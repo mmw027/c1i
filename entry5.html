@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Geometric Design</title>
+  <title>Geometric Design (SVG Version)</title>
   <style>
     body {
       background-color: #1E1E1E;
@@ -17,15 +17,14 @@
     .frame {
       width: 400px;
       height: 500px;
-      background-color: #243C54; /* dark navy */
+      background-color: #243C54;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
-    /* Top (sky) */
     .sky {
-      background-color: #8ABEEB; /* light blue */
+      background-color: #8ABEEB;
       height: 50%;
       display: flex;
       justify-content: center;
@@ -34,19 +33,18 @@
       position: relative;
     }
 
-    /* Blocks (orange + yellow) */
     .block {
       width: 80px;
       height: 100px;
     }
 
     .block1 {
-      background-color: #F4B860; /* orange */
+      background-color: #F4B860;
     }
 
     .block2 {
-      background-color: #F6D365; /* yellow-orange */
-      border: 3px solid #387AA3; /* blue outline */
+      background-color: #F6D365;
+      border: 3px solid #387AA3;
     }
 
     .block3 {
@@ -55,18 +53,15 @@
       right: 125px;
       width: 80px;
       height: 40px;
-      background-color: #F49E42; /* deeper orange top */
+      background-color: #F49E42;
     }
 
-    /* Bottom (ground) */
     .ground {
-      background-color: #344E68; /* darker navy */
+      background-color: #344E68;
       height: 50%;
       position: relative;
-      overflow: hidden;
     }
 
-    /* Shadow triangle */
     .shadow {
       position: absolute;
       left: 0;
@@ -77,16 +72,12 @@
       clip-path: polygon(0 0, 100% 100%, 0 100%);
     }
 
-    /* Curved shape (refined) */
-    .curve {
+    svg {
       position: absolute;
       right: 0;
       bottom: 0;
       width: 55%;
       height: 100%;
-      background-color: #2C445E;
-      /* Smooth wavy shape similar to Figma */
-      clip-path: path("M0,0 C80,80 80,180 0,260 L0,400 L200,400 L200,0 Z");
     }
   </style>
 </head>
@@ -99,7 +90,10 @@
     </div>
     <div class="ground">
       <div class="shadow"></div>
-      <div class="curve"></div>
+      <!-- Wave shape made with SVG -->
+      <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,0 C80,80 80,180 0,260 L0,400 L200,400 L200,0 Z" fill="#2C445E" />
+      </svg>
     </div>
   </div>
 </body>

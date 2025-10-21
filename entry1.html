@@ -4,103 +4,121 @@
 <meta charset="UTF-8">
 <title>Entry 1 – Lights and Shadows</title>
 <style>
-  body {
+  html, body {
     margin: 0;
-    background: #000;
-    font-family: sans-serif;
+    height: 100%;
     overflow: hidden;
+    background: #F8C57E;
+    font-family: sans-serif;
   }
 
-  /* full-screen animated gradient background */
+  /* ---------- LAYERS ---------- */
   .frame {
+    position: relative;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(120deg, #0a0a0a, #1b1b1b, #000000);
-    background-size: 300% 300%;
-    animation: gradientMove 10s ease-in-out infinite alternate;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sky1 { flex: 1; background: #F9CE93; }
+  .sky2 { flex: 1; background: #FBB164; }
+  .sky3 { flex: 2; background: #F8A54B; position: relative; overflow: hidden; }
+
+  /* ---------- SUN ---------- */
+  .sun {
+    position: absolute;
+    bottom: -40vmin;        /* start below horizon */
+    left: 50%;
+    width: 35vmin;
+    height: 35vmin;
+    background: radial-gradient(circle at center,
+      #FFE59C 0%, #FCD97F 60%, #F8A54B 100%);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    animation:
+      rise 8s ease-in-out forwards,
+      glow 6s ease-in-out infinite alternate;
+    filter: blur(2px);
+  }
+
+  @keyframes rise {
+    0%   { bottom: -40vmin; opacity: 0; }
+    100% { bottom: 20%; opacity: 1; }
+  }
+
+  @keyframes glow {
+    0%   { transform: translateX(-50%) scale(1); opacity: 0.9; }
+    100% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+  }
+
+  /* ---------- GROUND ---------- */
+  .ground {
+    flex: 1;
+    background: #B9926F;
     position: relative;
   }
 
-  @keyframes gradientMove {
-    from { background-position: 0% 50%; }
-    to { background-position: 100% 50%; }
+  .bar {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    width: 80%;
+    height: 8%;
+    background: #8A5B3A;
+    border-radius: 4vmin;
   }
 
-  /* moving glow */
-  .glow {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255,255,220,0.5) 0%, transparent 70%);
-    border-radius: 50%;
+  /* ---------- LIGHT SHIMMER ---------- */
+  .light {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%,
+      rgba(255,255,200,0.25) 0%, transparent 60%);
+    mix-blend-mode: overlay;
     pointer-events: none;
-    filter: blur(25px);
-    transition: transform 0.05s linear, background 0.4s ease;
+    transition: background 0.3s ease;
   }
 
-  /* floating particles */
-  .particle {
-    position: absolute;
-    bottom: -20px;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.7;
-    animation: float 8s linear infinite;
-  }
-  .particle:nth-child(2) { left: 25%; animation-delay: 2s; }
-  .particle:nth-child(3) { left: 60%; animation-delay: 4s; }
-  .particle:nth-child(4) { left: 80%; animation-delay: 1s; }
-
-  @keyframes float {
-    0% { transform: translateY(0); opacity: 0.8; }
-    100% { transform: translateY(-110vh); opacity: 0; }
-  }
-
-  /* back-to-index link */
+  /* ---------- BACK LINK ---------- */
   .back {
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     color: white;
     text-decoration: none;
     font-size: 1.2em;
-    transition: color 0.2s ease;
-    z-index: 2;
+    font-weight: 300;
+    text-shadow: 0 0 10px rgba(0,0,0,0.6);
+    transition: color 0.3s ease;
+    z-index: 5;
   }
-  .back:hover { color: gray; }
+  .back:hover { color: #ddd; }
 </style>
 </head>
 <body>
   <div class="frame">
-    <div class="glow"></div>
-
-    <!-- four floating light particles -->
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-
-    <a href="index.html" class="back">← Back to Index</a>
+    <div class="sky1"></div>
+    <div class="sky2"></div>
+    <div class="sky3"><div class="sun"></div></div>
+    <div class="ground"><div class="bar"></div></div>
   </div>
 
+  <div class="light"></div>
+  <a href="index.html" class="back">← Back to Index</a>
+
   <script>
-    const glow = document.querySelector('.glow');
-    let bright = true;
-
-    /* make glow follow cursor */
+    /* LIGHT FOLLOWING CURSOR */
+    const light = document.querySelector('.light');
     document.addEventListener('mousemove', e => {
-      glow.style.transform = `translate(${e.clientX - 150}px, ${e.clientY - 150}px)`;
-    });
-
-    /* toggle brightness on click */
-    document.addEventListener('click', () => {
-      bright = !bright;
-      glow.style.background = bright
-        ? 'radial-gradient(circle, rgba(255,255,220,0.5) 0%, transparent 70%)'
-        : 'radial-gradient(circle, rgba(255,255,220,0.15) 0%, transparent 70%)';
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      light.style.background =
+        `radial-gradient(circle at ${x}% ${y}%,
+          rgba(255,255,220,0.25) 0%, transparent 60%)`;
     });
   </script>
 </body>

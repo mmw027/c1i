@@ -23,6 +23,7 @@
       margin-bottom: 40px;
     }
 
+    /* Container for the entry links */
     .entries {
       display: flex;
       flex-wrap: wrap;
@@ -30,39 +31,35 @@
       gap: 20px;
     }
 
-    .entry {
+    /* Each clickable entry box */
+    a.entry {
       background: rgba(255, 255, 255, 0.25);
       border-radius: 20px;
       padding: 20px;
-      width: 250px;
-      box-sizing: border-box;
-      font-size: 1.1em;
+      width: 200px;
       text-decoration: none;
       color: white;
       transition: transform 0.2s ease, background 0.3s ease;
+      font-size: 1.3em;
     }
 
-    .entry:hover {
+    /* Hover effect */
+    a.entry:hover {
       background: rgba(255, 255, 255, 0.4);
       transform: translateY(-5px);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: white;
     }
   </style>
 </head>
 <body>
-  <h1>This is my harmonic collection</h1>
+  <h1>This is my Harmonic Collection</h1>
 
   <div class="entries">
-    <a href="entry1.html" class="entry"><h2>Entry 1</h2><p>Click to view Entry 1</p></a>
-    <a href="entry2.html" class="entry"><h2>Entry 2</h2><p>Click to view Entry 2</p></a>
-    <a href="entry3.html" class="entry"><h2>Entry 3</h2><p>Click to view Entry 3</p></a>
-    <a href="entry4.html" class="entry"><h2>Entry 4</h2><p>Click to view Entry 4</p></a>
-    <a href="entry5.html" class="entry"><h2>Entry 5</h2><p>Click to view Entry 5</p></a>
-    <a href="entry6.html" class="entry"><h2>Entry 6</h2><p>Click to view Entry 6</p></a>
+    <a href="entry1.html" class="entry">Entry 1</a>
+    <a href="entry2.html" class="entry">Entry 2</a>
+    <a href="entry3.html" class="entry">Entry 3</a>
+    <a href="entry4.html" class="entry">Entry 4</a>
+    <a href="entry5.html" class="entry">Entry 5</a>
+    <a href="entry6.html" class="entry">Entry 6</a>
   </div>
 </body>
 </html>

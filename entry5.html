@@ -1,100 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Geometric Design (SVG Version)</title>
-  <style>
-    body {
-      background-color: #1E1E1E;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+<meta charset="UTF-8">
+<title>Frame 5 – Layered Blues (CSS Grid)</title>
+<style>
+body {
+  margin: 0;
+  background: #1A1A1A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .frame {
-      width: 400px;
-      height: 500px;
-      background-color: #243C54;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+/* container */
+.frame {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;  /* 4 stacked rows */
+  width: 180px;
+  height: 280px;
+  background: #96AFB8;
+  overflow: hidden;
+  border-radius: 4px;
+}
 
-    .sky {
-      background-color: #8ABEEB;
-      height: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 10px;
-      position: relative;
-    }
+/* bars */
+.bar {
+  background: #47647E;
+  border-top-right-radius: 70px;
+  border-bottom-right-radius: 70px;
+}
 
-    .block {
-      width: 80px;
-      height: 100px;
-    }
+/* varying transparency */
+.bar:nth-child(1) { opacity: 0.95; }
+.bar:nth-child(2) { opacity: 0.8; }
+.bar:nth-child(3) { opacity: 0.7; }
 
-    .block1 {
-      background-color: #F4B860;
-    }
-
-    .block2 {
-      background-color: #F6D365;
-      border: 3px solid #387AA3;
-    }
-
-    .block3 {
-      position: absolute;
-      top: 50px;
-      right: 125px;
-      width: 80px;
-      height: 40px;
-      background-color: #F49E42;
-    }
-
-    .ground {
-      background-color: #344E68;
-      height: 50%;
-      position: relative;
-    }
-
-    .shadow {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 50%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.25);
-      clip-path: polygon(0 0, 100% 100%, 0 100%);
-    }
-
-    svg {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: 55%;
-      height: 100%;
-    }
-  </style>
+/* bottom section */
+.bottom-section {
+  background: #7D9AA4;
+  width: 100%;
+}
+</style>
 </head>
 <body>
   <div class="frame">
-    <div class="sky">
-      <div class="block block1"></div>
-      <div class="block block2"></div>
-      <div class="block block3"></div>
-    </div>
-    <div class="ground">
-      <div class="shadow"></div>
-      <!-- Wave shape made with SVG -->
-      <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,0 C80,80 80,180 0,260 L0,400 L200,400 L200,0 Z" fill="#2C445E" />
-      </svg>
-    </div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bottom-section"></div>
   </div>
 </body>
 </html>

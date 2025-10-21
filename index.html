@@ -2,113 +2,126 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Harmonic Collection – Lights and Shadows</title>
-
-<!-- Import modern fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Raleway:wght@200;400&display=swap" rel="stylesheet">
-
+<title>Entry 1 – Lights and Shadows</title>
 <style>
-  :root {
-    --light: #ffffff;
-    --shadow: #000000;
-    --accent: #777;
-  }
-
   body {
     margin: 0;
+    overflow: hidden;
     height: 100vh;
-    background: radial-gradient(circle at 50% 30%, #1a1a1a 0%, #000 70%);
-    color: var(--light);
-    font-family: 'Raleway', sans-serif;
+    background: #F8C57E;
+    font-family: sans-serif;
+  }
+
+  /* frame structure */
+  .frame {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
   }
 
-  /* animated light background */
-  .light-glow {
+  /* sky layers */
+  .sky1 { flex: 1; background: #F9CE93; }
+  .sky2 { flex: 1; background: #FBB164; }
+  .sky3 { flex: 2; background: #F8A54B; position: relative; overflow: hidden; }
+
+  /* glowing sun with rising animation */
+  .sun {
     position: absolute;
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 80%);
+    bottom: -35vmin;
+    left: 50%;
+    width: 35vmin;
+    height: 35vmin;
+    background: radial-gradient(circle at center, #FFE59C 0%, #FCD97F 60%, #F8A54B 100%);
     border-radius: 50%;
-    filter: blur(100px);
-    animation: moveLight 10s ease-in-out infinite alternate;
+    transform: translateX(-50%);
+    animation: sunrise 8s ease-in-out forwards, sunriseGlow 6s ease-in-out infinite alternate;
+    filter: blur(2px);
   }
 
-  @keyframes moveLight {
-    from { transform: translate(-200px, -100px) scale(1); opacity: 0.8; }
-    to { transform: translate(200px, 150px) scale(1.2); opacity: 0.4; }
+  @keyframes sunrise {
+    0% { bottom: -35vmin; opacity: 0; }
+    100% { bottom: 20%; opacity: 1; }
   }
 
-  h1 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-size: 2.8em;
-    z-index: 1;
-    text-shadow: 0 0 30px rgba(255,255,255,0.2);
-    animation: fadeUp 1.5s ease-out forwards;
-    opacity: 0;
+  @keyframes sunriseGlow {
+    0% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
   }
 
-  p.intro {
-    font-weight: 300;
-    color: #bbb;
-    font-size: 1.1em;
-    margin-bottom: 50px;
-    letter-spacing: 0.5px;
-    animation: fadeUp 2s ease-out forwards;
-    opacity: 0;
+  /* ground + bar */
+  .ground {
+    flex: 1;
+    background: #B9926F;
+    position: relative;
   }
 
-  a {
-    display: block;
-    color: var(--light);
+  .bar {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    width: 80%;
+    height: 8%;
+    background: #8A5B3A;
+    border-radius: 4vmin;
+  }
+
+  /* interactive shimmer that follows mouse */
+  .light {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,200,0.25) 0%, transparent 60%);
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    transition: background 0.3s ease;
+  }
+
+  /* back link fixed at bottom */
+  .back {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
     text-decoration: none;
-    font-size: 1.4em;
-    margin: 12px 0;
-    opacity: 0;
+    font-size: 1.2em;
     font-weight: 300;
-    animation: fadeUp 2s ease-out forwards;
-    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    transition: color 0.3s ease;
+    z-index: 5;
   }
-
-  /* slight stagger for entry links */
-  a:nth-of-type(1) { animation-delay: 0.5s; }
-  a:nth-of-type(2) { animation-delay: 0.7s; }
-  a:nth-of-type(3) { animation-delay: 0.9s; }
-  a:nth-of-type(4) { animation-delay: 1.1s; }
-  a:nth-of-type(5) { animation-delay: 1.3s; }
-  a:nth-of-type(6) { animation-delay: 1.5s; }
-
-  a:hover {
-    color: #fff;
-    text-shadow: 0 0 12px rgba(255,255,255,0.9);
-    transform: scale(1.05);
-  }
-
-  @keyframes fadeUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
+  .back:hover { color: #ddd; }
 </style>
 </head>
 <body>
-  <div class="light-glow"></div>
+  <div class="frame">
+    <div class="sky1"></div>
+    <div class="sky2"></div>
+    <div class="sky3">
+      <div class="sun"></div>
+    </div>
+    <div class="ground">
+      <div class="bar"></div>
+    </div>
+  </div>
 
-  <h1>Lights and Shadows</h1>
-  <p class="intro">A harmonic journey through rhythm, tone, and balance.</p>
+  <div class="light"></div>
+  <a href="index.html" class="back">← Back to Index</a>
 
-  <a href="entry1.html">Entry 1</a>
-  <a href="entry2.html">Entry 2</a>
-  <a href="entry3.html">Entry 3</a>
-  <a href="entry4.html">Entry 4</a>
-  <a href="entry5.html">Entry 5</a>
-  <a href="entry6.html">Entry 6</a>
+  <script>
+    const light = document.querySelector('.light');
+
+    /* make the shimmer follow the mouse */
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      light.style.background = `
+        radial-gradient(circle at ${x}% ${y}%, 
+          rgba(255,255,220,0.25) 0%, 
+          transparent 60%)`;
+    });
+  </script>
 </body>
 </html>

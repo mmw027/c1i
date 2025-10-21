@@ -2,53 +2,71 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Frame 1</title>
+<title>Entry 1 – Lights and Shadows</title>
 <style>
   body {
     margin: 0;
-    background: #1A1A1A;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: monospace;
-  }
-
-  /* The full-screen gradient frame */
-  .frame {
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(#F7D1A0 25%, #F5B876 50%, #E69C54 75%, #B48D74 100%);
-    position: relative;
+    background: #000;
+    font-family: sans-serif;
     overflow: hidden;
   }
 
-  /* The sun shape */
-  .sun {
+  /* full-screen animated gradient background */
+  .frame {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(120deg, #0a0a0a, #1b1b1b, #000000);
+    background-size: 300% 300%;
+    animation: gradientMove 10s ease-in-out infinite alternate;
+    position: relative;
+  }
+
+  @keyframes gradientMove {
+    from { background-position: 0% 50%; }
+    to { background-position: 100% 50%; }
+  }
+
+  /* soft breathing glow in the center */
+  .glow {
     position: absolute;
-    bottom: 20%;
+    top: 50%;
     left: 50%;
-    width: 20vw;
-    height: 20vw;
-    max-width: 200px;
-    max-height: 200px;
-    background: #FBE5A7;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(255,255,220,0.4) 0%, transparent 70%);
     border-radius: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+    filter: blur(20px);
   }
 
-  /* The brown bar (ground) */
-  .bar {
+  @keyframes pulse {
+    0%,100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+  }
+
+  /* optional floating particles of light */
+  .particle {
     position: absolute;
-    bottom: 10%;
-    width: 100%;
-    height: 8vh;
-    background: #8A5B3A;
-    border-radius: 20px;
+    bottom: -20px;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: float 8s linear infinite;
   }
 
-  /* Back link */
+  .particle:nth-child(2) { left: 25%; animation-delay: 2s; }
+  .particle:nth-child(3) { left: 60%; animation-delay: 4s; }
+  .particle:nth-child(4) { left: 80%; animation-delay: 1s; }
+
+  @keyframes float {
+    0% { transform: translateY(0); opacity: 0.8; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+  }
+
+  /* back-to-index link */
   .back {
     position: absolute;
     bottom: 20px;
@@ -67,8 +85,12 @@
 </head>
 <body>
   <div class="frame">
-    <div class="sun"></div>
-    <div class="bar"></div>
+    <div class="glow"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
     <a href="index.html" class="back">← Back to Index</a>
   </div>
 </body>

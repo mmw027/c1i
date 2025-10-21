@@ -4,65 +4,47 @@
   <meta charset="UTF-8">
   <title>Harmonic Collection</title>
   <style>
-    :root {
-      --brandColor: black;
-      --textColor: white;
-      --hoverColor: #444; /* dark gray hover effect */
-    }
-
     body {
-      background: var(--brandColor);
-      font-family: system-ui, sans-serif;
-      color: var(--textColor);
+      background-color: black;
+      color: white;
+      font-family: sans-serif;
       text-align: center;
       margin: 0;
-      padding: 50px;
+      padding: 80px 0;
     }
 
     h1 {
       font-size: 2.5em;
+      margin-bottom: 60px;
       letter-spacing: 1px;
-      margin-bottom: 40px;
-      color: var(--textColor);
-    }
-
-    .entries {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    a.entry {
-      background: transparent;
-      border: 2px solid white;
-      border-radius: 12px;
-      padding: 20px;
-      width: 200px;
-      text-decoration: none;
-      color: var(--textColor);
       font-weight: 600;
-      transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease;
-      font-size: 1.2em;
     }
 
-    a.entry:hover {
-      background: var(--hoverColor);
-      transform: translateY(-5px);
+    /* Clean vertical text links */
+    a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 1.5em;
+      margin: 20px 0;
+      transition: color 0.2s ease;
+      font-weight: 400;
+    }
+
+    /* Subtle hover effect */
+    a:hover {
+      color: gray;
     }
   </style>
 </head>
 <body>
   <h1>This is my Harmonic Collection</h1>
 
-  <div class="entries">
-    <a href="entry1.html" class="entry">Entry 1</a>
-    <a href="entry2.html" class="entry">Entry 2</a>
-    <a href="entry3.html" class="entry">Entry 3</a>
-    <a href="entry4.html" class="entry">Entry 4</a>
-    <a href="entry5.html" class="entry">Entry 5</a>
-    <a href="entry6.html" class="entry">Entry 6</a>
-  </div>
+  <a href="entry1.html">Entry 1</a>
+  <a href="entry2.html">Entry 2</a>
+  <a href="entry3.html">Entry 3</a>
+  <a href="entry4.html">Entry 4</a>
+  <a href="entry5.html">Entry 5</a>
+  <a href="entry6.html">Entry 6</a>
 </body>
 </html>
-

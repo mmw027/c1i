@@ -1,44 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Harmonic Collection</title>
-  <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: monospace, monospace;
-      text-align: center;
-      margin: 0;
-      padding: 80px 0;
-    }
+<meta charset="UTF-8">
+<title>Harmonic Collection – Lights and Shadows</title>
+<style>
+  /* ----- Base Layout ----- */
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: sans-serif;
+    color: white;
+    background: radial-gradient(circle at 50% 30%, #444 0%, #000 70%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 60px;
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
+  /* ----- Animated background glow ----- */
+  .glow {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: floatGlow 8s ease-in-out infinite alternate;
+  }
 
-    /* Clean vertical text links */
-    a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      font-size: 1.5em;
-      margin: 20px 0;
-      transition: color 0.2s ease;
-      font-weight: 400;
-    }
+  @keyframes floatGlow {
+    from { transform: translate(-200px, -100px) scale(1); opacity: 0.8; }
+    to { transform: translate(200px, 150px) scale(1.2); opacity: 0.4; }
+  }
 
-    /* Subtle hover effect */
-    a:hover {
-      color: gray;
-    }
-  </style>
+  /* ----- Title and intro ----- */
+  h1 {
+    font-size: 2.8em;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    z-index: 1;
+  }
+
+  p.intro {
+    color: #ccc;
+    font-size: 1.1em;
+    margin-bottom: 60px;
+    z-index: 1;
+  }
+
+  /* ----- Entry links ----- */
+  a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    margin: 15px 0;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    z-index: 1;
+  }
+
+  /* Fade-in stagger for rhythm */
+  a:nth-of-type(1) { animation-delay: 0.2s; }
+  a:nth-of-type(2) { animation-delay: 0.4s; }
+  a:nth-of-type(3) { animation-delay: 0.6s; }
+  a:nth-of-type(4) { animation-delay: 0.8s; }
+  a:nth-of-type(5) { animation-delay: 1s; }
+  a:nth-of-type(6) { animation-delay: 1.2s; }
+
+  a:hover {
+    color: #fff;
+    text-shadow: 0 0 15px #fff, 0 0 30px #888;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 </head>
 <body>
-  <h1>Lights & Shadows </h1>
+  <div class="glow"></div>
+
+  <h1>Lights and Shadows</h1>
+  <p class="intro">A harmonic journey through contrast, rhythm, and form.</p>
 
   <a href="entry1.html">Entry 1</a>
   <a href="entry2.html">Entry 2</a>

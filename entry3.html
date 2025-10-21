@@ -4,22 +4,82 @@
 <meta charset="UTF-8">
 <title>Frame 3</title>
 <style>
-body {
-  margin:0;background:#1A1A1A;display:flex;justify-content:center;align-items:center;height:100vh;
-}
-.frame {
-  width:180px;height:280px;background:#3D5C75;position:relative;
-}
-.circle {
-  position:absolute;border-radius:50%;
-}
-.large {
-  width:80px;height:80px;background:#FCEE86;top:90px;left:40px;
-}
-.small {background:#FFD18C;}
-.one {width:25px;height:25px;top:180px;left:130px;}
-.two {width:10px;height:10px;top:60px;left:160px;}
-.three {width:15px;height:15px;top:100px;left:170px;}
+  body {
+    margin: 0;
+    background: #1A1A1A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: sans-serif;
+  }
+
+  /* Full-screen blue background frame */
+  .frame {
+    width: 100vw;
+    height: 100vh;
+    background: #3D5C75;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Circle base style */
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  /* Large yellow circle */
+  .large {
+    width: 15vw;
+    height: 15vw;
+    background: #FCEE86;
+    top: 40%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Smaller orange circles */
+  .small {
+    background: #FFD18C;
+  }
+
+  .one {
+    width: 4vw;
+    height: 4vw;
+    top: 65%;
+    left: 60%;
+  }
+
+  .two {
+    width: 2vw;
+    height: 2vw;
+    top: 20%;
+    left: 75%;
+  }
+
+  .three {
+    width: 3vw;
+    height: 3vw;
+    top: 35%;
+    left: 80%;
+  }
+
+  /* Back to index link */
+  .back {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: color 0.2s ease;
+  }
+
+  .back:hover {
+    color: gray;
+  }
 </style>
 </head>
 <body>
@@ -28,7 +88,8 @@ body {
     <div class="circle small one"></div>
     <div class="circle small two"></div>
     <div class="circle small three"></div>
+
+    <a href="index.html" class="back">← Back to Index</a>
   </div>
 </body>
 </html>
-<a href="index.html">← Back to Index</a>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 1 – Lights and Shadows</title>
+<title>Entry 1 – Interactive Lights and Shadows</title>
 <style>
   body {
     margin: 0;
@@ -11,7 +11,7 @@
     overflow: hidden;
   }
 
-  /* full-screen animated gradient background */
+  /* Full-screen animated gradient background */
   .frame {
     width: 100vw;
     height: 100vh;
@@ -26,26 +26,19 @@
     to { background-position: 100% 50%; }
   }
 
-  /* soft breathing glow in the center */
+  /* The glow that follows the cursor */
   .glow {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(255,255,220,0.4) 0%, transparent 70%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,220,0.5) 0%, transparent 70%);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 4s ease-in-out infinite;
-    filter: blur(20px);
+    pointer-events: none; /* lets mouse move freely */
+    transition: transform 0.1s ease-out, background 0.5s ease;
+    filter: blur(25px);
   }
 
-  @keyframes pulse {
-    0%,100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
-  }
-
-  /* optional floating particles of light */
+  /* Optional floating light particles */
   .particle {
     position: absolute;
     bottom: -20px;
@@ -66,7 +59,7 @@
     100% { transform: translateY(-110vh); opacity: 0; }
   }
 
-  /* back-to-index link */
+  /* Back-to-index link */
   .back {
     position: absolute;
     bottom: 20px;
@@ -76,6 +69,7 @@
     text-decoration: none;
     font-size: 1.2em;
     transition: color 0.2s ease;
+    z-index: 2;
   }
 
   .back:hover {
@@ -86,6 +80,7 @@
 <body>
   <div class="frame">
     <div class="glow"></div>
+
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
@@ -93,5 +88,23 @@
 
     <a href="index.html" class="back">← Back to Index</a>
   </div>
+
+  <script>
+    const glow = document.querySelector('.glow');
+    let bright = true;
+
+    /* move glow with cursor */
+    document.addEventListener('mousemove', e => {
+      glow.style.transform = `translate(${e.clientX - 150}px, ${e.clientY - 150}px)`;
+    });
+
+    /* toggle brightness on click */
+    document.addEventListener('click', () => {
+      bright = !bright;
+      glow.style.background = bright
+        ? 'radial-gradient(circle, rgba(255,255,220,0.5) 0%, transparent 70%)'
+        : 'radial-gradient(circle, rgba(255,255,220,0.15) 0%, transparent 70%)';
+    });
+  </script>
 </body>
 </html>

@@ -2,143 +2,118 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 5 – Lights and Shadows (Interactive)</title>
+<title>Entry 4 — Shadow Play</title>
 <style>
-  body {
+  html, body {
     margin: 0;
-    height: 100vh;
-    background: #1A1A1A;
+    height: 100%;
     overflow: hidden;
-    font-family: sans-serif;
-    position: relative;
+    background: linear-gradient(to bottom right, #E8E4DC, #C5C1B8);
+    cursor: none;
+    transition: background 2s ease;
   }
 
-  /* --- background grid --- */
-  .frame {
+  .scene {
+    position: relative;
     width: 100vw;
     height: 100vh;
-    display: grid;
-    grid-template-rows: 50% 50%;
-    grid-template-columns: 50% 50%;
-    position: relative;
-    z-index: 1;
-  }
-  .top-left { background: #A8CBED; }
-  .top-right { background: #1B2C3F; }
-  .bottom-left { background: #344E6A; }
-  .bottom-right {
-    background: #1B2C3F;
-    position: relative;
+    overflow: hidden;
   }
 
-  /* diagonal & curve */
-  .diagonal {
+  /* Floating shapes */
+  .shape {
     position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 100%;
-    background: #344E6A;
-    clip-path: polygon(0 0, 100% 0, 0 100%);
-  }
-  .curve {
-    position: absolute;
-    bottom: 0; right: 0;
-    width: 50%; height: 70%;
-    background: #1B2C3F;
-    clip-path: path("M0,100 C60,80 70,30 100,0 L100,100 Z");
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    box-shadow: 30px 30px 30px rgba(0,0,0,0.25);
+    transition: box-shadow 0.2s ease;
   }
 
-  /* --- squares --- */
-  .square {
-    position: absolute;
-    width: 18vw;
-    height: 18vw;
-    min-width: 140px;
-    min-height: 140px;
-    border-radius: 4px;
-    transition: transform 0.2s ease, box-shadow 0.5s ease, filter 0.5s ease;
-  }
-  .orange { background: #FBB164; top: 32%; left: 43%; z-index: 3; }
-  .yellow { background: #F7D780; top: 28%; left: 47%; z-index: 2; }
-
-  /* hover glow */
-  .square:hover {
-    box-shadow: 0 0 30px rgba(255,255,200,0.6);
-    filter: brightness(1.2);
-    transform: scale(1.03);
+  .circle {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
   }
 
-  /* moving light overlay */
+  .triangle {
+    width: 0;
+    height: 0;
+    border-left: 70px solid transparent;
+    border-right: 70px solid transparent;
+    border-bottom: 120px solid rgba(255,255,255,0.7);
+    border-radius: 6px;
+  }
+
+  /* cursor light */
   .light {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: radial-gradient(circle at center,
-      rgba(255,255,255,0.15) 0%,
-      rgba(255,255,255,0.05) 25%,
-      transparent 60%);
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.1) 70%, transparent 100%);
     pointer-events: none;
     mix-blend-mode: overlay;
-    transition: background 0.3s ease;
-    z-index: 2;
+    border-radius: 50%;
   }
 
-  /* back link */
-  .back {
+  /* Navigation */
+  .nav {
     position: absolute;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    text-decoration: none;
-    font-size: 1.1em;
-    transition: color 0.2s ease;
-    z-index: 5;
+    width: 100%;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
   }
-  .back:hover { color: gray; }
+
+  .nav a {
+    color: rgba(0,0,0,0.6);
+    text-decoration: none;
+    margin: 0 15px;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav a:hover {
+    opacity: 0.7;
+  }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <div class="top-left"></div>
-    <div class="top-right"></div>
-    <div class="bottom-left"></div>
-    <div class="bottom-right">
-      <div class="diagonal"></div>
-      <div class="curve"></div>
-    </div>
-  </div>
+<div class="scene">
+  <div class="shape" id="square" style="top:40%; left:30%;"></div>
+  <div class="shape circle" id="circle" style="top:20%; left:60%;"></div>
+  <div class="shape triangle" id="triangle" style="top:60%; left:55%;"></div>
+  <div class="light" id="light"></div>
+</div>
 
-  <div class="square yellow"></div>
-  <div class="square orange"></div>
+<div class="nav">
+  <a href="entry3.html">← Previous</a>
+  <a href="index.html">Back to Index</a>
+  <a href="entry5.html">Next →</a>
+</div>
 
-  <div class="light"></div>
+<script>
+  const light = document.getElementById('light');
+  const shapes = document.querySelectorAll('.shape');
 
-  <a href="index.html" class="back">← Back to Index</a>
+  document.addEventListener('mousemove', e => {
+    light.style.left = `${e.pageX - 40}px`;
+    light.style.top = `${e.pageY - 40}px`;
 
-  <script>
-    const light = document.querySelector('.light');
+    shapes.forEach(shape => {
+      const rect = shape.getBoundingClientRect();
+      const dx = e.clientX - (rect.left + rect.width / 2);
+      const dy = e.clientY - (rect.top + rect.height / 2);
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      const intensity = Math.max(0.15, 1 - dist / 800);
+      const shadowX = dx * 0.2;
+      const shadowY = dy * 0.2;
 
-    // move radial light with mouse
-    document.addEventListener('mousemove', e => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      light.style.background = `
-        radial-gradient(circle at ${x}% ${y}%,
-          rgba(255,255,255,0.2) 0%,
-          rgba(255,255,255,0.05) 25%,
-          transparent 60%)`;
+      shape.style.boxShadow = `${shadowX}px ${shadowY}px 30px rgba(0,0,0,${intensity})`;
     });
-
-    // slight color warmth shift when hovering squares
-    const squares = document.querySelectorAll('.square');
-    squares.forEach(sq => {
-      sq.addEventListener('mouseenter', () => {
-        document.body.style.backgroundColor = '#1C1F26';
-      });
-      sq.addEventListener('mouseleave', () => {
-        document.body.style.backgroundColor = '#1A1A1A';
-      });
-    });
-  </script>
+  });
+</script>
 </body>
 </html>

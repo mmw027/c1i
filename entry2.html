@@ -2,66 +2,91 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 2 — Distorted Glass</title>
+<title>Entry 2 — Reflection</title>
 <style>
   html, body {
     margin: 0;
     height: 100%;
     overflow: hidden;
-    background: radial-gradient(circle at center,
-      #FFF9E6 0%, #F7D89A 40%, #E8A46B 80%, #B77C4A 100%);
+    background: radial-gradient(circle at center, #060606 0%, #020202 100%);
     cursor: none;
   }
 
-  /* --- GLASS LAYER --- */
+  /* ---- center glass panel ---- */
   .glass {
     position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60vw;
+    height: 65vh;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    box-shadow:
+      inset 0 0 100px rgba(255,255,255,0.04),
+      0 0 60px rgba(255,255,255,0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  /* ---- moving highlight that mimics reflected light ---- */
+  .reflection-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(35px) brightness(1.1);
     background: linear-gradient(
-      125deg,
-      rgba(255,255,255,0.15) 0%,
-      rgba(255,255,255,0.05) 25%,
-      rgba(255,255,255,0.1) 50%,
-      rgba(255,255,255,0.05) 75%,
-      rgba(255,255,255,0.15) 100%
+      135deg,
+      rgba(255,255,255,0.07) 0%,
+      rgba(255,255,255,0.02) 40%,
+      rgba(255,255,255,0.1) 70%,
+      transparent 100%
     );
-    mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
-    animation: shimmer 10s ease-in-out infinite alternate;
+    background-size: 400% 400%;
+    animation: shift 10s infinite linear;
+    border-radius: 30px;
+    mix-blend-mode: screen;
   }
 
-  /* --- DISTORTION WAVES --- */
-  .distort {
-    position: absolute;
-    width: 120%;
-    height: 120%;
-    top: -10%;
-    left: -10%;
-    background: repeating-radial-gradient(circle at center,
-      rgba(255,255,255,0.03) 0px,
-      rgba(255,255,255,0.0) 40px,
-      rgba(255,255,255,0.03) 80px);
-    filter: blur(30px);
-    mix-blend-mode: overlay;
-    animation: wave 8s ease-in-out infinite alternate;
+  @keyframes shift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
   }
 
-  /* --- CURSOR LIGHT --- */
+  /* ---- cursor light reflection ---- */
   .cursor-light {
     position: fixed;
-    width: 220px;
-    height: 220px;
+    width: 280px;
+    height: 280px;
     border-radius: 50%;
     pointer-events: none;
-    background: radial-gradient(circle, rgba(255,255,230,0.6) 0%, transparent 70%);
-    mix-blend-mode: soft-light;
+    background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+    mix-blend-mode: screen;
     transform: translate(-50%, -50%);
     transition: transform 0.05s linear;
   }
 
-  /* --- NAVIGATION --- */
+  /* ---- soft background reflection glow ---- */
+  .ambient-light {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 70%);
+    filter: blur(60px);
+    mix-blend-mode: screen;
+    animation: pulse 8s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { opacity: 0.4; transform: scale(1); }
+    to { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  /* ---- navigation ---- */
   .nav {
     position: absolute;
     bottom: 40px;
@@ -72,32 +97,24 @@
 
   .nav a {
     text-decoration: none;
-    color: #FFB703;
-    font-size: 1.2em;
-    text-shadow: 0 0 10px #FFB703, 0 0 25px #FFD166, 0 0 50px #FFD166;
+    color: #CFEFFF;
+    font-size: 1.1em;
+    text-shadow: 0 0 15px #CFEFFF, 0 0 40px #9BE2FF;
     margin: 0 20px;
     transition: color 0.4s, text-shadow 0.4s;
   }
 
   .nav a:hover {
-    color: #FB8500;
-    text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166, 0 0 80px #FFD166;
-  }
-
-  @keyframes shimmer {
-    0% { transform: rotate(0deg) scale(1); }
-    100% { transform: rotate(360deg) scale(1.02); }
-  }
-
-  @keyframes wave {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.1) rotate(180deg); }
+    color: #FFFFFF;
+    text-shadow: 0 0 25px #FFFFFF, 0 0 60px #AEEBFF;
   }
 </style>
 </head>
 <body>
-  <div class="distort"></div>
-  <div class="glass"></div>
+  <div class="ambient-light"></div>
+  <div class="glass">
+    <div class="reflection-overlay"></div>
+  </div>
   <div class="cursor-light"></div>
 
   <div class="nav">
@@ -108,11 +125,24 @@
 
 <script>
   const light = document.querySelector('.cursor-light');
+  const glass = document.querySelector('.glass');
 
-  // glowing cursor follows mouse
+  // glowing cursor follows movement
   document.addEventListener('mousemove', (e) => {
     light.style.left = e.clientX + 'px';
     light.style.top = e.clientY + 'px';
+
+    // make glass glow when cursor is near it
+    const rect = glass.getBoundingClientRect();
+    const distance = Math.hypot(
+      e.clientX - (rect.left + rect.width / 2),
+      e.clientY - (rect.top + rect.height / 2)
+    );
+    const glow = Math.max(0, 250 - distance);
+    glass.style.boxShadow = `
+      inset 0 0 100px rgba(255,255,255,${0.05 + glow/1000}),
+      0 0 ${60 + glow/8}px rgba(255,255,255,${0.1 + glow/1000})
+    `;
   });
 </script>
 </body>

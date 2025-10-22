@@ -13,7 +13,7 @@
       #B77C4A 0%, #D59C64 25%, #F5A65D 45%, #F9C97A 70%, #FEEEC8 100%
     );
     transition: background 2s ease;
-    cursor: none; /* hide normal cursor */
+    cursor: none;
   }
 
   /* ---- floating sun ---- */
@@ -52,13 +52,13 @@
     height: 200px;
     border-radius: 50%;
     pointer-events: none;
-    background: radial-gradient(circle, rgba(255,255,200,0.5) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,200,0.45) 0%, transparent 70%);
     mix-blend-mode: soft-light;
     transform: translate(-50%, -50%);
     transition: transform 0.05s linear;
   }
 
-  /* ---- click animation ---- */
+  /* ---- ripple ---- */
   .ripple {
     position: absolute;
     width: 160px;
@@ -74,7 +74,7 @@
     to { transform: scale(3); opacity: 0; }
   }
 
-  /* ---- navigation text ---- */
+  /* ---- glowing navigation text (no borders) ---- */
   .nav {
     position: absolute;
     bottom: 30px;
@@ -87,16 +87,17 @@
     text-decoration: none;
     color: #FFB703;
     font-size: 1.1em;
-    text-shadow: 0 0 15px #FFB703, 0 0 30px #FFD166;
+    text-shadow: 0 0 10px #FFB703, 0 0 25px #FFD166, 0 0 50px #FFD166;
+    margin: 0 20px;
     transition: color 0.4s, text-shadow 0.4s;
-    margin: 0 15px;
   }
 
   .nav a:hover {
     color: #FB8500;
-    text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166;
+    text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166, 0 0 80px #FFD166;
   }
 
+  /* ---- active state ---- */
   body.active {
     background: linear-gradient(to top, #C78650 0%, #E8A966 30%, #FFC87F 55%, #FFEAB5 80%, #FFF8E2 100%);
   }
@@ -128,7 +129,7 @@
     light.style.top = e.clientY + 'px';
   });
 
-  // toggle sunrise colors + ripple click
+  // toggle sunrise + ripple
   document.body.addEventListener("click", (e) => {
     document.body.classList.toggle("active");
 

@@ -2,55 +2,63 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 1 — Dawn</title>
+<title>Entry 1 — The First Glow</title>
 <style>
   html, body {
     margin: 0;
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(to top, #F8C57E 0%, #F9CE93 40%, #FCE9C8 70%, #FFFFFF 100%);
+    background: linear-gradient(
+      to top,
+      #B77C4A 0%, #D59C64 25%, #F5A65D 45%, #F9C97A 70%, #FEEEC8 100%
+    );
     transition: background 2s ease;
-    cursor: pointer;
+    cursor: none; /* hide normal cursor */
   }
 
-  .horizon {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 180px;
-    background: linear-gradient(to top, #E8B874 0%, transparent 100%);
-  }
-
+  /* ---- floating sun ---- */
   .sun {
     position: absolute;
-    bottom: 40px;
+    bottom: 80px;
     left: 50%;
     width: 180px;
     height: 180px;
-    background: radial-gradient(circle, #FFB703 0%, #FB8500 80%);
+    background: radial-gradient(circle, #FFD26F 0%, #FFB703 70%, #FB8500 100%);
     border-radius: 50%;
     transform: translateX(-50%);
-    box-shadow: 0 0 60px rgba(255, 200, 100, 0.6);
+    box-shadow: 0 0 60px rgba(255, 180, 70, 0.6);
     animation: float 6s ease-in-out infinite alternate;
     transition: all 1.5s ease;
   }
 
   @keyframes float {
-    from { transform: translateX(-50%) translateY(8px); }
-    to { transform: translateX(-50%) translateY(-8px); }
+    from { transform: translateX(-50%) translateY(6px); }
+    to { transform: translateX(-50%) translateY(-6px); }
   }
 
-  body.active {
-    background: linear-gradient(to top, #FFB981 0%, #FFD4A6 40%, #FFF3CC 70%, #FFFFFF 100%);
+  /* ---- horizon ---- */
+  .horizon {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to top, rgba(160, 90, 40, 0.8), transparent);
   }
 
-  body.active .sun {
-    bottom: 250px;
-    transform: translateX(-50%) scale(1.15);
-    box-shadow: 0 0 100px rgba(255, 190, 100, 0.9);
-    filter: brightness(1.2);
+  /* ---- glowing cursor ---- */
+  .cursor-light {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255,255,200,0.5) 0%, transparent 70%);
+    mix-blend-mode: soft-light;
+    transform: translate(-50%, -50%);
+    transition: transform 0.05s linear;
   }
 
+  /* ---- click animation ---- */
   .ripple {
     position: absolute;
     width: 160px;
@@ -66,6 +74,7 @@
     to { transform: scale(3); opacity: 0; }
   }
 
+  /* ---- navigation text ---- */
   .nav {
     position: absolute;
     bottom: 30px;
@@ -87,11 +96,23 @@
     color: #FB8500;
     text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166;
   }
+
+  body.active {
+    background: linear-gradient(to top, #C78650 0%, #E8A966 30%, #FFC87F 55%, #FFEAB5 80%, #FFF8E2 100%);
+  }
+
+  body.active .sun {
+    bottom: 250px;
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 0 90px rgba(255, 200, 100, 0.9);
+    filter: brightness(1.2);
+  }
 </style>
 </head>
 <body>
   <div class="sun"></div>
   <div class="horizon"></div>
+  <div class="cursor-light"></div>
 
   <div class="nav">
     <a href="index.html">Back to Index</a>
@@ -99,11 +120,18 @@
   </div>
 
 <script>
-  document.body.addEventListener("click", () => {
-    document.body.classList.toggle("active");
+  const light = document.querySelector('.cursor-light');
+
+  // move glowing cursor light
+  document.addEventListener('mousemove', (e) => {
+    light.style.left = e.clientX + 'px';
+    light.style.top = e.clientY + 'px';
   });
 
+  // toggle sunrise colors + ripple click
   document.body.addEventListener("click", (e) => {
+    document.body.classList.toggle("active");
+
     const ripple = document.createElement("div");
     ripple.className = "ripple";
     ripple.style.left = `${e.clientX - 80}px`;

@@ -10,69 +10,75 @@
     overflow: hidden;
     background: linear-gradient(
       to top,
-      #B77C4A 0%,  /* ground */
-      #D28B4F 25%, /* warm horizon */
-      #F5A65D 45%, /* orange mid sky */
-      #F9C97A 70%, /* peach-yellow */
-      #FEEEC8 100% /* pale cream top */
+      #B77C4A 0%,   /* deep ground */
+      #D48E53 25%,  /* warm base */
+      #F6A75D 45%,  /* orange mid sky */
+      #F9C97A 70%,  /* peach-yellow */
+      #FFF2C9 100%  /* pale top */
     );
     transition: background 2s ease;
     cursor: none;
   }
 
-  /* ---- solid ground ---- */
+  /* ---- solid darker ground ---- */
   .ground {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 220px;
-    background: linear-gradient(to top, #7B4B25 0%, #A96A3D 80%, transparent 100%);
+    height: 250px;
+    background: linear-gradient(to top, #704321 0%, #8B552B 50%, rgba(171,101,49,0.7) 100%);
   }
 
-  /* ---- visible glowing horizon line ---- */
+  /* ---- thicker horizon line ---- */
   .horizon-line {
     position: absolute;
-    bottom: 220px;
+    bottom: 250px;
     width: 100%;
-    height: 5px;
-    background: linear-gradient(to right, rgba(200,130,70,0.8), rgba(255,200,130,0.9), rgba(200,130,70,0.8));
-    box-shadow: 0 0 20px rgba(255,180,80,0.6);
+    height: 10px;
+    background: linear-gradient(to right,
+      rgba(180,110,50,1),
+      rgba(255,210,140,1),
+      rgba(180,110,50,1)
+    );
+    box-shadow: 0 0 30px rgba(255,200,100,0.8);
   }
 
-  /* ---- floating sun ---- */
+  /* ---- larger and brighter sun ---- */
   .sun {
     position: absolute;
-    bottom: 140px;
+    bottom: 100px;
     left: 50%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, #FFD26F 0%, #FFB703 70%, #FB8500 100%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #FFE08A 0%, #FFD35C 40%, #FFB703 75%, #FB8500 100%);
     border-radius: 50%;
     transform: translateX(-50%);
-    box-shadow: 0 0 80px rgba(255, 190, 100, 0.7);
+    box-shadow:
+      0 0 80px rgba(255,190,90,0.8),
+      0 0 160px rgba(255,170,60,0.5);
     animation: float 6s ease-in-out infinite alternate;
     transition: all 1.5s ease;
   }
 
   @keyframes float {
-    from { transform: translateX(-50%) translateY(8px); }
-    to { transform: translateX(-50%) translateY(-8px); }
+    from { transform: translateX(-50%) translateY(6px); }
+    to { transform: translateX(-50%) translateY(-6px); }
   }
 
-  /* ---- glowing cursor light ---- */
+  /* ---- cursor glow ---- */
   .cursor-light {
     position: fixed;
-    width: 200px;
-    height: 200px;
+    width: 240px;
+    height: 240px;
     border-radius: 50%;
     pointer-events: none;
-    background: radial-gradient(circle, rgba(255,255,200,0.45) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,200,0.5) 0%, transparent 70%);
     mix-blend-mode: soft-light;
     transform: translate(-50%, -50%);
     transition: transform 0.05s linear;
   }
 
-  /* ---- glowing navigation text ---- */
+  /* ---- glowing text navigation ---- */
   .nav {
     position: absolute;
     bottom: 40px;
@@ -84,7 +90,7 @@
   .nav a {
     text-decoration: none;
     color: #FFB703;
-    font-size: 1.1em;
+    font-size: 1.2em;
     text-shadow: 0 0 10px #FFB703, 0 0 25px #FFD166, 0 0 50px #FFD166;
     margin: 0 20px;
     transition: color 0.4s, text-shadow 0.4s;
@@ -95,15 +101,26 @@
     text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166, 0 0 80px #FFD166;
   }
 
-  /* ---- sunrise mode ---- */
+  /* ---- active sunrise: brighter, higher sun ---- */
   body.active {
-    background: linear-gradient(to top, #C78650 0%, #E8A966 30%, #FFC87F 55%, #FFEAB5 80%, #FFF8E2 100%);
+    background: linear-gradient(
+      to top,
+      #C27B42 0%,
+      #E89C55 25%,
+      #FFBF6B 50%,
+      #FFE399 75%,
+      #FFF9E2 100%
+    );
   }
 
   body.active .sun {
-    bottom: 300px;
-    transform: translateX(-50%) scale(1.1);
-    box-shadow: 0 0 100px rgba(255, 200, 100, 0.9);
+    bottom: 340px;
+    width: 340px;
+    height: 340px;
+    box-shadow:
+      0 0 100px rgba(255,210,90,0.9),
+      0 0 200px rgba(255,200,100,0.8),
+      0 0 300px rgba(255,230,180,0.6);
     filter: brightness(1.25);
   }
 </style>
@@ -128,7 +145,7 @@
     light.style.top = e.clientY + 'px';
   });
 
-  // sunrise toggle (color shift + sun lift)
+  // toggle sunrise: sun lifts + colors brighten
   document.body.addEventListener("click", () => {
     document.body.classList.toggle("active");
   });

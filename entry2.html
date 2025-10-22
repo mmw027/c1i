@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Reflection — Interactive Ripple</title>
+<title>Reflection — Surfaces That Speak</title>
 <style>
   body {
     margin: 0;
@@ -29,9 +29,39 @@
     from { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
     to { opacity: 0; transform: translate(-50%, -50%) scale(2); }
   }
+
+  .nav {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 60px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+  }
+
+  a:hover {
+    background: rgba(255, 255, 255, 0.8);
+  }
 </style>
 </head>
 <body>
+  <div class="nav">
+    <a href="dawn.html">← Previous</a>
+    <a href="index.html">Back to Index</a>
+    <a href="neon.html">Next →</a>
+  </div>
+
 <script>
 document.addEventListener('mousemove', (e) => {
   const ripple = document.createElement('div');

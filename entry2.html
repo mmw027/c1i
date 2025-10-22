@@ -2,102 +2,60 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 2 — Reflection — Surfaces That Speak</title>
+<title>Entry 2 — Distorted Glass</title>
 <style>
   html, body {
     margin: 0;
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(
-      to top,
-      #FFD8A1 0%,   /* pale bottom */
-      #FFC17D 35%,  /* warm orange */
-      #FF9E57 65%,  /* orange-peach */
-      #FFE8B8 100%  /* creamy top */
-    );
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    background: radial-gradient(circle at center,
+      #FFF9E6 0%, #F7D89A 40%, #E8A46B 80%, #B77C4A 100%);
     cursor: none;
-    transition: background 2s ease;
   }
 
-  /* --- SUN --- */
-  .sun {
+  /* --- GLASS LAYER --- */
+  .glass {
     position: absolute;
-    bottom: 50%;
-    left: 50%;
-    width: 320px;
-    height: 320px;
-    transform: translate(-50%, 50%);
-    background: radial-gradient(circle,
-      rgba(255,235,150,1) 0%,
-      rgba(255,205,90,0.9) 45%,
-      rgba(255,165,40,0.6) 80%,
-      rgba(255,130,0,0.3) 100%
-    );
-    border-radius: 50%;
-    box-shadow:
-      0 0 80px rgba(255,200,100,0.8),
-      0 0 180px rgba(255,170,60,0.5);
-    animation: float 6s ease-in-out infinite alternate,
-               pulse 5s ease-in-out infinite;
-  }
-
-  /* --- REFLECTION --- */
-  .reflection {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 320px;
-    height: 320px;
-    transform: translate(-50%, -50%) scaleY(-1);
-    background: radial-gradient(circle,
-      rgba(255,235,150,0.35) 0%,
-      rgba(255,205,90,0.25) 45%,
-      rgba(255,165,40,0.15) 80%,
-      rgba(255,130,0,0) 100%
-    );
-    border-radius: 50%;
-    filter: blur(4px);
-    opacity: 0.6;
-  }
-
-  /* --- WATER SURFACE --- */
-  .water {
-    position: absolute;
-    top: 50%;
     width: 100%;
-    height: 50%;
+    height: 100%;
+    backdrop-filter: blur(35px) brightness(1.1);
     background: linear-gradient(
-      to bottom,
-      rgba(180,110,60,0.25) 0%,
-      rgba(130,70,30,0.35) 40%,
-      rgba(90,50,20,0.55) 100%
+      125deg,
+      rgba(255,255,255,0.15) 0%,
+      rgba(255,255,255,0.05) 25%,
+      rgba(255,255,255,0.1) 50%,
+      rgba(255,255,255,0.05) 75%,
+      rgba(255,255,255,0.15) 100%
     );
-    backdrop-filter: blur(2px);
-    box-shadow: inset 0 80px 150px rgba(255,180,80,0.15);
+    mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+    animation: shimmer 10s ease-in-out infinite alternate;
   }
 
-  @keyframes float {
-    from { transform: translate(-50%, 52%) scaleY(1); }
-    to { transform: translate(-50%, 48%) scaleY(1); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.2); }
+  /* --- DISTORTION WAVES --- */
+  .distort {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    top: -10%;
+    left: -10%;
+    background: repeating-radial-gradient(circle at center,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.0) 40px,
+      rgba(255,255,255,0.03) 80px);
+    filter: blur(30px);
+    mix-blend-mode: overlay;
+    animation: wave 8s ease-in-out infinite alternate;
   }
 
   /* --- CURSOR LIGHT --- */
   .cursor-light {
     position: fixed;
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
     pointer-events: none;
-    background: radial-gradient(circle, rgba(255,255,220,0.5) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,230,0.6) 0%, transparent 70%);
     mix-blend-mode: soft-light;
     transform: translate(-50%, -50%);
     transition: transform 0.05s linear;
@@ -125,15 +83,25 @@
     color: #FB8500;
     text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166, 0 0 80px #FFD166;
   }
+
+  @keyframes shimmer {
+    0% { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(360deg) scale(1.02); }
+  }
+
+  @keyframes wave {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.1) rotate(180deg); }
+  }
 </style>
 </head>
 <body>
-  <div class="sun"></div>
-  <div class="reflection"></div>
-  <div class="water"></div>
+  <div class="distort"></div>
+  <div class="glass"></div>
   <div class="cursor-light"></div>
 
   <div class="nav">
+    <a href="entry1.html">← Previous</a>
     <a href="index.html">Back to Index</a>
     <a href="entry3.html">Next →</a>
   </div>

@@ -10,42 +10,56 @@
     overflow: hidden;
     background: linear-gradient(
       to top,
-      #B77C4A 0%, #D59C64 25%, #F5A65D 45%, #F9C97A 70%, #FEEEC8 100%
+      #B77C4A 0%,  /* ground */
+      #D28B4F 25%, /* warm horizon */
+      #F5A65D 45%, /* orange mid sky */
+      #F9C97A 70%, /* peach-yellow */
+      #FEEEC8 100% /* pale cream top */
     );
     transition: background 2s ease;
     cursor: none;
   }
 
+  /* ---- solid ground ---- */
+  .ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 220px;
+    background: linear-gradient(to top, #7B4B25 0%, #A96A3D 80%, transparent 100%);
+  }
+
+  /* ---- visible glowing horizon line ---- */
+  .horizon-line {
+    position: absolute;
+    bottom: 220px;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, rgba(200,130,70,0.8), rgba(255,200,130,0.9), rgba(200,130,70,0.8));
+    box-shadow: 0 0 20px rgba(255,180,80,0.6);
+  }
+
   /* ---- floating sun ---- */
   .sun {
     position: absolute;
-    bottom: 80px;
+    bottom: 140px;
     left: 50%;
-    width: 180px;
-    height: 180px;
+    width: 200px;
+    height: 200px;
     background: radial-gradient(circle, #FFD26F 0%, #FFB703 70%, #FB8500 100%);
     border-radius: 50%;
     transform: translateX(-50%);
-    box-shadow: 0 0 60px rgba(255, 180, 70, 0.6);
+    box-shadow: 0 0 80px rgba(255, 190, 100, 0.7);
     animation: float 6s ease-in-out infinite alternate;
     transition: all 1.5s ease;
   }
 
   @keyframes float {
-    from { transform: translateX(-50%) translateY(6px); }
-    to { transform: translateX(-50%) translateY(-6px); }
+    from { transform: translateX(-50%) translateY(8px); }
+    to { transform: translateX(-50%) translateY(-8px); }
   }
 
-  /* ---- horizon ---- */
-  .horizon {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 120px;
-    background: linear-gradient(to top, rgba(160, 90, 40, 0.8), transparent);
-  }
-
-  /* ---- glowing cursor ---- */
+  /* ---- glowing cursor light ---- */
   .cursor-light {
     position: fixed;
     width: 200px;
@@ -58,26 +72,10 @@
     transition: transform 0.05s linear;
   }
 
-  /* ---- ripple ---- */
-  .ripple {
-    position: absolute;
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
-    pointer-events: none;
-    animation: ripple 1.2s ease-out forwards;
-  }
-
-  @keyframes ripple {
-    from { transform: scale(0); opacity: 0.9; }
-    to { transform: scale(3); opacity: 0; }
-  }
-
-  /* ---- glowing navigation text (no borders) ---- */
+  /* ---- glowing navigation text ---- */
   .nav {
     position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     width: 100%;
     text-align: center;
     font-family: 'Courier New', monospace;
@@ -97,22 +95,23 @@
     text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166, 0 0 80px #FFD166;
   }
 
-  /* ---- active state ---- */
+  /* ---- sunrise mode ---- */
   body.active {
     background: linear-gradient(to top, #C78650 0%, #E8A966 30%, #FFC87F 55%, #FFEAB5 80%, #FFF8E2 100%);
   }
 
   body.active .sun {
-    bottom: 250px;
+    bottom: 300px;
     transform: translateX(-50%) scale(1.1);
-    box-shadow: 0 0 90px rgba(255, 200, 100, 0.9);
-    filter: brightness(1.2);
+    box-shadow: 0 0 100px rgba(255, 200, 100, 0.9);
+    filter: brightness(1.25);
   }
 </style>
 </head>
 <body>
   <div class="sun"></div>
-  <div class="horizon"></div>
+  <div class="horizon-line"></div>
+  <div class="ground"></div>
   <div class="cursor-light"></div>
 
   <div class="nav">
@@ -123,22 +122,15 @@
 <script>
   const light = document.querySelector('.cursor-light');
 
-  // move glowing cursor light
+  // glowing cursor follows mouse
   document.addEventListener('mousemove', (e) => {
     light.style.left = e.clientX + 'px';
     light.style.top = e.clientY + 'px';
   });
 
-  // toggle sunrise + ripple
-  document.body.addEventListener("click", (e) => {
+  // sunrise toggle (color shift + sun lift)
+  document.body.addEventListener("click", () => {
     document.body.classList.toggle("active");
-
-    const ripple = document.createElement("div");
-    ripple.className = "ripple";
-    ripple.style.left = `${e.clientX - 80}px`;
-    ripple.style.top = `${e.clientY - 80}px`;
-    document.body.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 1200);
   });
 </script>
 </body>

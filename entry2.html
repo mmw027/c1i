@@ -2,75 +2,129 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Reflection — Surfaces That Speak</title>
+<title>Entry 2 — Reflection: Surfaces That Speak</title>
 <style>
-  body {
+  html, body {
     margin: 0;
-    height: 100vh;
-    background: linear-gradient(to bottom, #A2D2FF, #CDB4DB);
+    height: 100%;
     overflow: hidden;
+    background: linear-gradient(to bottom, #5AC8FA 0%, #90E0EF 40%, #CAF0F8 100%);
     position: relative;
     cursor: none;
   }
 
+  .wave {
+    position: absolute;
+    width: 200%;
+    height: 200px;
+    background: rgba(255,255,255,0.25);
+    top: 60%;
+    left: -50%;
+    border-radius: 100%;
+    animation: waveMove 8s infinite linear;
+    filter: blur(20px);
+  }
+
+  .wave:nth-child(2) {
+    top: 70%;
+    animation-delay: 2s;
+    opacity: 0.5;
+  }
+
+  @keyframes waveMove {
+    from { transform: translateX(0) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg); }
+  }
+
   .ripple {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+    pointer-events: none;
+    animation: ripple 1.2s ease-out forwards;
+    mix-blend-mode: screen;
+  }
+
+  @keyframes ripple {
+    from { transform: scale(0.3); opacity: 0.9; }
+    to { transform: scale(3); opacity: 0; }
+  }
+
+  .glare {
     position: absolute;
     width: 200px;
     height: 200px;
     border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+    mix-blend-mode: overlay;
     pointer-events: none;
-    background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    animation: fade 1s ease-out forwards;
+    transition: transform 0.2s linear;
   }
 
-  @keyframes fade {
-    from { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
-    to { opacity: 0; transform: translate(-50%, -50%) scale(2); }
+  h1 {
+    position: absolute;
+    top: 10%;
+    width: 100%;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2em;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.6);
   }
 
   .nav {
     position: absolute;
-    bottom: 40px;
+    bottom: 30px;
+    left: 0;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 60px;
-  }
-
-  a {
-    text-decoration: none;
-    color: #333;
+    text-align: center;
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 10px 20px;
-    border-radius: 20px;
-    transition: background 0.3s ease;
   }
 
-  a:hover {
-    background: rgba(255, 255, 255, 0.8);
+  .nav a {
+    text-decoration: none;
+    color: #0D3B66;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .nav a:hover {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 25px rgba(100, 200, 255, 0.8);
   }
 </style>
 </head>
 <body>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="glare"></div>
+
+  <h1>Reflection — Surfaces That Speak</h1>
+
   <div class="nav">
-    <a href="dawn.html">← Previous</a>
     <a href="index.html">Back to Index</a>
-    <a href="neon.html">Next →</a>
   </div>
 
 <script>
-document.addEventListener('mousemove', (e) => {
-  const ripple = document.createElement('div');
-  ripple.className = 'ripple';
-  ripple.style.left = `${e.clientX}px`;
-  ripple.style.top = `${e.clientY}px`;
-  document.body.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 1000);
-});
+  document.addEventListener('click', (e) => {
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple';
+    ripple.style.left = `${e.clientX - 80}px`;
+    ripple.style.top = `${e.clientY - 80}px`;
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 1200);
+  });
+
+  const glare = document.querySelector('.glare');
+  document.addEventListener('mousemove', (e) => {
+    glare.style.transform = `translate(${e.clientX - 100}px, ${e.clientY - 100}px)`;
+  });
 </script>
 </body>
 </html>

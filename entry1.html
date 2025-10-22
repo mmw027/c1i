@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 1 — Lights and Shadows</title>
+<title>Entry 1 — The First Glow</title>
 <style>
   html, body {
     margin: 0;
@@ -13,7 +13,6 @@
     cursor: pointer;
   }
 
-  /* ----- HORIZON ----- */
   .horizon {
     position: absolute;
     bottom: 0;
@@ -22,7 +21,6 @@
     background: linear-gradient(to top, #E8B874 0%, transparent 100%);
   }
 
-  /* ----- SUN ----- */
   .sun {
     position: absolute;
     bottom: 40px;
@@ -42,7 +40,6 @@
     to { transform: translateX(-50%) translateY(-8px); }
   }
 
-  /* ----- INTERACTION STATE ----- */
   body.active {
     background: linear-gradient(to top, #FFB981 0%, #FFD4A6 40%, #FFF3CC 70%, #FFFFFF 100%);
   }
@@ -54,7 +51,6 @@
     filter: brightness(1.2);
   }
 
-  /* ----- RIPPLE CLICK EFFECT ----- */
   .ripple {
     position: absolute;
     width: 160px;
@@ -70,29 +66,28 @@
     to { transform: scale(3); opacity: 0; }
   }
 
-  /* ----- NAVIGATION ----- */
   .nav {
     position: absolute;
     bottom: 30px;
+    left: 0;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 60px;
+    text-align: center;
     font-family: 'Poppins', sans-serif;
   }
 
-  a {
+  .nav a {
     text-decoration: none;
-    color: #333;
-    background: rgba(255, 255, 255, 0.5);
+    color: #5B3900;
+    background: rgba(255, 248, 230, 0.8);
     padding: 10px 25px;
     border-radius: 25px;
     font-weight: 600;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
   }
 
-  a:hover {
-    background: rgba(255, 255, 255, 0.8);
+  .nav a:hover {
+    background: rgba(255, 233, 185, 1);
+    box-shadow: 0 0 25px rgba(255, 210, 100, 0.8);
   }
 </style>
 </head>
@@ -102,16 +97,13 @@
 
   <div class="nav">
     <a href="index.html">Back to Index</a>
-    <a href="entry2.html">Next →</a>
   </div>
 
 <script>
-  // Toggle sunrise mode
   document.body.addEventListener("click", () => {
     document.body.classList.toggle("active");
   });
 
-  // Ripple at click position
   document.body.addEventListener("click", (e) => {
     const ripple = document.createElement("div");
     ripple.className = "ripple";

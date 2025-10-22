@@ -22,9 +22,9 @@
   }
 
   /* ---------- SKY LAYERS ---------- */
-  .sky1 { flex: 1; background: #F2CDA1; }  /* top band – pale apricot */
-  .sky2 { flex: 1; background: #E7AA6E; }  /* middle band – muted orange */
-  .sky3 { flex: 2; background: #D88E52; position: relative; overflow: hidden; } /* deeper orange */
+  .sky1 { flex: 1; background: #F2CDA1; }  /* pale apricot */
+  .sky2 { flex: 1; background: #E7AA6E; }  /* muted orange */
+  .sky3 { flex: 2; background: #D88E52; position: relative; overflow: hidden; }
 
   /* ---------- SUN ---------- */
   .sun {
@@ -34,19 +34,19 @@
     width: 35vmin;
     height: 35vmin;
     background: radial-gradient(circle at center,
-      #F8E1A1 0%, #F3D68B 55%, #E7AA6E 100%);
+      #FBE7AA 0%, #F5D98A 60%, #E5A763 100%);
     border-radius: 50%;
     transform: translateX(-50%);
     animation:
       rise 8s ease-in-out forwards,
       glow 6s ease-in-out infinite alternate;
-    filter: blur(2px);
+    filter: blur(1.5px);
   }
 
-  /* rises higher now — just below middle block */
+  /* rises higher now so it’s fully visible */
   @keyframes rise {
     0%   { bottom: -35vmin; opacity: 0; }
-    100% { bottom: 18vmin; opacity: 1; } /* perfect balanced height */
+    100% { bottom: 28vmin; opacity: 1; } /* lifted higher */
   }
 
   @keyframes glow {

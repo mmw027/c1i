@@ -2,94 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Frame 3</title>
+<title>Neon — Artificial Glow</title>
 <style>
   body {
     margin: 0;
-    background: #1A1A1A;
+    height: 100vh;
+    background: radial-gradient(circle at bottom, #0A0A0A, #020202);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    font-family: sans-serif;
   }
 
-  /* Full-screen blue background frame */
-  .frame {
-    width: 100vw;
-    height: 100vh;
-    background: #3D5C75;
-    position: relative;
-    overflow: hidden;
+  .neon {
+    font-family: 'Courier New', monospace;
+    font-size: 5em;
+    color: #FF00FF;
+    text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 40px #FF00FF;
+    animation: flicker 2s infinite;
   }
 
-  /* Circle base style */
-  .circle {
-    position: absolute;
-    border-radius: 50%;
-  }
-
-  /* Large yellow circle */
-  .large {
-    width: 15vw;
-    height: 15vw;
-    background: #FCEE86;
-    top: 40%;
-    left: 35%;
-    transform: translate(-50%, -50%);
-  }
-
-  /* Smaller orange circles */
-  .small {
-    background: #FFD18C;
-  }
-
-  .one {
-    width: 4vw;
-    height: 4vw;
-    top: 65%;
-    left: 60%;
-  }
-
-  .two {
-    width: 2vw;
-    height: 2vw;
-    top: 20%;
-    left: 75%;
-  }
-
-  .three {
-    width: 3vw;
-    height: 3vw;
-    top: 35%;
-    left: 80%;
-  }
-
-  /* Back to index link */
-  .back {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    text-decoration: none;
-    font-size: 1.2em;
-    transition: color 0.2s ease;
-  }
-
-  .back:hover {
-    color: gray;
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.2; }
   }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <div class="circle large"></div>
-    <div class="circle small one"></div>
-    <div class="circle small two"></div>
-    <div class="circle small three"></div>
-
-    <a href="index.html" class="back">← Back to Index</a>
-  </div>
+  <div class="neon">NEON</div>
 </body>
 </html>

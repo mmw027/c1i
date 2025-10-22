@@ -7,7 +7,7 @@
   html, body {
     margin: 0;
     height: 100%;
-    background: #fffaf2;
+    background: #ffffff;
     overflow: hidden;
   }
 
@@ -15,41 +15,63 @@
     position: relative;
     width: 100vw;
     height: 100vh;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
   }
 
+  /* --- block base --- */
   .block {
     position: absolute;
-    transition: all 0.7s ease;
-    border-radius: 2vmin;
+    border-radius: 0;
     cursor: pointer;
+    transition: all 0.6s ease;
   }
 
-  /* pastel colors inspired by your screenshot */
-  .b1 { background: #f3c776; top: 0; left: 50%; width: 50%; height: 60%; }
-  .b2 { background: #fbe98d; top: 60%; left: 0; width: 50%; height: 40%; }
-  .b3 { background: #f2cd81; top: 60%; left: 50%; width: 50%; height: 40%; opacity: 0.85; }
-
-  .b4 { background: #f4d084; top: 30%; left: 50%; width: 30%; height: 30%; opacity: 0.7; }
-
-  /* click feedback */
-  .block:active {
-    transform: scale(0.98);
-    filter: brightness(1.05);
+  /* --- colors tuned to reference --- */
+  .b1 {             /* top-right warm block */
+    background: #eab867;          /* rich honey orange */
+    top: 0%;
+    left: 50%;
+    width: 50%;
+    height: 60%;
   }
 
-  /* back button */
+  .b2 {             /* bottom-left pale yellow */
+    background: #fff89a;
+    top: 60%;
+    left: 0%;
+    width: 50%;
+    height: 40%;
+  }
+
+  .b3 {             /* bottom-right overlap, slightly transparent */
+    background: #f1cf7b;
+    top: 60%;
+    left: 50%;
+    width: 50%;
+    height: 40%;
+    opacity: 0.8;
+  }
+
+  .b4 {             /* smaller overlay square at intersection */
+    background: #f3d182;
+    top: 40%;
+    left: 65%;
+    width: 20%;
+    height: 25%;
+    opacity: 0.7;
+  }
+
+  .block:hover { filter: brightness(1.05); }
+
+  /* back link */
   .back {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     color: #333;
-    font-size: 1.1em;
-    text-decoration: none;
     font-family: sans-serif;
+    text-decoration: none;
+    font-size: 1.1em;
     z-index: 10;
   }
 </style>
@@ -66,27 +88,23 @@
 
   <script>
     const blocks = document.querySelectorAll('.block');
-    let positions = [];
 
-    // Save initial positions
-    blocks.forEach(block => {
-      const rect = block.getBoundingClientRect();
-      positions.push({ top: block.style.top, left: block.style.left });
-    });
+    // record start positions
+    const positions = Array.from(blocks).map(b => ({
+      top: b.style.top,
+      left: b.style.left
+    }));
 
-    // On click, swap with a random other block
+    // click swaps random blocks
     blocks.forEach((block, i) => {
       block.addEventListener('click', () => {
         let j = Math.floor(Math.random() * blocks.length);
         while (j === i) j = Math.floor(Math.random() * blocks.length);
 
-        // Swap positions
         const tempTop = block.style.top;
         const tempLeft = block.style.left;
-
         block.style.top = blocks[j].style.top;
         block.style.left = blocks[j].style.left;
-
         blocks[j].style.top = tempTop;
         blocks[j].style.left = tempLeft;
       });

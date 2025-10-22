@@ -8,33 +8,17 @@
     margin: 0;
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(to bottom right, #FCE7C8, #FBD3D0, #D8E9F1);
+    background: linear-gradient(to bottom right, #fce7c8, #fbd3d0, #d8e9f1);
     font-family: sans-serif;
   }
 
-  /* ---------- MAIN CONTAINER ---------- */
   .frame {
     position: relative;
     width: 100vw;
     height: 100vh;
   }
 
-  /* ---------- SOFT RIPPLE OVERLAY ---------- */
-  .ripples {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, transparent 60%);
-    animation: rippleMove 10s ease-in-out infinite alternate;
-    mix-blend-mode: overlay;
-    opacity: 0.5;
-  }
-
-  @keyframes rippleMove {
-    0% { transform: scale(1) translate(0,0); }
-    100% { transform: scale(1.1) translate(10px,10px); }
-  }
-
-  /* ---------- SUN ---------- */
+  /* pastel sun */
   .sun {
     position: absolute;
     bottom: 20%;
@@ -42,32 +26,43 @@
     width: 30vmin;
     height: 30vmin;
     background: radial-gradient(circle at center,
-      #FFF8D6 0%, #FFE6A8 60%, #FFD59B 100%);
+      #fff8d6 0%, #ffe6a8 60%, #ffd59b 100%);
     border-radius: 50%;
     transform: translateX(-50%);
-    filter: blur(1px);
     animation: glow 6s ease-in-out infinite alternate;
+    filter: blur(1px);
   }
 
   @keyframes glow {
-    0%   { transform: translateX(-50%) scale(1); opacity: 0.9; }
+    0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
     100% { transform: translateX(-50%) scale(1.05); opacity: 1; }
   }
 
-  /* ---------- CURSOR LIGHT ---------- */
-  .light {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 50% 50%,
-      rgba(255,255,255,0.55) 0%, transparent 40%);
-    mix-blend-mode: screen;
-    pointer-events: none;
-    transition: background 0.15s ease;
+  /* subtle ripples */
+  .ripple {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+    animation: rippleMove 8s ease-in-out infinite alternate;
+    mix-blend-mode: overlay;
   }
 
-  /* ---------- BACK LINK ---------- */
+  @keyframes rippleMove {
+    0% { transform: scale(1) translate(0,0); opacity: 0.4; }
+    100% { transform: scale(1.1) translate(10px,10px); opacity: 0.6; }
+  }
+
+  /* cursor light */
+  .light {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.6) 0%, transparent 35%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    transition: background 0.1s ease;
+  }
+
+  /* back button */
   .back {
     position: fixed;
     bottom: 20px;
@@ -76,32 +71,27 @@
     color: #fff;
     text-decoration: none;
     font-size: 1.2em;
-    font-weight: 300;
-    text-shadow: 0 0 12px rgba(0,0,0,0.5);
-    transition: color 0.3s ease;
+    text-shadow: 0 0 12px rgba(0,0,0,0.4);
     z-index: 5;
   }
-  .back:hover { color: #ffe; }
 </style>
 </head>
 <body>
   <div class="frame">
     <div class="sun"></div>
-    <div class="ripples"></div>
+    <div class="ripple"></div>
   </div>
 
   <div class="light"></div>
   <a href="index.html" class="back">← Back to Index</a>
 
   <script>
-    /* LIGHT FOLLOWING CURSOR */
+    // make sure the script runs after the page loads
     const light = document.querySelector('.light');
     document.addEventListener('mousemove', e => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
-      light.style.background =
-        `radial-gradient(circle at ${x}% ${y}%,
-          rgba(255,255,255,0.6) 0%, transparent 40%)`;
+      light.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.65) 0%, transparent 35%)`;
     });
   </script>
 </body>

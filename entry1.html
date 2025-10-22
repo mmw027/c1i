@@ -8,7 +8,7 @@
     margin: 0;
     height: 100%;
     overflow: hidden;
-    background: #F8C57E;
+    background: linear-gradient(to bottom, #FBD499, #F9B86E, #F6953D);
     font-family: sans-serif;
   }
 
@@ -21,41 +21,41 @@
     flex-direction: column;
   }
 
-  .sky1 { flex: 1; background: #F9CE93; }
-  .sky2 { flex: 1; background: #FBB164; }
-  .sky3 { flex: 2; background: #F8A54B; position: relative; overflow: hidden; }
+  .sky1 { flex: 1; background: linear-gradient(to bottom, #FCE1AC, #FACB83); }
+  .sky2 { flex: 1; background: linear-gradient(to bottom, #FAB46A, #F89A46); }
+  .sky3 { flex: 2; background: linear-gradient(to bottom, #F78A34, #F5731E); position: relative; overflow: hidden; }
 
   /* ---------- SUN ---------- */
   .sun {
     position: absolute;
-    bottom: -40vmin;        /* start below horizon */
+    bottom: -40vmin;
     left: 50%;
     width: 35vmin;
     height: 35vmin;
     background: radial-gradient(circle at center,
-      #FFE59C 0%, #FCD97F 60%, #F8A54B 100%);
+      #FFE59C 0%, #FFD26F 60%, #F6972B 100%);
     border-radius: 50%;
     transform: translateX(-50%);
     animation:
       rise 8s ease-in-out forwards,
       glow 6s ease-in-out infinite alternate;
-    filter: blur(2px);
+    filter: blur(1.5px);
   }
 
   @keyframes rise {
     0%   { bottom: -40vmin; opacity: 0; }
-    100% { bottom: 20%; opacity: 1; }
+    100% { bottom: 25%; opacity: 1; }
   }
 
   @keyframes glow {
     0%   { transform: translateX(-50%) scale(1); opacity: 0.9; }
-    100% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1.07); opacity: 1; }
   }
 
   /* ---------- GROUND ---------- */
   .ground {
     flex: 1;
-    background: #B9926F;
+    background: linear-gradient(to bottom, #B07A54, #8B5C3A);
     position: relative;
   }
 
@@ -65,7 +65,7 @@
     left: 10%;
     width: 80%;
     height: 8%;
-    background: #8A5B3A;
+    background: #6B4129;
     border-radius: 4vmin;
   }
 
@@ -76,10 +76,10 @@
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 50% 50%,
-      rgba(255,255,200,0.25) 0%, transparent 60%);
+      rgba(255,255,200,0.45) 0%, transparent 65%);
     mix-blend-mode: overlay;
     pointer-events: none;
-    transition: background 0.3s ease;
+    transition: background 0.2s ease;
   }
 
   /* ---------- BACK LINK ---------- */
@@ -92,11 +92,11 @@
     text-decoration: none;
     font-size: 1.2em;
     font-weight: 300;
-    text-shadow: 0 0 10px rgba(0,0,0,0.6);
+    text-shadow: 0 0 12px rgba(0,0,0,0.6);
     transition: color 0.3s ease;
     z-index: 5;
   }
-  .back:hover { color: #ddd; }
+  .back:hover { color: #fffae5; }
 </style>
 </head>
 <body>
@@ -118,7 +118,7 @@
       const y = (e.clientY / window.innerHeight) * 100;
       light.style.background =
         `radial-gradient(circle at ${x}% ${y}%,
-          rgba(255,255,220,0.25) 0%, transparent 60%)`;
+          rgba(255,255,180,0.45) 0%, transparent 65%)`;
     });
   </script>
 </body>

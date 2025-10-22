@@ -2,132 +2,40 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 1 – Lights and Shadows</title>
+<title>Dawn — The First Glow</title>
 <style>
-  html, body {
+  body {
     margin: 0;
-    height: 100%;
-    overflow: hidden;
-    background: #E6B87C;
-    font-family: sans-serif;
-  }
-
-  /* ---------- FRAME ---------- */
-  .frame {
-    position: relative;
-    width: 100vw;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
+    background: linear-gradient(to top, #FFD6A5, #FFF3B0, #BDE0FE);
+    overflow: hidden;
+    transition: background 2s ease;
   }
 
-  /* ---------- SKY LAYERS ---------- */
-  .sky1 { flex: 1; background: #F2CDA1; }  /* pale apricot */
-  .sky2 { flex: 1; background: #E7AA6E; }  /* muted orange */
-  .sky3 { flex: 2; background: #D88E52; }  /* warm earthy orange */
-
-  /* ---------- SUN ---------- */
   .sun {
     position: absolute;
-    bottom: -35vmin;
+    bottom: -100px;
     left: 50%;
-    width: 35vmin;
-    height: 35vmin;
-    background: radial-gradient(circle at center,
-      #FFEFB2 0%, #F7DB87 60%, #E6A45F 100%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, #FFB703, #FB8500);
     border-radius: 50%;
     transform: translateX(-50%);
-    animation:
-      rise 8s ease-in-out forwards,
-      glow 6s ease-in-out infinite alternate;
-    filter: blur(1.5px);
-    z-index: 2;
+    transition: all 1.5s ease;
   }
 
-  /* rises fully into view now */
-  @keyframes rise {
-    0%   { bottom: -35vmin; opacity: 0; }
-    100% { bottom: 42vmin; opacity: 1; } /* raised higher so full circle shows */
+  body.active {
+    background: linear-gradient(to top, #FFB5A7, #FCD5CE, #F8EDEB);
   }
 
-  @keyframes glow {
-    0%   { transform: translateX(-50%) scale(1); opacity: 0.9; }
-    100% { transform: translateX(-50%) scale(1.06); opacity: 1; }
+  body.active .sun {
+    bottom: 350px;
+    filter: brightness(1.3) blur(0px);
+    transform: translateX(-50%) scale(1.2);
   }
-
-  /* ---------- GROUND ---------- */
-  .ground {
-    flex: 1;
-    background: #B1865B;
-    position: relative;
-  }
-
-  .bar {
-    position: absolute;
-    top: 30%;
-    left: 10%;
-    width: 80%;
-    height: 8%;
-    background: #8B6143;
-    border-radius: 4vmin;
-  }
-
-  /* ---------- SMALLER, BRIGHTER CURSOR LIGHT ---------- */
-  .light {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 50% 50%,
-      rgba(255,255,200,0.45) 0%, rgba(255,255,200,0.15) 10%, transparent 20%);
-    mix-blend-mode: screen;
-    pointer-events: none;
-    transition: background 0.15s ease;
-    z-index: 4;
-  }
-
-  /* ---------- BACK LINK ---------- */
-  .back {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.2em;
-    font-weight: 300;
-    text-shadow: 0 0 10px rgba(0,0,0,0.6);
-    transition: color 0.3s ease;
-    z-index: 5;
-  }
-  .back:hover { color: #ddd; }
 </style>
 </head>
-<body>
-  <div class="frame">
-    <div class="sky1"></div>
-    <div class="sky2"></div>
-    <div class="sky3"></div>
-    <div class="sun"></div>
-    <div class="ground"><div class="bar"></div></div>
-  </div>
-
-  <div class="light"></div>
-  <a href="index.html" class="back">← Back to Index</a>
-
-  <script>
-    /* BRIGHT SMALL LIGHT FOLLOWING CURSOR */
-    const light = document.querySelector('.light');
-    document.addEventListener('mousemove', e => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      light.style.background =
-        `radial-gradient(circle at ${x}% ${y}%,
-          rgba(255,255,210,0.55) 0%,
-          rgba(255,255,180,0.25) 8%,
-          transparent 18%)`;
-    });
-  </script>
+<body onclick="document.body.classList.toggle('active')">
+  <div class="sun"></div>
 </body>
 </html>

@@ -24,7 +24,7 @@
   /* ---------- SKY LAYERS ---------- */
   .sky1 { flex: 1; background: #F2CDA1; }  /* pale apricot */
   .sky2 { flex: 1; background: #E7AA6E; }  /* muted orange */
-  .sky3 { flex: 2; background: #D88E52; position: relative; overflow: hidden; }
+  .sky3 { flex: 2; background: #D88E52; }  /* warm earthy orange */
 
   /* ---------- SUN ---------- */
   .sun {
@@ -34,24 +34,25 @@
     width: 35vmin;
     height: 35vmin;
     background: radial-gradient(circle at center,
-      #FBE7AA 0%, #F5D98A 60%, #E5A763 100%);
+      #FFEFB2 0%, #F7DB87 60%, #E6A45F 100%);
     border-radius: 50%;
     transform: translateX(-50%);
     animation:
       rise 8s ease-in-out forwards,
       glow 6s ease-in-out infinite alternate;
     filter: blur(1.5px);
+    z-index: 2;
   }
 
-  /* rises higher now so it’s fully visible */
+  /* rises fully into view now */
   @keyframes rise {
     0%   { bottom: -35vmin; opacity: 0; }
-    100% { bottom: 28vmin; opacity: 1; } /* lifted higher */
+    100% { bottom: 42vmin; opacity: 1; } /* raised higher so full circle shows */
   }
 
   @keyframes glow {
     0%   { transform: translateX(-50%) scale(1); opacity: 0.9; }
-    100% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1.06); opacity: 1; }
   }
 
   /* ---------- GROUND ---------- */
@@ -71,7 +72,7 @@
     border-radius: 4vmin;
   }
 
-  /* ---------- LIGHT SHIMMER ---------- */
+  /* ---------- SMALLER, BRIGHTER CURSOR LIGHT ---------- */
   .light {
     position: fixed;
     top: 0;
@@ -79,11 +80,11 @@
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 50% 50%,
-      rgba(255,235,190,0.25) 0%, transparent 60%);
-    mix-blend-mode: overlay;
+      rgba(255,255,200,0.45) 0%, rgba(255,255,200,0.15) 10%, transparent 20%);
+    mix-blend-mode: screen;
     pointer-events: none;
-    transition: background 0.3s ease;
-    z-index: 3;
+    transition: background 0.15s ease;
+    z-index: 4;
   }
 
   /* ---------- BACK LINK ---------- */
@@ -107,7 +108,8 @@
   <div class="frame">
     <div class="sky1"></div>
     <div class="sky2"></div>
-    <div class="sky3"><div class="sun"></div></div>
+    <div class="sky3"></div>
+    <div class="sun"></div>
     <div class="ground"><div class="bar"></div></div>
   </div>
 
@@ -115,14 +117,16 @@
   <a href="index.html" class="back">← Back to Index</a>
 
   <script>
-    /* LIGHT FOLLOWING CURSOR */
+    /* BRIGHT SMALL LIGHT FOLLOWING CURSOR */
     const light = document.querySelector('.light');
     document.addEventListener('mousemove', e => {
       const x = (e.clientX / window.innerWidth) * 100;
       const y = (e.clientY / window.innerHeight) * 100;
       light.style.background =
         `radial-gradient(circle at ${x}% ${y}%,
-          rgba(255,235,190,0.25) 0%, transparent 60%)`;
+          rgba(255,255,210,0.55) 0%,
+          rgba(255,255,180,0.25) 8%,
+          transparent 18%)`;
     });
   </script>
 </body>

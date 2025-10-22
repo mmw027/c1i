@@ -2,51 +2,95 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Frame 2</title>
+<title>Entry 2 – Interactive Blocks</title>
 <style>
-  body {
+  html, body {
     margin: 0;
-    background: #1A1A1A;
-    font-family: sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-
-  /* full-screen frame */
-  .frame {
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom right, #EFC166 50%, #FBEF8C 100%);
-    box-shadow:
-      inset -25vw 25vw 0 0 #E6BB64,
-      inset 25vw -25vw 0 0 #FFF4A6;
-    position: relative;
+    height: 100%;
+    background: #fffaf2;
     overflow: hidden;
   }
 
-  /* back link */
-  .back {
+  .container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .block {
     position: absolute;
+    transition: all 0.7s ease;
+    border-radius: 2vmin;
+    cursor: pointer;
+  }
+
+  /* pastel colors inspired by your screenshot */
+  .b1 { background: #f3c776; top: 0; left: 50%; width: 50%; height: 60%; }
+  .b2 { background: #fbe98d; top: 60%; left: 0; width: 50%; height: 40%; }
+  .b3 { background: #f2cd81; top: 60%; left: 50%; width: 50%; height: 40%; opacity: 0.85; }
+
+  .b4 { background: #f4d084; top: 30%; left: 50%; width: 30%; height: 30%; opacity: 0.7; }
+
+  /* click feedback */
+  .block:active {
+    transform: scale(0.98);
+    filter: brightness(1.05);
+  }
+
+  /* back button */
+  .back {
+    position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    color: #1A1A1A;
+    color: #333;
+    font-size: 1.1em;
     text-decoration: none;
-    font-size: 1.2em;
-    font-weight: 600;
-    transition: color 0.2s ease;
-  }
-
-  .back:hover {
-    color: gray;
+    font-family: sans-serif;
+    z-index: 10;
   }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <a href="index.html" class="back">← Back to Index</a>
+  <div class="container">
+    <div class="block b1"></div>
+    <div class="block b2"></div>
+    <div class="block b3"></div>
+    <div class="block b4"></div>
   </div>
+
+  <a href="index.html" class="back">← Back to Index</a>
+
+  <script>
+    const blocks = document.querySelectorAll('.block');
+    let positions = [];
+
+    // Save initial positions
+    blocks.forEach(block => {
+      const rect = block.getBoundingClientRect();
+      positions.push({ top: block.style.top, left: block.style.left });
+    });
+
+    // On click, swap with a random other block
+    blocks.forEach((block, i) => {
+      block.addEventListener('click', () => {
+        let j = Math.floor(Math.random() * blocks.length);
+        while (j === i) j = Math.floor(Math.random() * blocks.length);
+
+        // Swap positions
+        const tempTop = block.style.top;
+        const tempLeft = block.style.left;
+
+        block.style.top = blocks[j].style.top;
+        block.style.left = blocks[j].style.left;
+
+        blocks[j].style.top = tempTop;
+        blocks[j].style.left = tempLeft;
+      });
+    });
+  </script>
 </body>
 </html>

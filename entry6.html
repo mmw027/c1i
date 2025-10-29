@@ -2,18 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 6 — Passing Light</title>
+<title>Entry 6 — Passing Light (Urban Edition)</title>
 <style>
   html, body {
     margin: 0;
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(to bottom, #EFE3CF, #E1D2B5);
-    transition: background 2s ease;
+    background: radial-gradient(circle at top, #0E1320 0%, #05070C 100%);
     cursor: none;
   }
 
-  /* --- Scene container --- */
   .scene {
     position: relative;
     width: 100vw;
@@ -21,53 +19,67 @@
     overflow: hidden;
   }
 
-  /* --- Soft beams of light --- */
-  .beam {
+  /* moving horizontal light streaks */
+  .streak {
     position: absolute;
-    top: 0;
-    left: -50%;
+    left: -100%;
     width: 200%;
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      rgba(255,255,255,0) 0%,
-      rgba(255,255,255,0.25) 40%,
-      rgba(255,255,255,0.5) 50%,
-      rgba(255,255,255,0.25) 60%,
-      rgba(255,255,255,0) 100%
-    );
-    opacity: 0.5;
-    mix-blend-mode: overlay;
-    animation: slide 14s linear infinite;
+    height: 4px;
+    background: linear-gradient(to right,
+      transparent 0%,
+      rgba(255,255,255,0.1) 30%,
+      rgba(150,200,255,0.8) 50%,
+      rgba(255,255,255,0.1) 70%,
+      transparent 100%);
+    opacity: 0.6;
+    mix-blend-mode: screen;
+    animation: moveStreak 10s linear infinite;
   }
 
-  @keyframes slide {
+  /* multiple streak layers with different speeds */
+  .streak:nth-child(1) { top: 20%; animation-duration: 9s; opacity: 0.4; }
+  .streak:nth-child(2) { top: 40%; animation-duration: 6s; opacity: 0.7; }
+  .streak:nth-child(3) { top: 60%; animation-duration: 8s; opacity: 0.5; }
+  .streak:nth-child(4) { top: 80%; animation-duration: 5s; opacity: 0.8; }
+
+  @keyframes moveStreak {
     0% { transform: translateX(-30%); }
     100% { transform: translateX(30%); }
   }
 
-  /* --- Subtle overlay glow --- */
-  .overlay {
+  /* faint noise overlay for texture */
+  .noise {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 40% 60%, rgba(255,255,255,0.3), transparent 70%);
-    mix-blend-mode: soft-light;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.02) 0px,
+      rgba(255,255,255,0.02) 2px,
+      transparent 3px
+    );
+    mix-blend-mode: overlay;
+    animation: noiseShift 0.6s infinite linear;
   }
 
-  /* --- Cursor glow --- */
+  @keyframes noiseShift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-3px); }
+  }
+
+  /* cursor light */
   .light {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.1) 70%, transparent 100%);
+    background: radial-gradient(circle, rgba(150,200,255,0.8) 0%, rgba(150,200,255,0.05) 70%, transparent 100%);
     mix-blend-mode: screen;
     pointer-events: none;
     transition: transform 0.08s linear;
   }
 
-  /* --- Navigation --- */
+  /* navigation */
   .nav {
     position: absolute;
     bottom: 25px;
@@ -79,22 +91,24 @@
   }
 
   .nav a {
-    color: rgba(0,0,0,0.6);
+    color: rgba(255,255,255,0.6);
     text-decoration: none;
     margin: 0 15px;
     transition: opacity 0.3s ease;
   }
 
   .nav a:hover {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 </style>
 </head>
 <body>
   <div class="scene">
-    <div class="beam"></div>
-    <div class="beam" style="animation-delay:7s; opacity:0.4;"></div>
-    <div class="overlay"></div>
+    <div class="streak"></div>
+    <div class="streak"></div>
+    <div class="streak"></div>
+    <div class="streak"></div>
+    <div class="noise"></div>
     <div class="light" id="light"></div>
   </div>
 
@@ -107,7 +121,7 @@
   <script>
     const light = document.getElementById('light');
     document.addEventListener('mousemove', e => {
-      light.style.transform = `translate(${e.pageX - 60}px, ${e.pageY - 60}px)`;
+      light.style.transform = `translate(${e.pageX - 50}px, ${e.pageY - 50}px)`;
     });
   </script>
 </body>

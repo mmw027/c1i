@@ -2,32 +2,111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Frame 6</title>
+<title>Entry 6 — Passing Light</title>
 <style>
-body {
-  margin:0;background:#1A1A1A;display:flex;justify-content:center;align-items:center;height:100vh;
-}
-.frame {
-  width:180px;height:280px;background:#96AFB8;position:relative;
-}
-.bar {
-  position:absolute;left:0;width:100%;height:70px;background:#47647E;
-  border-top-right-radius:70px;border-bottom-right-radius:70px;opacity:0.9;
-}
-.top{top:60px;}
-.middle{top:130px;opacity:0.8;}
-.bottom{top:200px;opacity:0.7;}
-.bottom-section{
-  position:absolute;bottom:0;width:100%;height:100px;background:#7D9AA4;
-}
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #F1E5D0, #E4D4B8);
+    transition: background 2s ease;
+    cursor: none;
+  }
+
+  .scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* moving light beams */
+  .beam {
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.3) 40%,
+      rgba(255,255,255,0.5) 50%,
+      rgba(255,255,255,0.3) 60%,
+      rgba(255,255,255,0) 100%
+    );
+    animation: slide 12s linear infinite;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+  }
+
+  @keyframes slide {
+    0% { transform: translateX(-30%); }
+    100% { transform: translateX(30%); }
+  }
+
+  /* gentle gradient overlay */
+  .overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 40% 60%, rgba(255,255,255,0.3), transparent 70%);
+    mix-blend-mode: soft-light;
+  }
+
+  /* cursor glow */
+  .light {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.1) 70%, transparent 100%);
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    transition: transform 0.1s ease;
+  }
+
+  /* navigation */
+  .nav {
+    position: absolute;
+    bottom: 25px;
+    width: 100%;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  .nav a {
+    color: rgba(0,0,0,0.6);
+    text-decoration: none;
+    margin: 0 15px;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav a:hover {
+    opacity: 0.7;
+  }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <div class="bar top"></div>
-    <div class="bar middle"></div>
-    <div class="bar bottom"></div>
-    <div class="bottom-section"></div>
-  </div>
+<div class="scene">
+  <div class="beam"></div>
+  <div class="overlay"></div>
+  <div class="light" id="light"></div>
+</div>
+
+<div class="nav">
+  <a href="entry5.html">← Previous</a>
+  <a href="index.html">Back to Index</a>
+  <a href="entry7.html">Next →</a>
+</div>
+
+<script>
+  const light = document.getElementById('light');
+  document.addEventListener('mousemove', e => {
+    light.style.transform = `translate(${e.pageX - 50}px, ${e.pageY - 50}px)`;
+  });
+</script>
 </body>
 </html>

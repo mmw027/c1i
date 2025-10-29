@@ -8,11 +8,12 @@
     margin: 0;
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(to bottom, #F1E5D0, #E4D4B8);
+    background: linear-gradient(to bottom, #EFE3CF, #E1D2B5);
     transition: background 2s ease;
     cursor: none;
   }
 
+  /* --- Scene container --- */
   .scene {
     position: relative;
     width: 100vw;
@@ -20,7 +21,7 @@
     overflow: hidden;
   }
 
-  /* moving light beams */
+  /* --- Soft beams of light --- */
   .beam {
     position: absolute;
     top: 0;
@@ -30,14 +31,14 @@
     background: linear-gradient(
       to right,
       rgba(255,255,255,0) 0%,
-      rgba(255,255,255,0.3) 40%,
+      rgba(255,255,255,0.25) 40%,
       rgba(255,255,255,0.5) 50%,
-      rgba(255,255,255,0.3) 60%,
+      rgba(255,255,255,0.25) 60%,
       rgba(255,255,255,0) 100%
     );
-    animation: slide 12s linear infinite;
     opacity: 0.5;
     mix-blend-mode: overlay;
+    animation: slide 14s linear infinite;
   }
 
   @keyframes slide {
@@ -45,7 +46,7 @@
     100% { transform: translateX(30%); }
   }
 
-  /* gentle gradient overlay */
+  /* --- Subtle overlay glow --- */
   .overlay {
     position: absolute;
     width: 100%;
@@ -54,19 +55,19 @@
     mix-blend-mode: soft-light;
   }
 
-  /* cursor glow */
+  /* --- Cursor glow --- */
   .light {
     position: absolute;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.1) 70%, transparent 100%);
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.1) 70%, transparent 100%);
     mix-blend-mode: screen;
     pointer-events: none;
-    transition: transform 0.1s ease;
+    transition: transform 0.08s linear;
   }
 
-  /* navigation */
+  /* --- Navigation --- */
   .nav {
     position: absolute;
     bottom: 25px;
@@ -85,28 +86,29 @@
   }
 
   .nav a:hover {
-    opacity: 0.7;
+    opacity: 0.8;
   }
 </style>
 </head>
 <body>
-<div class="scene">
-  <div class="beam"></div>
-  <div class="overlay"></div>
-  <div class="light" id="light"></div>
-</div>
+  <div class="scene">
+    <div class="beam"></div>
+    <div class="beam" style="animation-delay:7s; opacity:0.4;"></div>
+    <div class="overlay"></div>
+    <div class="light" id="light"></div>
+  </div>
 
-<div class="nav">
-  <a href="entry5.html">← Previous</a>
-  <a href="index.html">Back to Index</a>
-  <a href="entry7.html">Next →</a>
-</div>
+  <div class="nav">
+    <a href="entry5.html">← Previous</a>
+    <a href="index.html">Back to Index</a>
+    <a href="entry7.html">Next →</a>
+  </div>
 
-<script>
-  const light = document.getElementById('light');
-  document.addEventListener('mousemove', e => {
-    light.style.transform = `translate(${e.pageX - 50}px, ${e.pageY - 50}px)`;
-  });
-</script>
+  <script>
+    const light = document.getElementById('light');
+    document.addEventListener('mousemove', e => {
+      light.style.transform = `translate(${e.pageX - 60}px, ${e.pageY - 60}px)`;
+    });
+  </script>
 </body>
 </html>

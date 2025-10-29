@@ -2,53 +2,108 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Frame 5 – Layered Blues (CSS Grid)</title>
+<title>Entry 5 — Flicker</title>
 <style>
-body {
-  margin: 0;
-  background: #1A1A1A;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(circle at bottom, #0A0A0A, #010101);
+    cursor: none;
+  }
 
-/* container */
-.frame {
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;  /* 4 stacked rows */
-  width: 180px;
-  height: 280px;
-  background: #96AFB8;
-  overflow: hidden;
-  border-radius: 4px;
-}
+  .scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-/* bars */
-.bar {
-  background: #47647E;
-  border-top-right-radius: 70px;
-  border-bottom-right-radius: 70px;
-}
+  /* glowing orbs */
+  .orb {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,255,180,0.9), rgba(255,200,100,0.1), transparent);
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    animation: flicker 3s infinite ease-in-out;
+    filter: blur(10px);
+  }
 
-/* varying transparency */
-.bar:nth-child(1) { opacity: 0.95; }
-.bar:nth-child(2) { opacity: 0.8; }
-.bar:nth-child(3) { opacity: 0.7; }
+  .orb:nth-child(1) { top: 30%; left: 40%; animation-delay: 0s; }
+  .orb:nth-child(2) { top: 60%; left: 20%; animation-delay: 1s; }
+  .orb:nth-child(3) { top: 50%; left: 70%; animation-delay: 2s; }
 
-/* bottom section */
-.bottom-section {
-  background: #7D9AA4;
-  width: 100%;
-}
+  @keyframes flicker {
+    0%, 100% { opacity: 0.3; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  /* cursor glow */
+  .light {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.1) 70%, transparent 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    transition: transform 0.1s ease;
+  }
+
+  /* navigation */
+  .nav {
+    position: absolute;
+    bottom: 25px;
+    width: 100%;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  .nav a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    margin: 0 15px;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav a:hover {
+    opacity: 0.9;
+  }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bottom-section"></div>
-  </div>
+<div class="scene">
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="light" id="light"></div>
+</div>
+
+<div class="nav">
+  <a href="entry4.html">← Previous</a>
+  <a href="index.html">Back to Index</a>
+  <a href="entry6.html">Next →</a>
+</div>
+
+<script>
+  const light = document.getElementById('light');
+  const orbs = document.querySelectorAll('.orb');
+
+  document.addEventListener('mousemove', e => {
+    light.style.transform = `translate(${e.pageX - 40}px, ${e.pageY - 40}px)`;
+  });
+
+  // hover effect: stabilize the flicker
+  document.addEventListener('mousemove', () => {
+    orbs.forEach(orb => {
+      orb.style.animationPlayState = 'paused';
+      setTimeout(() => orb.style.animationPlayState = 'running', 500);
+    });
+  });
+</script>
 </body>
 </html>

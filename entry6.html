@@ -2,67 +2,86 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 6 — Flow : Breath of Light</title>
+<title>Entry 6 — Pulse of Darkness</title>
 <style>
   html, body {
     margin: 0;
     height: 100%;
     overflow: hidden;
-    cursor: none;
-  }
-
-  /* animated gradient background */
-  body {
-    background: linear-gradient(-45deg, #F6E6FF, #E3F8FF, #FFF6E6, #E8FFEA);
-    background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
+    background: radial-gradient(circle at center, #0a0a0a, #000000 80%);
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
-    font-family: 'Poppins', sans-serif;
+    cursor: none;
+    transition: background 1s ease;
   }
 
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  /* soft glow that follows the cursor */
-  .glow {
+  /* ---------- FLASHING LIGHT ---------- */
+  .flash {
     position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+    animation: pulse 3s infinite ease-in-out;
+    mix-blend-mode: screen;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0; transform: scale(0.8); }
+    10% { opacity: 1; transform: scale(1.1); }
+    30% { opacity: 0.6; transform: scale(1.3); }
+    50% { opacity: 0.2; transform: scale(0.9); }
+    70% { opacity: 0.8; transform: scale(1.2); }
+  }
+
+  /* ---------- FOLLOW CURSOR ---------- */
+  body::before {
+    content: "";
+    position: fixed;
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,100,255,0.3) 0%, transparent 80%);
     pointer-events: none;
     transform: translate(-50%, -50%);
-    mix-blend-mode: overlay;
-    filter: blur(10px);
-    transition: 0.15s ease;
   }
 
-  /* navigation links */
+  /* Move glow with cursor */
+  body {
+    --x: 50vw;
+    --y: 50vh;
+  }
+  body::before {
+    left: var(--x);
+    top: var(--y);
+    transition: left 0.1s linear, top 0.1s linear;
+  }
+
+  /* ---------- BUTTONS ---------- */
   .nav {
     position: absolute;
     bottom: 30px;
     display: flex;
-    gap: 40px;
-    font-size: 1rem;
+    gap: 20px;
+    font-family: 'Poppins', sans-serif;
   }
   .nav a {
-    color: rgba(0,0,0,0.5);
     text-decoration: none;
-    transition: 0.3s;
+    color: #aaa;
+    padding: 8px 18px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    transition: background 0.3s, color 0.3s;
   }
   .nav a:hover {
-    color: rgba(0,0,0,0.8);
+    background: rgba(255,255,255,0.15);
+    color: #fff;
   }
 </style>
 </head>
 <body>
-  <div class="glow"></div>
+  <div class="flash"></div>
 
   <div class="nav">
     <a href="index.html">Back to Index</a>
@@ -70,12 +89,12 @@
     <a href="entry7.html">Next</a>
   </div>
 
-<script>
-  const glow = document.querySelector('.glow');
-  document.addEventListener('mousemove', e => {
-    glow.style.left = `${e.clientX}px`;
-    glow.style.top = `${e.clientY}px`;
-  });
-</script>
+  <script>
+    // move glow with cursor
+    document.addEventListener('mousemove', e => {
+      document.body.style.setProperty('--x', e.clientX + 'px');
+      document.body.style.setProperty('--y', e.clientY + 'px');
+    });
+  </script>
 </body>
 </html>

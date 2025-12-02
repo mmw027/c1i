@@ -8,29 +8,42 @@ html,body{
   margin:0;
   height:100%;
   overflow:hidden;
-  background:linear-gradient(to bottom,#cfefff 0%,#eaf7ff 50%,#ffffff 100%);
   font-family:'Inter',sans-serif;
+  background:linear-gradient(to bottom,#cfefff 0%,#eaf7ff 50%,#ffffff 100%);
 }
 
-/* moving light bands */
+/* shimmering horizontal light */
 .lightband{
   position:absolute;
-  width:200%;
-  height:100%;
-  top:0;left:-50%;
+  inset:0;
   background:repeating-linear-gradient(
     to right,
-    rgba(255,255,255,0.2) 0px,
-    rgba(255,255,255,0.3) 120px,
+    rgba(255,255,255,0.15) 0px,
+    rgba(255,255,255,0.35) 120px,
     rgba(255,255,255,0) 240px
   );
-  animation:moveband 12s linear infinite;
   mix-blend-mode:soft-light;
-  filter:blur(10px);
+  animation:moveband 15s linear infinite;
+  filter:blur(12px);
 }
 @keyframes moveband{
   from{transform:translateX(0);}
   to{transform:translateX(-25%);}
+}
+
+/* gentle vertical shimmer overlay */
+.shimmer{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,0.05) 0%,
+    rgba(255,255,255,0.2) 40%,
+    rgba(255,255,255,0) 100%);
+  animation:glow 10s ease-in-out infinite alternate;
+}
+@keyframes glow{
+  from{opacity:0.5;}
+  to{opacity:0.9;}
 }
 
 /* ripple canvas */
@@ -42,7 +55,7 @@ canvas{
   display:block;
 }
 
-/* nav */
+/* navigation */
 .nav{
   position:fixed;
   bottom:25px;left:50%;
@@ -63,7 +76,9 @@ canvas{
 </style>
 </head>
 <body>
+
 <div class="lightband"></div>
+<div class="shimmer"></div>
 <canvas id="ripple"></canvas>
 
 <div class="nav">
@@ -73,44 +88,44 @@ canvas{
 </div>
 
 <script>
-// --- Ripple Effect ---
+/* Ripple animation */
 const canvas=document.getElementById('ripple');
 const ctx=canvas.getContext('2d');
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-let ripples=[];
-
-window.addEventListener('resize',()=>{
+function resize(){
   canvas.width=innerWidth;
   canvas.height=innerHeight;
-});
+}
+resize();
+window.addEventListener('resize',resize);
 
+let ripples=[];
 function draw(){
-  ctx.fillStyle='rgba(207,239,255,0.2)';
+  ctx.fillStyle='rgba(207,239,255,0.25)';
   ctx.fillRect(0,0,canvas.width,canvas.height);
   ripples.forEach(r=>{
     ctx.beginPath();
     ctx.arc(r.x,r.y,r.r,0,Math.PI*2);
-    const alpha=r.alpha.toFixed(2);
-    ctx.strokeStyle=`rgba(255,255,255,${alpha})`;
-    ctx.lineWidth=3;
+    ctx.strokeStyle=`rgba(255,255,255,${r.alpha})`;
+    ctx.lineWidth=2;
     ctx.stroke();
-    r.r+=2.5;
-    r.alpha-=0.01;
+    r.r+=2.2;
+    r.alpha-=0.015;
   });
   ripples=ripples.filter(r=>r.alpha>0);
   requestAnimationFrame(draw);
 }
 draw();
 
+/* Mouse interaction */
 canvas.addEventListener('mousemove',e=>{
   ripples.push({x:e.x,y:e.y,r:0,alpha:0.8});
 });
 canvas.addEventListener('click',e=>{
   for(let i=0;i<3;i++){
-    ripples.push({x:e.x,y:e.y,r:i*10,alpha:0.8});
+    ripples.push({x:e.x,y:e.y,r:i*12,alpha:0.9});
   }
 });
 </script>
+
 </body>
 </html>

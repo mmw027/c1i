@@ -2,112 +2,112 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>2 · Reflections</title>
+<title>9 · Echo</title>
 <style>
 html,body{
   margin:0;
   height:100%;
   overflow:hidden;
   font-family:'Inter',sans-serif;
-  background:radial-gradient(circle at center,#0a0f1e 0%,#111a33 60%,#060912 100%);
+  background:linear-gradient(45deg,#ffe0cc,#fff5e8,#f2f0ff);
+  background-size:400% 400%;
+  animation:shift 25s ease-in-out infinite alternate;
 }
 
-/* moving light streaks */
-.streak{
+/* slow gradient movement */
+@keyframes shift{
+  0%{background-position:0% 50%;}
+  100%{background-position:100% 50%;}
+}
+
+/* horizon band */
+.horizon{
   position:absolute;
-  height:2px;
+  top:55%;
   width:100%;
-  background:linear-gradient(to right,rgba(255,255,255,0) 0%,rgba(255,220,160,0.6) 40%,rgba(255,255,255,0) 100%);
-  opacity:0.4;
-  animation:moveStreak 3s linear infinite;
-  filter:blur(1px);
-}
-@keyframes moveStreak{
-  0%{transform:translateX(-100%) translateY(0);}
-  100%{transform:translateX(100%) translateY(0);}
+  height:2px;
+  background:rgba(255,255,255,0.8);
+  box-shadow:0 0 20px rgba(255,255,255,0.7);
+  z-index:3;
 }
 
-/* shimmer reflection lines */
-.glow{
+/* ambient glow overlay */
+.overlay{
   position:absolute;
-  width:220px;height:220px;
+  inset:0;
+  background:radial-gradient(circle at 50% 60%,rgba(255,220,150,0.25),rgba(255,255,255,0) 80%);
+  mix-blend-mode:soft-light;
+  animation:breathe 12s ease-in-out infinite alternate;
+}
+@keyframes breathe{
+  0%{opacity:0.6;}
+  100%{opacity:0.9;}
+}
+
+/* echo trail from cursor */
+.trail{
+  position:absolute;
+  width:260px;height:260px;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(255,230,120,0.5) 0%,rgba(255,255,255,0) 70%);
+  background:radial-gradient(circle,rgba(255,255,255,0.9) 0%,rgba(255,230,180,0.4) 40%,rgba(255,255,255,0) 80%);
   pointer-events:none;
-  mix-blend-mode:screen;
+  mix-blend-mode:overlay;
   filter:blur(40px);
   transform:translate(-50%,-50%);
-  opacity:0.8;
-  transition:opacity .2s ease;
-}
-
-/* light flare on click */
-.flare{
-  position:absolute;
-  width:100px;height:100px;
-  border-radius:50%;
-  border:2px solid rgba(255,255,255,0.7);
-  transform:translate(-50%,-50%) scale(0);
-  animation:flareOut 0.8s ease-out forwards;
-  pointer-events:none;
-}
-@keyframes flareOut{
-  to{transform:translate(-50%,-50%) scale(10);opacity:0;}
+  opacity:0.75;
+  transition:opacity .4s ease;
 }
 
 /* nav */
 .nav{
-  position:fixed;bottom:25px;left:50%;
+  position:fixed;
+  bottom:25px;left:50%;
   transform:translateX(-50%);
   display:flex;gap:25px;z-index:10;
 }
 .nav a{
   text-decoration:none;
-  padding:10px 16px;
+  padding:10px 18px;
   border-radius:20px;
-  background:rgba(255,255,255,0.15);
-  color:#fff;
+  background:rgba(255,255,255,0.5);
+  color:#333;
   font-size:.9rem;
   transition:.3s;
   backdrop-filter:blur(10px);
 }
-.nav a:hover{background:rgba(255,255,255,0.4);}
+.nav a:hover{background:rgba(255,255,255,0.9);}
 </style>
 </head>
 <body>
 
-<!-- dynamic moving streaks -->
-<div class="streak" style="top:20%;animation-delay:0s;"></div>
-<div class="streak" style="top:40%;animation-delay:1s;"></div>
-<div class="streak" style="top:60%;animation-delay:2s;"></div>
-<div class="streak" style="top:80%;animation-delay:0.5s;"></div>
-
-<div class="glow" id="glow"></div>
+<div class="overlay"></div>
+<div class="horizon"></div>
+<div class="trail" id="trail"></div>
 
 <div class="nav">
-  <a href="entry1.html">← Prev</a>
+  <a href="entry8.html">← Prev</a>
   <a href="index.html">Back to Index</a>
-  <a href="entry3.html">Next →</a>
 </div>
 
 <script>
-const glow=document.getElementById('glow');
-document.addEventListener('mousemove',e=>{
-  glow.style.left=e.clientX+'px';
-  glow.style.top=e.clientY+'px';
-  glow.style.opacity=1;
-  clearTimeout(window.fade);
-  window.fade=setTimeout(()=>glow.style.opacity=0.6,200);
-});
+const trail=document.getElementById('trail');
+let lastX=0,lastY=0;
 
-// flash flare on click
-document.addEventListener('click',e=>{
-  const f=document.createElement('div');
-  f.className='flare';
-  f.style.left=e.clientX+'px';
-  f.style.top=e.clientY+'px';
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),800);
+document.addEventListener('mousemove',e=>{
+  const dx=e.clientX-lastX;
+  const dy=e.clientY-lastY;
+  const dist=Math.sqrt(dx*dx+dy*dy);
+  const scale=1+Math.min(dist/80,0.4);
+
+  trail.style.left=e.clientX+'px';
+  trail.style.top=e.clientY+'px';
+  trail.style.transform=`translate(-50%,-50%) scale(${scale})`;
+  trail.style.opacity='1';
+  clearTimeout(window.fade);
+  window.fade=setTimeout(()=>trail.style.opacity='0.7',300);
+
+  lastX=e.clientX;
+  lastY=e.clientY;
 });
 </script>
 

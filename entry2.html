@@ -1,22 +1,48 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>2 · Reflections</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2 · Reflections</title>
 <style>
-html,body{margin:0;overflow:hidden;background:#b8d9ff;}
-.nav{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);display:flex;gap:25px;}
-a{text-decoration:none;padding:10px 16px;border-radius:20px;background:rgba(255,255,255,0.6);color:#333;font-family:'Inter',sans-serif;font-size:.9rem;transition:.3s;backdrop-filter:blur(10px);}
-a:hover{background:rgba(255,255,255,0.9);}
-</style></head>
-<body>
-<canvas id="c"></canvas>
-<script>
-const ctx=document.getElementById("c").getContext("2d");
-c.width=innerWidth;c.height=innerHeight;let x=0;
-function draw(){
- ctx.fillStyle="#b8d9ff";ctx.fillRect(0,0,c.width,c.height);
- ctx.beginPath();
- for(let i=0;i<30;i++){ctx.arc(x+i*40,200+Math.sin(i+x/20)*20,10,0,6.28);}
- ctx.fillStyle="#fff";ctx.fill();x+=2;requestAnimationFrame(draw);}
-draw();
-</script>
-<div class="nav"><a href="entry1.html">← Prev</a><a href="index.html">Back</a><a href="entry3.html">Next →</a></div>
-</body></html>
+html,body{
+  margin:0;
+  height:100%;
+  overflow:hidden;
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(to bottom,#dbe8ff 0%,#e9f3ff 45%,#c5dcff 50%,#a8cfff 80%,#8fb5ff 100%);
+  animation:shift 15s ease-in-out infinite alternate;
+}
+
+/* shimmer motion */
+@keyframes shift{
+  0%{background-position:0 0;}
+  100%{background-position:0 20%;}
+}
+
+/* reflection divider (horizon) */
+.horizon{
+  position:absolute;
+  top:50%;
+  left:0;
+  width:100%;
+  height:2px;
+  background:rgba(255,255,255,0.5);
+  box-shadow:0 0 15px rgba(255,255,255,0.6);
+}
+
+/* mirrored gradient reflection */
+.reflection{
+  position:absolute;
+  top:50%;
+  width:100%;
+  height:50%;
+  background:linear-gradient(to top,
+    rgba(173,208,255,0.6) 0%,
+    rgba(255,255,255,0.2) 50%,
+    transparent 100%);
+  backdrop-filter:blur(10px);
+  transform-origin:top;
+  transform:scaleY(-1);
+  animation:wave 8s ease-in-out infinite;
+}
+@k

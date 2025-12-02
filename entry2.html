@@ -1,149 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Entry 2 — Reflection</title>
+<html><head><meta charset="UTF-8"><title>2 · Reflections</title>
 <style>
-  html, body {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-    background: radial-gradient(circle at center, #060606 0%, #020202 100%);
-    cursor: none;
-  }
-
-  /* ---- center glass panel ---- */
-  .glass {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 60vw;
-    height: 65vh;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 30px;
-    backdrop-filter: blur(20px);
-    box-shadow:
-      inset 0 0 100px rgba(255,255,255,0.04),
-      0 0 60px rgba(255,255,255,0.1);
-    transition: box-shadow 0.3s ease;
-  }
-
-  /* ---- moving highlight that mimics reflected light ---- */
-  .reflection-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.07) 0%,
-      rgba(255,255,255,0.02) 40%,
-      rgba(255,255,255,0.1) 70%,
-      transparent 100%
-    );
-    background-size: 400% 400%;
-    animation: shift 10s infinite linear;
-    border-radius: 30px;
-    mix-blend-mode: screen;
-  }
-
-  @keyframes shift {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-  }
-
-  /* ---- cursor light reflection ---- */
-  .cursor-light {
-    position: fixed;
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    pointer-events: none;
-    background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
-    mix-blend-mode: screen;
-    transform: translate(-50%, -50%);
-    transition: transform 0.05s linear;
-  }
-
-  /* ---- soft background reflection glow ---- */
-  .ambient-light {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 120%;
-    height: 120%;
-    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06), transparent 70%);
-    filter: blur(60px);
-    mix-blend-mode: screen;
-    animation: pulse 8s infinite alternate;
-  }
-
-  @keyframes pulse {
-    from { opacity: 0.4; transform: scale(1); }
-    to { opacity: 0.7; transform: scale(1.05); }
-  }
-
-  /* ---- navigation ---- */
-  .nav {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-  }
-
-  .nav a {
-    text-decoration: none;
-    color: #CFEFFF;
-    font-size: 1.1em;
-    text-shadow: 0 0 15px #CFEFFF, 0 0 40px #9BE2FF;
-    margin: 0 20px;
-    transition: color 0.4s, text-shadow 0.4s;
-  }
-
-  .nav a:hover {
-    color: #FFFFFF;
-    text-shadow: 0 0 25px #FFFFFF, 0 0 60px #AEEBFF;
-  }
-</style>
-</head>
+html,body{margin:0;overflow:hidden;background:#b8d9ff;}
+.nav{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);display:flex;gap:25px;}
+a{text-decoration:none;padding:10px 16px;border-radius:20px;background:rgba(255,255,255,0.6);color:#333;font-family:'Inter',sans-serif;font-size:.9rem;transition:.3s;backdrop-filter:blur(10px);}
+a:hover{background:rgba(255,255,255,0.9);}
+</style></head>
 <body>
-  <div class="ambient-light"></div>
-  <div class="glass">
-    <div class="reflection-overlay"></div>
-  </div>
-  <div class="cursor-light"></div>
-
-  <div class="nav">
-    <a href="entry1.html">← Previous</a>
-    <a href="index.html">Back to Index</a>
-    <a href="entry3.html">Next →</a>
-  </div>
-
+<canvas id="c"></canvas>
 <script>
-  const light = document.querySelector('.cursor-light');
-  const glass = document.querySelector('.glass');
-
-  // glowing cursor follows movement
-  document.addEventListener('mousemove', (e) => {
-    light.style.left = e.clientX + 'px';
-    light.style.top = e.clientY + 'px';
-
-    // make glass glow when cursor is near it
-    const rect = glass.getBoundingClientRect();
-    const distance = Math.hypot(
-      e.clientX - (rect.left + rect.width / 2),
-      e.clientY - (rect.top + rect.height / 2)
-    );
-    const glow = Math.max(0, 250 - distance);
-    glass.style.boxShadow = `
-      inset 0 0 100px rgba(255,255,255,${0.05 + glow/1000}),
-      0 0 ${60 + glow/8}px rgba(255,255,255,${0.1 + glow/1000})
-    `;
-  });
+const ctx=document.getElementById("c").getContext("2d");
+c.width=innerWidth;c.height=innerHeight;let x=0;
+function draw(){
+ ctx.fillStyle="#b8d9ff";ctx.fillRect(0,0,c.width,c.height);
+ ctx.beginPath();
+ for(let i=0;i<30;i++){ctx.arc(x+i*40,200+Math.sin(i+x/20)*20,10,0,6.28);}
+ ctx.fillStyle="#fff";ctx.fill();x+=2;requestAnimationFrame(draw);}
+draw();
 </script>
-</body>
-</html>
+<div class="nav"><a href="entry1.html">← Prev</a><a href="index.html">Back</a><a href="entry3.html">Next →</a></div>
+</body></html>

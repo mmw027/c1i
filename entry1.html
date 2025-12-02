@@ -1,141 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Entry 1 — The First Glow</title>
+<html><head><meta charset="UTF-8"><title>1 · First Glow</title>
 <style>
-  html, body {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-    background: linear-gradient(
-      to top,
-      #B77C4A 0%,   /* ground */
-      #D48E53 25%,  /* warm base */
-      #F6A75D 45%,  /* orange mid sky */
-      #F9C97A 70%,  /* peach-yellow */
-      #FFF2C9 100%  /* pale top */
-    );
-    transition: background 2s ease;
-    cursor: none;
-  }
-
-  /* ---- ground ---- */
-  .ground {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 250px;
-    background: linear-gradient(to top, #704321 0%, #8B552B 50%, rgba(171,101,49,0.7) 100%);
-  }
-
-  /* ---- horizon line ---- */
-  .horizon-line {
-    position: absolute;
-    bottom: 250px;
-    width: 100%;
-    height: 8px;
-    background: linear-gradient(to right,
-      rgba(180,110,50,1),
-      rgba(255,210,140,1),
-      rgba(180,110,50,1)
-    );
-    box-shadow: 0 0 20px rgba(255,190,90,0.6);
-  }
-
-  /* ---- smaller + slightly softer sun ---- */
-  .sun {
-  position: absolute;
-  bottom: 30%;
-  left: 50%;
-  width: 220px;     /* ⬅️ was smaller before — now slightly larger */
-  height: 220px;
-  background: radial-gradient(circle, #FFD58A 0%, #F8A84E 60%, transparent 100%);
-  border-radius: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 0 90px 40px rgba(255, 200, 120, 0.5);
-  animation: rise 10s ease-in-out forwards;
-}
-  @keyframes float {
-    from { transform: translateX(-50%) translateY(6px); }
-    to { transform: translateX(-50%) translateY(-6px); }
-  }
-
-  /* ---- cursor glow ---- */
-  .cursor-light {
-    position: fixed;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    pointer-events: none;
-    background: radial-gradient(circle, rgba(255,255,200,0.45) 0%, transparent 70%);
-    mix-blend-mode: soft-light;
-    transform: translate(-50%, -50%);
-    transition: transform 0.05s linear;
-  }
-
-  /* ---- glowing navigation ---- */
-  .nav {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-  }
-
-  .nav a {
-    text-decoration: none;
-    color: #FFB703;
-    font-size: 1.1em;
-    text-shadow: 0 0 10px #FFB703, 0 0 25px #FFD166, 0 0 50px #FFD166;
-    margin: 0 20px;
-    transition: color 0.4s, text-shadow 0.4s;
-  }
-
-  .nav a:hover {
-    color: #FB8500;
-    text-shadow: 0 0 20px #FFD166, 0 0 40px #FFD166, 0 0 80px #FFD166;
-  }
-
-  /* ---- sunrise mode ---- */
-  body.active {
-    background: linear-gradient(to top, #C78650 0%, #E8A966 30%, #FFC87F 55%, #FFEAB5 80%, #FFF8E2 100%);
-  }
-
-  body.active .sun {
-    bottom: 300px;
-    transform: translateX(-50%) scale(1.05);
-    box-shadow:
-      0 0 70px rgba(255,195,90,0.7),
-      0 0 140px rgba(255,180,70,0.4);
-    filter: brightness(1.15);
-  }
-</style>
-</head>
+html,body{margin:0;height:100%;overflow:hidden;
+background:linear-gradient(180deg,#160a33,#ffecd2,#fff);
+background-size:100% 200%;animation:rise 15s ease-in-out infinite alternate;}
+@keyframes rise{0%{background-position:0 100%;}100%{background-position:0 0;}}
+.nav{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);
+display:flex;gap:25px;}
+a{text-decoration:none;padding:10px 16px;border-radius:20px;
+background:rgba(255,255,255,0.6);color:#333;font-family:'Inter',sans-serif;
+font-size:.9rem;transition:.3s;backdrop-filter:blur(10px);}
+a:hover{background:rgba(255,255,255,0.9);}
+</style></head>
 <body>
-  <div class="sun"></div>
-  <div class="horizon-line"></div>
-  <div class="ground"></div>
-  <div class="cursor-light"></div>
-
-  <div class="nav">
-    <a href="index.html">Back to Index</a>
-    <a href="entry2.html">Next →</a>
-  </div>
-
-<script>
-  const light = document.querySelector('.cursor-light');
-
-  // glowing cursor follows movement
-  document.addEventListener('mousemove', (e) => {
-    light.style.left = e.clientX + 'px';
-    light.style.top = e.clientY + 'px';
-  });
-
-  // toggle sunrise (click to animate)
-  document.body.addEventListener("click", () => {
-    document.body.classList.toggle("active");
-  });
-</script>
-</body>
-</html>
+<div class="nav"><a href="index.html">Back</a><a href="entry2.html">Next →</a></div>
+</body></html>

@@ -9,40 +9,118 @@ html,body{
   height:100%;
   overflow:hidden;
   font-family:'Inter',sans-serif;
-  background:linear-gradient(to bottom,#dbe8ff 0%,#e9f3ff 45%,#c5dcff 50%,#a8cfff 80%,#8fb5ff 100%);
-  animation:shift 15s ease-in-out infinite alternate;
+  background:linear-gradient(to bottom,#cfe6ff 0%,#e8f1ff 40%,#a8cbff 50%,#86b8ff 75%,#5fa4ff 100%);
 }
 
-/* shimmer motion */
-@keyframes shift{
-  0%{background-position:0 0;}
-  100%{background-position:0 20%;}
+/* moving shimmer overlay */
+.shimmer{
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(
+    to right,
+    rgba(255,255,255,0.25) 0px,
+    rgba(255,255,255,0.05) 200px,
+    rgba(255,255,255,0) 400px
+  );
+  mix-blend-mode:soft-light;
+  animation:slide 15s linear infinite;
+}
+@keyframes slide{
+  from{transform:translateX(0);}
+  to{transform:translateX(-400px);}
 }
 
-/* reflection divider (horizon) */
+/* horizon divider */
 .horizon{
   position:absolute;
   top:50%;
   left:0;
   width:100%;
   height:2px;
-  background:rgba(255,255,255,0.5);
-  box-shadow:0 0 15px rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.6);
+  box-shadow:0 0 20px rgba(255,255,255,0.8);
+  z-index:2;
 }
 
-/* mirrored gradient reflection */
+/* reflection layer (flipped gradient) */
 .reflection{
   position:absolute;
   top:50%;
+  left:0;
   width:100%;
   height:50%;
-  background:linear-gradient(to top,
-    rgba(173,208,255,0.6) 0%,
-    rgba(255,255,255,0.2) 50%,
-    transparent 100%);
+  background:linear-gradient(to top,rgba(180,210,255,0.8),rgba(255,255,255,0.2));
   backdrop-filter:blur(10px);
   transform-origin:top;
   transform:scaleY(-1);
   animation:wave 8s ease-in-out infinite;
 }
-@k
+@keyframes wave{
+  0%,100%{transform:scaleY(-1) translateY(0);}
+  50%{transform:scaleY(-1) translateY(-25px);}
+}
+
+/* light lens that follows cursor */
+.lens{
+  position:absolute;
+  width:300px;height:300px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.3) 40%,rgba(255,255,255,0) 80%);
+  mix-blend-mode:soft-light;
+  filter:blur(30px);
+  pointer-events:none;
+  opacity:0.85;
+  transform:translate(-50%,-50%);
+  transition:transform 0.2s ease, opacity 0.3s ease;
+}
+
+/* nav */
+.nav{
+  position:fixed;
+  bottom:25px;left:50%;
+  transform:translateX(-50%);
+  display:flex;gap:25px;z-index:10;
+}
+.nav a{
+  text-decoration:none;
+  padding:10px 16px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.6);
+  color:#333;
+  font-size:.9rem;
+  transition:.3s;
+  backdrop-filter:blur(10px);
+}
+.nav a:hover{background:rgba(255,255,255,0.9);}
+</style>
+</head>
+<body>
+
+<div class="shimmer"></div>
+<div class="horizon"></div>
+<div class="reflection"></div>
+<div class="lens" id="lens"></div>
+
+<div class="nav">
+  <a href="entry1.html">← Prev</a>
+  <a href="index.html">Back</a>
+  <a href="entry3.html">Next →</a>
+</div>
+
+<script>
+// glowing lens follows cursor
+const lens=document.getElementById('lens');
+document.addEventListener('mousemove',e=>{
+  lens.style.left=e.clientX+'px';
+  lens.style.top=e.clientY+'px';
+  lens.style.opacity='1';
+  lens.style.transform='translate(-50%,-50%) scale(1.1)';
+  clearTimeout(window.fade);
+  window.fade=setTimeout(()=>{
+    lens.style.opacity='0.8';
+    lens.style.transform='translate(-50%,-50%) scale(1)';
+  },200);
+});
+</script>
+</body>
+</html>

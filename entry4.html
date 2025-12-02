@@ -8,36 +8,56 @@ html,body{
   margin:0;
   height:100%;
   overflow:hidden;
-  background:linear-gradient(to bottom,#0b1028,#15224f,#2e3a56);
-}
-#overlay{
-  position:absolute;
-  top:0;left:0;width:100%;height:100%;
-  backdrop-filter:blur(25px) brightness(1.1);
-  background:rgba(255,255,255,0.08);
-  transition:filter 0.3s;
+  background:radial-gradient(circle at center,#0a0f26 0%,#1b284b 50%,#263a63 100%);
+  font-family:'Inter',sans-serif;
 }
 
-/* lightning flash overlay */
+/* background light glow */
+.glow{
+  position:absolute;
+  width:120%;
+  height:120%;
+  left:-10%;top:-10%;
+  background:radial-gradient(circle at 60% 40%,rgba(255,204,140,0.3),transparent 70%);
+  filter:blur(80px);
+  animation:glowShift 12s ease-in-out infinite alternate;
+}
+@keyframes glowShift{
+  0%{transform:translate(0,0);}
+  100%{transform:translate(-10px,10px);}
+}
+
+/* fog overlay */
+#fog{
+  position:absolute;
+  inset:0;
+  backdrop-filter:blur(30px) brightness(1.2);
+  background:rgba(255,255,255,0.08);
+  transition:clip-path 0.3s ease;
+}
+
+/* lightning flash */
 .flash{
   position:absolute;
-  top:0;left:0;width:100%;height:100%;
-  background:rgba(255,255,255,0.8);
-  opacity:0;pointer-events:none;
-  transition:opacity 0.3s ease;
+  inset:0;
+  background:rgba(255,255,255,0.9);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.15s ease;
 }
 
-/* raindrop streaks */
-.rain{
+/* raindrops */
+.drop{
   position:absolute;
-  top:0;left:0;width:2px;height:15px;
+  width:2px;
+  height:25px;
   background:rgba(255,255,255,0.25);
-  filter:blur(0.3px);
+  filter:blur(0.4px);
   animation:fall linear infinite;
 }
 @keyframes fall{
-  0%{transform:translateY(-20vh);}
-  100%{transform:translateY(120vh);}
+  0%{transform:translateY(-10vh);}
+  100%{transform:translateY(110vh);}
 }
 
 /* nav */
@@ -52,7 +72,7 @@ html,body{
   padding:10px 16px;
   border-radius:20px;
   background:rgba(255,255,255,0.6);
-  color:#333;font-family:'Inter',sans-serif;
+  color:#333;
   font-size:.9rem;
   transition:.3s;
   backdrop-filter:blur(10px);
@@ -62,7 +82,8 @@ html,body{
 </head>
 <body>
 
-<div id="overlay"></div>
+<div class="glow"></div>
+<div id="fog"></div>
 <div class="flash"></div>
 
 <div class="nav">
@@ -72,33 +93,35 @@ html,body{
 </div>
 
 <script>
-// create rain streaks
-for(let i=0;i<120;i++){
-  const drop=document.createElement('div');
-  drop.className='rain';
-  drop.style.left=Math.random()*100+'%';
-  drop.style.animationDuration=0.8+Math.random()*0.7+'s';
-  drop.style.animationDelay=Math.random()*5+'s';
-  document.body.appendChild(drop);
+// --- Rain Generation ---
+for(let i=0;i<160;i++){
+  const d=document.createElement('div');
+  d.className='drop';
+  d.style.left=Math.random()*100+'%';
+  d.style.animationDuration=0.7+Math.random()*0.8+'s';
+  d.style.animationDelay=Math.random()*4+'s';
+  document.body.appendChild(d);
 }
 
-// lightning flash every 10s
+// --- Lightning Effect ---
 const flash=document.querySelector('.flash');
-setInterval(()=>{
+function lightning(){
   flash.style.opacity='1';
-  setTimeout(()=>flash.style.opacity='0',200);
-},10000);
+  setTimeout(()=>flash.style.opacity='0',120);
+}
+setInterval(lightning,Math.random()*8000+6000); // every 6–14s
 
-// fog clearing effect
-const overlay=document.getElementById('overlay');
-let timeout;
+// --- Fog Clearing Interaction ---
+const fog=document.getElementById('fog');
+let timer;
 document.addEventListener('mousemove',e=>{
-  overlay.style.clipPath=`circle(120px at ${e.clientX}px ${e.clientY}px)`;
-  clearTimeout(timeout);
-  timeout=setTimeout(()=>{
-    overlay.style.clipPath='circle(0 at 50% 50%)';
-  },1500);
+  fog.style.clipPath=`circle(150px at ${e.clientX}px ${e.clientY}px)`;
+  clearTimeout(timer);
+  timer=setTimeout(()=>{
+    fog.style.clipPath='circle(0 at 50% 50%)';
+  },1800);
 });
 </script>
+
 </body>
 </html>

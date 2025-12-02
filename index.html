@@ -1,52 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>The Harmonic Collection</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>The Harmonic Collection · Floating Orbs</title>
 <style>
-html,body{margin:0;height:100%;font-family:Poppins,sans-serif;background:#f9f9fb;color:#333;}
-header{padding:60px 0;text-align:center;}
-h1{font-size:2.4rem;letter-spacing:1px;margin-bottom:10px;}
-p{color:#666;}
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;padding:50px;}
-.card{
- position:relative;height:260px;border-radius:16px;overflow:hidden;
- box-shadow:0 4px 25px rgba(0,0,0,0.1);cursor:pointer;
- transition:transform .4s ease;
+html,body{
+  margin:0;padding:0;height:100%;
+  background:radial-gradient(circle at top,#0a0a14 0%,#000 100%);
+  overflow:hidden;font-family:'Poppins',sans-serif;color:#fff;
 }
-.card:hover{transform:translateY(-10px);}
-.card::after{content:"";position:absolute;inset:0;
- background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.5));}
-.card h2{position:absolute;bottom:20px;left:20px;color:#fff;font-size:1.2rem;z-index:2;}
-.one{background:linear-gradient(180deg,#fce0f3,#fff3cd);}
-.two{background:linear-gradient(180deg,#d0e2ff,#fff);}
-.three{background:linear-gradient(180deg,#010818,#ff0066);}
-.four{background:url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=900&q=80') center/cover;}
-.five{background:linear-gradient(180deg,#aee1f9,#f8fff6);}
-.six{background:linear-gradient(180deg,#fde2ff,#e0fff3);}
-.seven{background:linear-gradient(180deg,#0a0a1a,#ff4b8a);}
-.eight{background:linear-gradient(180deg,#c8d8ff,#f5e1ff);}
-.nine{background:linear-gradient(180deg,#fff5e1,#ffe1ec);}
-footer{text-align:center;padding:40px;color:#aaa;font-size:.9rem;}
+
+/* Title */
+header{
+  position:fixed;top:30px;width:100%;text-align:center;z-index:10;
+}
+h1{font-size:2rem;letter-spacing:1px;margin:0;}
+p{color:#bbb;font-size:0.9rem;margin-top:6px;}
+
+/* Orb container */
+.scene{
+  width:100%;height:100%;
+  position:relative;
+  display:flex;justify-content:center;align-items:center;
+}
+
+/* Orbs */
+.orb{
+  position:absolute;
+  width:80px;height:80px;border-radius:50%;
+  filter:blur(1px);
+  opacity:0.85;
+  animation:float 14s ease-in-out infinite;
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.orb:hover{
+  transform:scale(1.2);
+  box-shadow:0 0 25px rgba(255,255,255,0.9);
+}
+
+/* Titles appear on hover */
+.orb::after{
+  content:attr(data-label);
+  position:absolute;bottom:-25px;left:50%;transform:translateX(-50%);
+  font-size:0.8rem;color:#fff;opacity:0;
+  transition:opacity .4s ease;
+  white-space:nowrap;
+}
+.orb:hover::after{opacity:1;}
+
+/* Colors per entry */
+.one{background:radial-gradient(circle,#fce0f3,#fff3cd);}
+.two{background:radial-gradient(circle,#b6d4ff,#fff);}
+.three{background:radial-gradient(circle,#ff2a7b,#0a0a1a);}
+.four{background:radial-gradient(circle,#70a4ff,#203060);}
+.five{background:radial-gradient(circle,#aee1f9,#f8fff6);}
+.six{background:radial-gradient(circle,#fde2ff,#e0fff3);}
+.seven{background:radial-gradient(circle,#ff6699,#0a0a1a);}
+.eight{background:radial-gradient(circle,#c8d8ff,#f5e1ff);}
+.nine{background:radial-gradient(circle,#fff5e1,#ffe1ec);}
+
+/* Floating motion */
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-25px);}
+}
+
+/* Position variety */
+.one{top:25%;left:15%;animation-delay:0s;}
+.two{top:60%;left:10%;animation-delay:2s;}
+.three{top:40%;left:25%;animation-delay:4s;}
+.four{top:30%;left:45%;animation-delay:1s;}
+.five{top:65%;left:45%;animation-delay:3s;}
+.six{top:40%;left:65%;animation-delay:5s;}
+.seven{top:70%;left:75%;animation-delay:2.5s;}
+.eight{top:25%;left:80%;animation-delay:4.5s;}
+.nine{top:50%;left:90%;animation-delay:6s;}
+
+/* Index footer */
+footer{
+  position:fixed;bottom:20px;width:100%;text-align:center;
+  color:#777;font-size:0.8rem;
+}
 a{color:inherit;text-decoration:none;}
 </style>
 </head>
 <body>
+
 <header>
   <h1>The Harmonic Collection</h1>
-  <p>By Melody Wu — Nine studies of light, rhythm, and emotion</p>
+  <p>By Melody Wu — Nine Studies of Light and Rhythm</p>
 </header>
-<section class="gallery">
-  <a href="entry1.html" class="card one"><h2>1 · First Glow</h2></a>
-  <a href="entry2.html" class="card two"><h2>2 · Reflections</h2></a>
-  <a href="entry3.html" class="card three"><h2>3 · Neon</h2></a>
-  <a href="entry4.html" class="card four"><h2>4 · Rain on Glass</h2></a>
-  <a href="entry5.html" class="card five"><h2>5 · Surface Light</h2></a>
-  <a href="entry6.html" class="card six"><h2>6 · Flow</h2></a>
-  <a href="entry7.html" class="card seven"><h2>7 · Pulse</h2></a>
-  <a href="entry8.html" class="card eight"><h2>8 · Drift</h2></a>
-  <a href="entry9.html" class="card nine"><h2>9 · Echo</h2></a>
-</section>
+
+<div class="scene">
+  <a href="entry1.html" class="orb one"  data-label="1 · First Glow"></a>
+  <a href="entry2.html" class="orb two"  data-label="2 · Reflections"></a>
+  <a href="entry3.html" class="orb three" data-label="3 · Neon"></a>
+  <a href="entry4.html" class="orb four"  data-label="4 · Rain on Glass"></a>
+  <a href="entry5.html" class="orb five"  data-label="5 · Surface Light"></a>
+  <a href="entry6.html" class="orb six"  data-label="6 · Flow"></a>
+  <a href="entry7.html" class="orb seven" data-label="7 · Pulse"></a>
+  <a href="entry8.html" class="orb eight" data-label="8 · Drift"></a>
+  <a href="entry9.html" class="orb nine"  data-label="9 · Echo"></a>
+</div>
+
 <footer>© 2025 Melody Wu · Parsons Communication Design</footer>
+
 </body>
 </html>

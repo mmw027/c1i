@@ -6,33 +6,45 @@
 <style>
 html, body {
   margin: 0; height: 100%;
+  background: linear-gradient(120deg, #bcd2f9, #f5d4f2, #faf3e0);
   overflow: hidden;
-  background: radial-gradient(circle at 30% 30%, #C8E6F9, #DCCAF8, #FCE9D9);
-  transition: background 2s ease;
+  font-family: 'Poppins', sans-serif;
+  color: rgba(0,0,0,0.5);
 }
-body {
-  display: flex; justify-content: center; align-items: center;
-  font-family: 'Poppins', sans-serif; color: rgba(0,0,0,0.5);
-}
+
 .layer {
-  position: absolute; width: 100%; height: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-  filter: blur(40px);
-  animation: drift 10s ease-in-out infinite alternate;
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+  animation: drift 25s linear infinite;
+  filter: blur(80px);
+  mix-blend-mode: overlay;
 }
 @keyframes drift {
-  from { transform: translate(-10px, -10px); }
-  to { transform: translate(10px, 10px); }
+  from { transform: translate(-20%, -20%) rotate(0deg); }
+  to { transform: translate(20%, 20%) rotate(360deg); }
 }
+
+.raindrop {
+  position: absolute;
+  width: 2px; height: 10px;
+  background: rgba(255,255,255,0.3);
+  animation: rain 3s linear infinite;
+}
+@keyframes rain {
+  0% { transform: translateY(-10vh); opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
 .nav {
-  position: absolute; bottom: 30px;
-  display: flex; gap: 40px;
+  position: absolute; bottom: 30px; display: flex; gap: 40px;
 }
 .nav a {
-  color: rgba(0,0,0,0.5); text-decoration: none;
-  transition: 0.3s;
+  color: rgba(0,0,0,0.6);
+  text-decoration: none;
 }
-.nav a:hover { color: rgba(0,0,0,0.8); }
+.nav a:hover { color: black; }
 </style>
 </head>
 <body>
@@ -42,5 +54,15 @@ body {
     <a href="entry7.html">Previous</a>
     <a href="entry9.html">Next</a>
   </div>
+
+<script>
+for (let i = 0; i < 60; i++) {
+  const drop = document.createElement('div');
+  drop.classList.add('raindrop');
+  drop.style.left = Math.random() * 100 + 'vw';
+  drop.style.animationDelay = Math.random() * 3 + 's';
+  document.body.appendChild(drop);
+}
+</script>
 </body>
 </html>

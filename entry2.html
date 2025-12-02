@@ -9,25 +9,24 @@ html,body{
   height:100%;
   overflow:hidden;
   font-family:'Inter',sans-serif;
-  background:linear-gradient(to bottom,#cfe6ff 0%,#e8f1ff 40%,#a8cbff 50%,#86b8ff 75%,#5fa4ff 100%);
+  background:linear-gradient(to bottom,#b5d5ff 0%,#dceaff 40%,#a4caff 80%,#6faaff 100%);
 }
 
-/* moving shimmer overlay */
+/* shimmer highlight layer */
 .shimmer{
   position:absolute;
   inset:0;
-  background:repeating-linear-gradient(
-    to right,
-    rgba(255,255,255,0.25) 0px,
-    rgba(255,255,255,0.05) 200px,
-    rgba(255,255,255,0) 400px
-  );
-  mix-blend-mode:soft-light;
-  animation:slide 15s linear infinite;
+  background:linear-gradient(120deg,
+    rgba(255,255,255,0.1) 0%,
+    rgba(255,255,255,0.4) 30%,
+    rgba(255,255,255,0.1) 60%);
+  mix-blend-mode:overlay;
+  filter:blur(15px);
+  animation:shimmerMove 8s linear infinite;
 }
-@keyframes slide{
-  from{transform:translateX(0);}
-  to{transform:translateX(-400px);}
+@keyframes shimmerMove{
+  from{transform:translateX(-30%) rotate(2deg);}
+  to{transform:translateX(30%) rotate(-2deg);}
 }
 
 /* horizon divider */
@@ -37,61 +36,75 @@ html,body{
   left:0;
   width:100%;
   height:2px;
-  background:rgba(255,255,255,0.6);
-  box-shadow:0 0 20px rgba(255,255,255,0.8);
-  z-index:2;
+  background:rgba(255,255,255,0.8);
+  box-shadow:0 0 30px rgba(255,255,255,0.6);
+  z-index:5;
 }
 
-/* reflection layer (flipped gradient) */
+/* reflection */
 .reflection{
   position:absolute;
   top:50%;
-  left:0;
   width:100%;
   height:50%;
-  background:linear-gradient(to top,rgba(180,210,255,0.8),rgba(255,255,255,0.2));
-  backdrop-filter:blur(10px);
+  background:linear-gradient(to top,rgba(150,190,255,0.6),rgba(255,255,255,0.1));
+  backdrop-filter:blur(12px);
   transform-origin:top;
   transform:scaleY(-1);
-  animation:wave 8s ease-in-out infinite;
+  animation:wave 6s ease-in-out infinite;
 }
 @keyframes wave{
   0%,100%{transform:scaleY(-1) translateY(0);}
-  50%{transform:scaleY(-1) translateY(-25px);}
+  50%{transform:scaleY(-1) translateY(-15px);}
 }
 
-/* light lens that follows cursor */
+/* ripple layer */
+canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  z-index:3;
+}
+
+/* light orb */
 .lens{
   position:absolute;
-  width:300px;height:300px;
+  width:250px;height:250px;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.3) 40%,rgba(255,255,255,0) 80%);
+  background:radial-gradient(circle,rgba(255,255,255,0.8) 0%,rgba(255,255,255,0.3) 40%,rgba(255,255,255,0) 80%);
+  pointer-events:none;
   mix-blend-mode:soft-light;
   filter:blur(30px);
-  pointer-events:none;
-  opacity:0.85;
   transform:translate(-50%,-50%);
+  opacity:0.85;
   transition:transform 0.2s ease, opacity 0.3s ease;
+  z-index:4;
 }
 
-/* nav */
+/* navigation */
 .nav{
   position:fixed;
   bottom:25px;left:50%;
   transform:translateX(-50%);
-  display:flex;gap:25px;z-index:10;
+  display:flex;
+  gap:25px;
+  z-index:10;
 }
 .nav a{
   text-decoration:none;
-  padding:10px 16px;
+  padding:10px 18px;
   border-radius:20px;
-  background:rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.65);
   color:#333;
-  font-size:.9rem;
-  transition:.3s;
+  font-size:0.9rem;
+  transition:0.3s;
   backdrop-filter:blur(10px);
 }
-.nav a:hover{background:rgba(255,255,255,0.9);}
+.nav a:hover{
+  background:rgba(255,255,255,0.9);
+}
 </style>
 </head>
 <body>
@@ -99,16 +112,51 @@ html,body{
 <div class="shimmer"></div>
 <div class="horizon"></div>
 <div class="reflection"></div>
+<canvas id="ripples"></canvas>
 <div class="lens" id="lens"></div>
 
+<!-- full navigation -->
 <div class="nav">
   <a href="entry1.html">← Prev</a>
-  <a href="index.html">Back</a>
+  <a href="index.html">Back to Index</a>
   <a href="entry3.html">Next →</a>
 </div>
 
 <script>
-// glowing lens follows cursor
+// canvas setup
+const canvas=document.getElementById('ripples');
+const ctx=canvas.getContext('2d');
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
+resize();
+window.addEventListener('resize',resize);
+
+let ripples=[];
+function draw(){
+  ctx.fillStyle='rgba(180,210,255,0.15)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ripples.forEach(r=>{
+    ctx.beginPath();
+    ctx.arc(r.x,r.y,r.r,0,Math.PI*2);
+    const alpha=r.alpha.toFixed(2);
+    ctx.strokeStyle=`rgba(255,255,255,${alpha})`;
+    ctx.lineWidth=2;
+    ctx.stroke();
+    r.r+=2.5;
+    r.alpha-=0.012;
+  });
+  ripples=ripples.filter(r=>r.alpha>0);
+  requestAnimationFrame(draw);
+}
+draw();
+
+canvas.addEventListener('mousemove',e=>{
+  ripples.push({x:e.x,y:e.y,r:0,alpha:0.9});
+});
+
+// lens movement
 const lens=document.getElementById('lens');
 document.addEventListener('mousemove',e=>{
   lens.style.left=e.clientX+'px';
@@ -122,5 +170,6 @@ document.addEventListener('mousemove',e=>{
   },200);
 });
 </script>
+
 </body>
 </html>

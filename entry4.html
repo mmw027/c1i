@@ -12,7 +12,7 @@ html,body{
   font-family:'Inter',sans-serif;
 }
 
-/* soft background glow */
+/* warm background glow */
 .glow{
   position:absolute;
   width:120%;
@@ -48,7 +48,7 @@ html,body{
   z-index:6;
 }
 
-/* raindrop style */
+/* raindrops */
 .drop{
   position:absolute;
   width:2px;
@@ -95,12 +95,13 @@ html,body{
 </div>
 
 <script>
-let rainActive=true;
-const fog=document.getElementById('fog');
-const flash=document.querySelector('.flash');
+let rainActive = true;
+const fog = document.getElementById('fog');
+const flash = document.querySelector('.flash');
+let lightningTimer;
+let drops = [];
 
-// --- Create raindrops ---
-let drops=[];
+// --- Create Rain ---
 function makeRain(){
   for(let i=0;i<160;i++){
     const d=document.createElement('div');
@@ -114,15 +115,18 @@ function makeRain(){
 }
 makeRain();
 
-// --- Lightning ---
-function lightning(){
-  if(!rainActive) return;
-  flash.style.opacity='1';
-  setTimeout(()=>flash.style.opacity='0',120);
+// --- Lightning Function ---
+function startLightning(){
+  lightningTimer=setInterval(()=>{
+    if(rainActive){
+      flash.style.opacity='1';
+      setTimeout(()=>flash.style.opacity='0',120);
+    }
+  },Math.random()*8000+6000);
 }
-setInterval(lightning,Math.random()*8000+6000);
+startLightning();
 
-// --- Fog clearing effect ---
+// --- Fog interaction ---
 let timer;
 document.addEventListener('mousemove',e=>{
   fog.style.clipPath=`circle(150px at ${e.clientX}px ${e.clientY}px)`;
@@ -132,22 +136,26 @@ document.addEventListener('mousemove',e=>{
   },1800);
 });
 
-// --- Click to toggle rain ---
+// --- Toggle Rain on Click ---
 document.addEventListener('click',()=>{
   rainActive=!rainActive;
-
   if(!rainActive){
-    // Stop rain: fade and freeze drops
+    // Stop rain
     drops.forEach(d=>{
       d.style.animationPlayState='paused';
-      d.style.opacity='0';
+      d.style.opacity='0.15';
     });
+    clearInterval(lightningTimer);
+    // Soft visual cue (small glow flash)
+    flash.style.opacity='0.3';
+    setTimeout(()=>flash.style.opacity='0',300);
   }else{
-    // Resume rain: fade back in
+    // Resume rain
     drops.forEach(d=>{
       d.style.animationPlayState='running';
       d.style.opacity='1';
     });
+    startLightning();
   }
 });
 </script>

@@ -12,7 +12,7 @@ html,body{
   font-family:'Inter',sans-serif;
 }
 
-/* background light glow */
+/* soft background glow */
 .glow{
   position:absolute;
   width:120%;
@@ -34,6 +34,7 @@ html,body{
   backdrop-filter:blur(30px) brightness(1.2);
   background:rgba(255,255,255,0.08);
   transition:clip-path 0.3s ease;
+  z-index:5;
 }
 
 /* lightning flash */
@@ -44,9 +45,10 @@ html,body{
   opacity:0;
   pointer-events:none;
   transition:opacity 0.15s ease;
+  z-index:6;
 }
 
-/* raindrops */
+/* raindrop style */
 .drop{
   position:absolute;
   width:2px;
@@ -60,7 +62,7 @@ html,body{
   100%{transform:translateY(110vh);}
 }
 
-/* nav */
+/* navigation */
 .nav{
   position:fixed;
   bottom:25px;left:50%;
@@ -88,31 +90,39 @@ html,body{
 
 <div class="nav">
   <a href="entry3.html">← Prev</a>
-  <a href="index.html">Back</a>
+  <a href="index.html">Back to Index</a>
   <a href="entry5.html">Next →</a>
 </div>
 
 <script>
-// --- Rain Generation ---
-for(let i=0;i<160;i++){
-  const d=document.createElement('div');
-  d.className='drop';
-  d.style.left=Math.random()*100+'%';
-  d.style.animationDuration=0.7+Math.random()*0.8+'s';
-  d.style.animationDelay=Math.random()*4+'s';
-  document.body.appendChild(d);
-}
-
-// --- Lightning Effect ---
+let rainActive=true;
+const fog=document.getElementById('fog');
 const flash=document.querySelector('.flash');
+
+// --- Create raindrops ---
+let drops=[];
+function makeRain(){
+  for(let i=0;i<160;i++){
+    const d=document.createElement('div');
+    d.className='drop';
+    d.style.left=Math.random()*100+'%';
+    d.style.animationDuration=0.7+Math.random()*0.8+'s';
+    d.style.animationDelay=Math.random()*4+'s';
+    document.body.appendChild(d);
+    drops.push(d);
+  }
+}
+makeRain();
+
+// --- Lightning ---
 function lightning(){
+  if(!rainActive) return;
   flash.style.opacity='1';
   setTimeout(()=>flash.style.opacity='0',120);
 }
-setInterval(lightning,Math.random()*8000+6000); // every 6–14s
+setInterval(lightning,Math.random()*8000+6000);
 
-// --- Fog Clearing Interaction ---
-const fog=document.getElementById('fog');
+// --- Fog clearing effect ---
 let timer;
 document.addEventListener('mousemove',e=>{
   fog.style.clipPath=`circle(150px at ${e.clientX}px ${e.clientY}px)`;
@@ -120,6 +130,25 @@ document.addEventListener('mousemove',e=>{
   timer=setTimeout(()=>{
     fog.style.clipPath='circle(0 at 50% 50%)';
   },1800);
+});
+
+// --- Click to toggle rain ---
+document.addEventListener('click',()=>{
+  rainActive=!rainActive;
+
+  if(!rainActive){
+    // Stop rain: fade and freeze drops
+    drops.forEach(d=>{
+      d.style.animationPlayState='paused';
+      d.style.opacity='0';
+    });
+  }else{
+    // Resume rain: fade back in
+    drops.forEach(d=>{
+      d.style.animationPlayState='running';
+      d.style.opacity='1';
+    });
+  }
 });
 </script>
 

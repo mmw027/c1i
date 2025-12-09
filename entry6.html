@@ -22,7 +22,7 @@ html,body{
   opacity:0.6;
 }
 
-/* photo frames - clickable memories */
+/* photo frames */
 .frame{
   position:absolute;
   width:180px;
@@ -51,7 +51,22 @@ html,body{
 .frame3{bottom:25%;left:15%;transform:rotate(3deg);}
 .frame4{bottom:20%;right:18%;transform:rotate(-4deg);}
 
-/* memory text inside frames */
+/* photo inside frames */
+.photo {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0.9;
+  border-radius:2px;
+  pointer-events:none;
+}
+.frame.active .photo {
+  opacity:0.4;
+}
+
+/* memory text */
 .memoryText{
   position:absolute;
   top:50%;
@@ -125,7 +140,7 @@ html,body{
   100%{opacity:0;transform:translateY(-200px) scale(0.3);}
 }
 
-/* distance indicator */
+/* distance text */
 .distance{
   position:absolute;
   bottom:120px;
@@ -185,31 +200,40 @@ html,body{
 .nav a:hover{background:rgba(255,255,255,0.9);}
 </style>
 </head>
+
 <body>
 <div class="texture"></div>
 
+<!-- Frames with Correct Images -->
 <div class="frame frame1">
+  <img class="photo" src="/mnt/data/IMG_4075.JPG">
   <div class="memoryText">
     家的味道<br>
     the smell of<br>
     mom's cooking
   </div>
 </div>
+
 <div class="frame frame2">
+  <img class="photo" src="/mnt/data/IMG_3955.JPG">
   <div class="memoryText">
     台北的夜市<br>
     night markets<br>
     & warm lights
   </div>
 </div>
+
 <div class="frame frame3">
+  <img class="photo" src="/mnt/data/IMG_4025.JPG">
   <div class="memoryText">
-    阿嬤的笑容<br>
-    grandma's<br>
-    gentle smile
+    潮濕的台灣雨聲<br>
+    the soft sound<br>
+    of Taiwan rain
   </div>
 </div>
+
 <div class="frame frame4">
+  <img class="photo" src="/mnt/data/IMG_1675.JPG">
   <div class="memoryText">
     那條回家的路<br>
     the road<br>
@@ -217,6 +241,7 @@ html,body{
   </div>
 </div>
 
+<!-- Lanterns -->
 <div class="lantern l1"></div>
 <div class="lantern l2"></div>
 <div class="lantern l3"></div>
@@ -236,7 +261,7 @@ html,body{
 <script>
 let activeFrame = null;
 
-// Click frames to activate memories
+// Frame toggle
 document.querySelectorAll('.frame').forEach(frame => {
   frame.addEventListener('click', () => {
     if (activeFrame === frame) {
@@ -251,16 +276,14 @@ document.querySelectorAll('.frame').forEach(frame => {
   });
 });
 
-// Click lanterns to release warmth particles
+// Lantern warmth effect
 document.querySelectorAll('.lantern').forEach(lantern => {
   lantern.addEventListener('click', (e) => {
     const x = e.clientX;
     const y = e.clientY;
-    
+
     for (let i = 0; i < 10; i++) {
-      setTimeout(() => {
-        createWarmthParticle(x, y);
-      }, i * 100);
+      setTimeout(() => createWarmthParticle(x, y), i * 100);
     }
     hideInstruction();
   });
@@ -272,7 +295,6 @@ function createWarmthParticle(x, y) {
   particle.style.left = (x + Math.random() * 60 - 30) + 'px';
   particle.style.top = (y + Math.random() * 60 - 30) + 'px';
   document.body.appendChild(particle);
-  
   setTimeout(() => particle.remove(), 4000);
 }
 

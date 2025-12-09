@@ -2,67 +2,300 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Entry 8 — Drift : Between Worlds</title>
+<title>8 · Street Details</title>
 <style>
-html, body {
-  margin: 0; height: 100%;
-  background: linear-gradient(120deg, #bcd2f9, #f5d4f2, #faf3e0);
-  overflow: hidden;
-  font-family: 'Poppins', sans-serif;
-  color: rgba(0,0,0,0.5);
+html,body{
+  margin:0;
+  height:100%;
+  overflow:hidden;
+  background:linear-gradient(to bottom, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
+  font-family:'Inter',sans-serif;
 }
 
-.layer {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-  animation: drift 25s linear infinite;
-  filter: blur(80px);
-  mix-blend-mode: overlay;
-}
-@keyframes drift {
-  from { transform: translate(-20%, -20%) rotate(0deg); }
-  to { transform: translate(20%, 20%) rotate(360deg); }
+.scene{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
 }
 
-.raindrop {
-  position: absolute;
-  width: 2px; height: 10px;
-  background: rgba(255,255,255,0.3);
-  animation: rain 3s linear infinite;
-}
-@keyframes rain {
-  0% { transform: translateY(-10vh); opacity: 1; }
-  100% { transform: translateY(110vh); opacity: 0; }
+/* wet street */
+.street{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:40%;
+  background:linear-gradient(to bottom, #1a1a2e 0%, #0f0f1e 100%);
+  box-shadow:inset 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.nav {
-  position: absolute; bottom: 30px; display: flex; gap: 40px;
+/* neon sign 1 - left side */
+.neon-sign-1{
+  position:absolute;
+  top:25%;
+  left:15%;
+  font-size:4rem;
+  font-weight:bold;
+  color:#ff0080;
+  text-shadow:
+    0 0 10px #ff0080,
+    0 0 20px #ff0080,
+    0 0 40px #ff0080,
+    0 0 80px #ff0080;
+  font-family:'Arial Black', sans-serif;
+  letter-spacing:8px;
 }
-.nav a {
-  color: rgba(0,0,0,0.6);
-  text-decoration: none;
+
+.neon-sign-1::before{
+  content:'OPEN';
 }
-.nav a:hover { color: black; }
+
+body.playing .neon-sign-1::before{
+  content:'CLOSED';
+  animation:flicker1 4s infinite;
+}
+
+/* neon sign 2 - right side */
+.neon-sign-2{
+  position:absolute;
+  top:30%;
+  right:18%;
+  font-size:3.5rem;
+  font-weight:bold;
+  color:#00ff88;
+  text-shadow:
+    0 0 10px #00ff88,
+    0 0 20px #00ff88,
+    0 0 40px #00ff88,
+    0 0 80px #00ff88;
+  font-family:'Arial Black', sans-serif;
+  letter-spacing:6px;
+}
+
+body.playing .neon-sign-2{
+  animation:flicker2 5s infinite;
+}
+
+/* reflections on wet ground */
+.reflection-1{
+  position:absolute;
+  bottom:10%;
+  left:15%;
+  font-size:4rem;
+  font-weight:bold;
+  color:#ff0080;
+  text-shadow:
+    0 0 20px #ff0080,
+    0 0 40px #ff0080;
+  font-family:'Arial Black', sans-serif;
+  letter-spacing:8px;
+  opacity:0.4;
+  filter:blur(8px);
+  transform:scaleY(-0.6);
+}
+
+.reflection-1::before{
+  content:'OPEN';
+}
+
+body.playing .reflection-1::before{
+  content:'CLOSED';
+  animation:flicker1 4s infinite;
+}
+
+.reflection-2{
+  position:absolute;
+  bottom:8%;
+  right:18%;
+  font-size:3.5rem;
+  font-weight:bold;
+  color:#00ff88;
+  text-shadow:
+    0 0 20px #00ff88,
+    0 0 40px #00ff88;
+  font-family:'Arial Black', sans-serif;
+  letter-spacing:6px;
+  opacity:0.35;
+  filter:blur(10px);
+  transform:scaleY(-0.6);
+}
+
+body.playing .reflection-2{
+  animation:flicker2 5s infinite;
+}
+
+/* flicker animations */
+@keyframes flicker1{
+  0%, 100%{opacity:1;}
+  2%{opacity:0.8;}
+  4%{opacity:1;}
+  8%{opacity:0.9;}
+  10%{opacity:1;}
+  45%{opacity:1;}
+  46%{opacity:0.3;}
+  47%{opacity:1;}
+  48%{opacity:0.5;}
+  50%{opacity:1;}
+}
+
+@keyframes flicker2{
+  0%, 100%{opacity:1;}
+  5%{opacity:0.9;}
+  10%{opacity:1;}
+  35%{opacity:1;}
+  36%{opacity:0.2;}
+  37%{opacity:1;}
+  38%{opacity:0.4;}
+  40%{opacity:1;}
+  70%{opacity:1;}
+  71%{opacity:0.7;}
+  72%{opacity:1;}
+}
+
+@keyframes flicker3{
+  0%, 100%{opacity:1;}
+  15%{opacity:1;}
+  16%{opacity:0.4;}
+  17%{opacity:1;}
+  18%{opacity:0.6;}
+  20%{opacity:1;}
+  55%{opacity:1;}
+  56%{opacity:0.3;}
+  58%{opacity:1;}
+}
+
+/* ambient glow */
+.glow-pink{
+  position:absolute;
+  top:25%;
+  left:15%;
+  width:200px;
+  height:200px;
+  background:radial-gradient(circle, rgba(255,0,128,0.3) 0%, transparent 70%);
+  filter:blur(60px);
+  pointer-events:none;
+}
+
+body.playing .glow-pink{
+  animation:glowPulse1 4s infinite;
+}
+
+.glow-green{
+  position:absolute;
+  top:30%;
+  right:18%;
+  width:180px;
+  height:180px;
+  background:radial-gradient(circle, rgba(0,255,136,0.25) 0%, transparent 70%);
+  filter:blur(60px);
+  pointer-events:none;
+}
+
+body.playing .glow-green{
+  animation:glowPulse2 5s infinite;
+}
+
+@keyframes glowPulse1{
+  0%, 100%{opacity:1;}
+  45%{opacity:1;}
+  47%{opacity:0.3;}
+  50%{opacity:1;}
+}
+
+@keyframes glowPulse2{
+  0%, 100%{opacity:1;}
+  36%{opacity:0.3;}
+  40%{opacity:1;}
+}
+
+/* instruction */
+.instruction{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  color:rgba(255,255,255,0.9);
+  font-size:1.1rem;
+  font-weight:300;
+  letter-spacing:1px;
+  pointer-events:none;
+  text-shadow:0 2px 10px rgba(0,0,0,0.8);
+  transition:opacity 2s ease;
+  z-index:10;
+}
+.instruction.hidden{
+  opacity:0;
+}
+.subtitle{
+  font-size:0.85rem;
+  margin-top:8px;
+  opacity:0.7;
+}
+
+/* nav */
+.nav{
+  position:fixed;
+  bottom:25px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:25px;
+  z-index:20;
+}
+.nav a{
+  text-decoration:none;
+  padding:10px 16px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.6);
+  color:#333;
+  font-size:.9rem;
+  transition:.3s;
+  backdrop-filter:blur(10px);
+}
+.nav a:hover{background:rgba(255,255,255,0.9);}
 </style>
 </head>
 <body>
-  <div class="layer"></div>
-  <div class="nav">
-    <a href="index.html">Back to Index</a>
-    <a href="entry7.html">Previous</a>
-    <a href="entry9.html">Next</a>
-  </div>
+<div class="scene">
+  <!-- ambient glows -->
+  <div class="glow-pink"></div>
+  <div class="glow-green"></div>
+  
+  <!-- neon signs -->
+  <div class="neon-sign-1"></div>
+  <div class="neon-sign-2">BAR</div>
+  
+  <!-- wet street -->
+  <div class="street"></div>
+  
+  <!-- reflections -->
+  <div class="reflection-1"></div>
+  <div class="reflection-2">BAR</div>
+</div>
+
+<div class="instruction">
+  Press SPACE to close the bar
+  <div class="subtitle">neon signs flickering on wet pavement</div>
+</div>
+
+<div class="nav">
+  <a href="entry7.html">← Back</a>
+  <a href="entry9.html">Next →</a>
+</div>
 
 <script>
-for (let i = 0; i < 60; i++) {
-  const drop = document.createElement('div');
-  drop.classList.add('raindrop');
-  drop.style.left = Math.random() * 100 + 'vw';
-  drop.style.animationDelay = Math.random() * 3 + 's';
-  document.body.appendChild(drop);
-}
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    document.body.classList.toggle('playing');
+    
+    const instruction = document.querySelector('.instruction');
+    setTimeout(() => {
+      instruction.classList.add('hidden');
+    }, 1000);
+  }
+});
 </script>
 </body>
 </html>

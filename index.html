@@ -1,86 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>The Harmonic Collection</title>
-
-<!-- Elegant fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;500&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8">
+<title>Daily Harmonics · Index</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
 html,body{
   margin:0;
-  padding:0;
   height:100%;
-  background:#0a0a0a;
-  color:#f4f4f4;
-  font-family:'Inter', sans-serif;
+  overflow:hidden;
+  background:#ffffff;
+  font-family:'Courier Prime', 'Courier New', monospace;
+}
+
+.container{
+  position:absolute;
+  inset:0;
   display:flex;
   flex-direction:column;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
+  padding:40px;
+  overflow-y:auto;
 }
-h1{
-  font-family:'Cormorant Garamond',serif;
-  font-size:2.8rem;
-  font-weight:600;
-  letter-spacing:0.5px;
-  margin-bottom:10px;
-}
-p{
-  color:#aaa;
-  font-size:0.95rem;
-  margin-bottom:40px;
-  letter-spacing:0.4px;
-}
-ul{
-  list-style:none;
-  padding:0;
-  margin:0;
+
+/* title */
+.title{
   text-align:center;
+  color:#000;
+  margin-bottom:40px;
 }
-li{
-  margin:14px 0;
+.title h1{
+  font-size:1.8rem;
+  font-weight:700;
+  letter-spacing:6px;
+  margin:0;
 }
-a{
+.subtitle{
+  font-size:0.75rem;
+  font-weight:400;
+  letter-spacing:2px;
+  margin-top:10px;
+  opacity:0.6;
+}
+
+/* entry list */
+.entries{
+  max-width:450px;
+  width:100%;
+}
+
+.entry{
+  display:block;
   text-decoration:none;
-  color:#f4f4f4;
-  font-size:1.1rem;
-  letter-spacing:0.3px;
-  transition:color 0.3s ease, letter-spacing 0.3s ease;
+  color:#000;
+  padding:15px 0;
+  border-bottom:1px solid rgba(0,0,0,0.1);
+  transition:all 0.3s ease;
+  position:relative;
 }
-a:hover{
-  color:#c1b8ff;
+
+.entry:hover{
+  padding-left:15px;
+  border-bottom-color:#000;
+}
+
+.entry:hover .entryNumber{
+  opacity:1;
+}
+
+.entryRow{
+  display:flex;
+  align-items:baseline;
+  gap:15px;
+}
+
+.entryNumber{
+  font-size:0.7rem;
+  font-weight:400;
   letter-spacing:1px;
+  opacity:0.4;
+  transition:opacity 0.3s ease;
+  min-width:25px;
 }
-footer{
-  position:fixed;
-  bottom:25px;
+
+.entryTitle{
+  font-size:1rem;
+  font-weight:400;
+  letter-spacing:1px;
+  flex:1;
+}
+
+.entryTheme{
+  font-size:0.7rem;
+  font-weight:400;
   color:#666;
-  font-size:0.8rem;
-  letter-spacing:0.3px;
+  margin-top:4px;
+  padding-left:40px;
+}
+
+/* footer */
+.footer{
+  margin-top:50px;
+  text-align:center;
+  color:#999;
+  font-size:0.65rem;
+  font-weight:400;
+  letter-spacing:1px;
+  padding-bottom:30px;
 }
 </style>
 </head>
 <body>
+<div class="container">
+  <div class="title">
+    <h1>DAILY HARMONICS</h1>
+    <div class="subtitle">Ten Interactive Moments</div>
+  </div>
 
-<h1>The Harmonic Collection</h1>
-<p>By Melody Wu — Nine Studies of Light and Rhythm</p>
+  <div class="entries">
+    <a href="entry1.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">01</div>
+        <div class="entryTitle">First Glow</div>
+      </div>
+      <div class="entryTheme">the first light of a new day</div>
+    </a>
 
-<ul>
-  <li><a href="entry1.html">1 · First Glow</a></li>
-  <li><a href="entry2.html">2 · Reflections</a></li>
-  <li><a href="entry3.html">3 · Neon</a></li>
-  <li><a href="entry4.html">4 · Rain on Glass</a></li>
-  <li><a href="entry5.html">5 · Surface Light</a></li>
-  <li><a href="entry6.html">6 · Flow</a></li>
-  <li><a href="entry7.html">7 · Pulse</a></li>
-  <li><a href="entry8.html">8 · Drift</a></li>
-  <li><a href="entry9.html">9 · Echo</a></li>
-</ul>
+    <a href="entry2.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">02</div>
+        <div class="entryTitle">Everyday Movements</div>
+      </div>
+      <div class="entryTheme">harmony hidden in ordinary moments</div>
+    </a>
 
-<footer>© 2025 Melody Wu · Parsons Communication Design</footer>
+    <a href="entry3.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">03</div>
+        <div class="entryTitle">City Rush</div>
+      </div>
+      <div class="entryTheme">intensity, pressure, momentum</div>
+    </a>
 
+    <a href="entry4.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">04</div>
+        <div class="entryTitle">Reflection + Stillness</div>
+      </div>
+      <div class="entryTheme">pauses between moments</div>
+    </a>
+
+    <a href="entry5.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">05</div>
+        <div class="entryTitle">Night Glow</div>
+      </div>
+      <div class="entryTheme">dreaminess, solitude, light in darkness</div>
+    </a>
+
+    <a href="entry6.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">06</div>
+        <div class="entryTitle">Memory + Distance</div>
+      </div>
+      <div class="entryTheme">nostalgia, warmth, emotional connection</div>
+    </a>
+
+    <a href="entry7.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">07</div>
+        <div class="entryTitle">Pattern + Repetition</div>
+      </div>
+      <div class="entryTheme">structure, design logic, observation</div>
+    </a>
+
+    <a href="entry8.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">08</div>
+        <div class="entryTitle">Sensory Harmony</div>
+      </div>
+      <div class="entryTheme">sensory awareness, tactility</div>
+    </a>
+
+    <a href="entry9.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">09</div>
+        <div class="entryTitle">Emotional Shifts</div>
+      </div>
+      <div class="entryTheme">emotional gradients, transitions</div>
+    </a>
+
+    <a href="entry10.html" class="entry">
+      <div class="entryRow">
+        <div class="entryNumber">10</div>
+        <div class="entryTitle">Connection</div>
+      </div>
+      <div class="entryTheme">relationships, belonging, warmth</div>
+    </a>
+  </div>
+
+  <div class="footer">
+    © 2025 Melody Wu · Parsons Communication Design
+  </div>
+</div>
 </body>
 </html>

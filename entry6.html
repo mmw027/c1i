@@ -22,134 +22,131 @@ html,body{
   opacity:0.6;
 }
 
-/* photo frames */
+/* photo frames - clickable memories */
 .frame{
   position:absolute;
-  width:180px;
-  height:220px;
-  background:rgba(255,255,255,0.3);
-  border:15px solid rgba(139,90,60,0.4);
+  width:240px;
+  height:320px;
+  background:rgba(255,255,255,0.2);
+  border:20px solid rgba(139,90,60,0.35);
   border-radius:4px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  box-shadow:0 12px 35px rgba(0,0,0,0.25);
   cursor:pointer;
-  transition:all 0.4s ease;
-  backdrop-filter:blur(5px);
+  transition:all 0.5s ease;
+  backdrop-filter:blur(8px);
+  overflow:hidden;
 }
 .frame:hover{
-  transform:scale(1.05) rotate(0deg) !important;
-  box-shadow:0 15px 40px rgba(0,0,0,0.3);
-  border-color:rgba(139,90,60,0.6);
+  transform:scale(1.08) rotate(0deg) !important;
+  box-shadow:0 18px 45px rgba(0,0,0,0.35);
+  border-color:rgba(139,90,60,0.55);
 }
 .frame.active{
-  transform:scale(1.2) rotate(0deg) !important;
+  transform:scale(1.15) rotate(0deg) !important;
   z-index:10;
-  background:rgba(255,255,255,0.5);
+  background:rgba(255,255,255,0.3);
+  box-shadow:0 20px 60px rgba(0,0,0,0.4);
 }
 
-.frame1{top:15%;left:10%;transform:rotate(-5deg);}
-.frame2{top:20%;right:12%;transform:rotate(4deg);}
-.frame3{bottom:25%;left:15%;transform:rotate(3deg);}
-.frame4{bottom:20%;right:18%;transform:rotate(-4deg);}
-
-/* photo inside frames */
-.photo {
-  position:absolute;
-  inset:0;
+.frame img{
   width:100%;
   height:100%;
   object-fit:cover;
-  opacity:0.9;
-  border-radius:2px;
-  pointer-events:none;
-}
-.frame.active .photo {
-  opacity:0.4;
+  transition:opacity 0.3s ease;
 }
 
-/* memory text */
-.memoryText{
+.frame1{top:12%;left:8%;transform:rotate(-4deg);}
+.frame2{top:15%;right:10%;transform:rotate(3deg);}
+.frame3{bottom:18%;left:12%;transform:rotate(2deg);}
+.frame4{bottom:15%;right:12%;transform:rotate(-3deg);}
+
+/* memory caption */
+.caption{
   position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
-  color:rgba(80,50,30,0.7);
+  bottom:0;
+  left:0;
+  right:0;
+  padding:15px;
+  background:rgba(0,0,0,0.5);
+  color:rgba(255,255,255,0.95);
   font-family:'Inter',sans-serif;
-  font-size:0.85rem;
+  font-size:0.8rem;
   font-weight:400;
-  padding:20px;
-  line-height:1.6;
+  text-align:center;
+  letter-spacing:1px;
   opacity:0;
   transition:opacity 0.4s ease;
+  backdrop-filter:blur(10px);
 }
-.frame.active .memoryText{
+.frame.active .caption{
   opacity:1;
 }
 
 /* floating lanterns */
 .lantern{
   position:absolute;
-  width:40px;
-  height:50px;
-  background:radial-gradient(circle,rgba(255,180,100,0.6) 0%,rgba(255,140,80,0.3) 100%);
-  border-radius:40% 40% 50% 50%;
-  animation:floatLantern 15s ease-in-out infinite;
+  width:50px;
+  height:60px;
+  background:radial-gradient(circle,rgba(255,180,100,0.7) 0%,rgba(255,140,80,0.4) 100%);
+  border-radius:45% 45% 50% 50%;
+  animation:floatLantern 18s ease-in-out infinite;
   cursor:pointer;
   transition:all 0.3s ease;
-  box-shadow:0 0 20px rgba(255,180,100,0.4);
+  box-shadow:0 0 25px rgba(255,180,100,0.5);
 }
 .lantern:hover{
-  transform:scale(1.2);
-  box-shadow:0 0 40px rgba(255,180,100,0.7);
+  transform:scale(1.3);
+  box-shadow:0 0 45px rgba(255,180,100,0.8);
 }
 .lantern::after{
   content:'';
   position:absolute;
-  bottom:-8px;
+  bottom:-10px;
   left:50%;
   transform:translateX(-50%);
-  width:20px;
-  height:8px;
-  background:rgba(255,140,80,0.4);
+  width:25px;
+  height:10px;
+  background:rgba(255,140,80,0.5);
   border-radius:50%;
 }
 
-.l1{left:20%;top:30%;animation-delay:0s;}
-.l2{right:25%;top:40%;animation-delay:3s;}
-.l3{left:60%;bottom:30%;animation-delay:6s;}
+.l1{left:18%;top:28%;animation-delay:0s;}
+.l2{right:20%;top:38%;animation-delay:4s;}
+.l3{left:55%;bottom:28%;animation-delay:8s;}
 
 @keyframes floatLantern{
   0%,100%{transform:translateY(0) translateX(0);}
-  25%{transform:translateY(-30px) translateX(15px);}
-  50%{transform:translateY(-10px) translateX(-10px);}
-  75%{transform:translateY(-40px) translateX(20px);}
+  25%{transform:translateY(-35px) translateX(20px);}
+  50%{transform:translateY(-15px) translateX(-15px);}
+  75%{transform:translateY(-45px) translateX(25px);}
 }
 
 /* warmth particles */
 .warmthParticle{
   position:absolute;
-  width:4px;
-  height:4px;
-  background:rgba(255,180,100,0.5);
+  width:5px;
+  height:5px;
+  background:rgba(255,180,100,0.6);
   border-radius:50%;
-  animation:warmthRise 4s ease-out forwards;
+  animation:warmthRise 4.5s ease-out forwards;
   pointer-events:none;
+  box-shadow:0 0 8px rgba(255,180,100,0.5);
 }
 @keyframes warmthRise{
   0%{opacity:1;transform:translateY(0) scale(1);}
-  100%{opacity:0;transform:translateY(-200px) scale(0.3);}
+  100%{opacity:0;transform:translateY(-230px) scale(0.3);}
 }
 
-/* distance text */
+/* distance indicator */
 .distance{
   position:absolute;
-  bottom:120px;
+  bottom:100px;
   left:50%;
   transform:translateX(-50%);
   text-align:center;
-  color:rgba(100,60,40,0.6);
+  color:rgba(100,60,40,0.65);
   font-family:'Inter',sans-serif;
-  font-size:0.9rem;
+  font-size:0.85rem;
   font-weight:300;
   letter-spacing:2px;
 }
@@ -163,17 +160,18 @@ html,body{
   text-align:center;
   color:rgba(100,60,40,0.7);
   font-family:'Inter',sans-serif;
-  font-size:1.1rem;
+  font-size:1rem;
   font-weight:300;
-  letter-spacing:1px;
+  letter-spacing:2px;
   pointer-events:none;
-  transition:opacity 0.5s;
+  transition:opacity 2s ease;
+  text-shadow:0 2px 8px rgba(255,255,255,0.3);
 }
 .instruction.hidden{opacity:0;}
 .subtitle{
-  font-size:0.85rem;
-  margin-top:8px;
-  opacity:0.7;
+  font-size:0.8rem;
+  margin-top:10px;
+  opacity:0.75;
 }
 
 /* nav */
@@ -200,48 +198,29 @@ html,body{
 .nav a:hover{background:rgba(255,255,255,0.9);}
 </style>
 </head>
-
 <body>
 <div class="texture"></div>
 
-<!-- Frames with Correct Images -->
 <div class="frame frame1">
-  <img class="photo" src="/mnt/data/IMG_4075.JPG">
-  <div class="memoryText">
-    家的味道<br>
-    the smell of<br>
-    mom's cooking
-  </div>
+  <img src="img_1675.jpg" alt="Night train window">
+  <div class="caption">夜晚的車窗<br>night reflections</div>
 </div>
 
 <div class="frame frame2">
-  <img class="photo" src="/mnt/data/IMG_3955.JPG">
-  <div class="memoryText">
-    台北的夜市<br>
-    night markets<br>
-    & warm lights
-  </div>
+  <img src="IMG_3955.jpg" alt="Night market">
+  <div class="caption">台灣夜市<br>night market warmth</div>
 </div>
 
 <div class="frame frame3">
-  <img class="photo" src="/mnt/data/IMG_4025.JPG">
-  <div class="memoryText">
-    潮濕的台灣雨聲<br>
-    the soft sound<br>
-    of Taiwan rain
-  </div>
+  <img src="IMG_4025.jpg" alt="Rainbow sunset">
+  <div class="caption">家鄉的天空<br>rainbow & sunset</div>
 </div>
 
 <div class="frame frame4">
-  <img class="photo" src="/mnt/data/IMG_1675.JPG">
-  <div class="memoryText">
-    那條回家的路<br>
-    the road<br>
-    back home
-  </div>
+  <img src="IMG_4075.jpg" alt="Home cooking">
+  <div class="caption">家的味道<br>taste of home</div>
 </div>
 
-<!-- Lanterns -->
 <div class="lantern l1"></div>
 <div class="lantern l2"></div>
 <div class="lantern l3"></div>
@@ -249,7 +228,7 @@ html,body{
 <div class="distance">7,783 miles away</div>
 
 <div class="instruction" id="instruction">
-  CLICK photos to remember · CLICK lanterns for warmth
+  Click photos to remember · Click lanterns for warmth
   <div class="subtitle">nostalgia, warmth, emotional connection</div>
 </div>
 
@@ -261,7 +240,7 @@ html,body{
 <script>
 let activeFrame = null;
 
-// Frame toggle
+// Click frames to activate memories
 document.querySelectorAll('.frame').forEach(frame => {
   frame.addEventListener('click', () => {
     if (activeFrame === frame) {
@@ -276,14 +255,16 @@ document.querySelectorAll('.frame').forEach(frame => {
   });
 });
 
-// Lantern warmth effect
+// Click lanterns to release warmth particles
 document.querySelectorAll('.lantern').forEach(lantern => {
   lantern.addEventListener('click', (e) => {
     const x = e.clientX;
     const y = e.clientY;
-
-    for (let i = 0; i < 10; i++) {
-      setTimeout(() => createWarmthParticle(x, y), i * 100);
+    
+    for (let i = 0; i < 12; i++) {
+      setTimeout(() => {
+        createWarmthParticle(x, y);
+      }, i * 100);
     }
     hideInstruction();
   });
@@ -292,14 +273,18 @@ document.querySelectorAll('.lantern').forEach(lantern => {
 function createWarmthParticle(x, y) {
   const particle = document.createElement('div');
   particle.className = 'warmthParticle';
-  particle.style.left = (x + Math.random() * 60 - 30) + 'px';
-  particle.style.top = (y + Math.random() * 60 - 30) + 'px';
+  particle.style.left = (x + Math.random() * 70 - 35) + 'px';
+  particle.style.top = (y + Math.random() * 70 - 35) + 'px';
   document.body.appendChild(particle);
-  setTimeout(() => particle.remove(), 4000);
+  
+  setTimeout(() => particle.remove(), 4500);
 }
 
 function hideInstruction() {
-  document.getElementById('instruction').classList.add('hidden');
+  const instruction = document.getElementById('instruction');
+  setTimeout(() => {
+    instruction.classList.add('hidden');
+  }, 500);
 }
 </script>
 </body>

@@ -2,114 +2,222 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>9 · Echo</title>
+<title>2 · Everyday Movements</title>
 <style>
 html,body{
   margin:0;
   height:100%;
   overflow:hidden;
-  font-family:'Inter',sans-serif;
-  background:linear-gradient(45deg,#ffe0cc,#fff5e8,#f2f0ff);
-  background-size:400% 400%;
-  animation:shift 25s ease-in-out infinite alternate;
+  background:linear-gradient(to bottom,#2d2a4a 0%,#7e8ba3 50%,#c8d5e0 100%);
+  background-size:100% 200%;
+  animation:cityShift 25s ease-in-out infinite alternate;
 }
 
-/* slow gradient movement */
-@keyframes shift{
-  0%{background-position:0% 50%;}
-  100%{background-position:100% 50%;}
+@keyframes cityShift{
+  0%{background-position:0 0%;}
+  100%{background-position:0 100%;}
 }
 
-/* horizon band */
-.horizon{
+/* city silhouette */
+.buildings{
   position:absolute;
-  top:55%;
+  bottom:0;
+  left:0;
   width:100%;
-  height:2px;
-  background:rgba(255,255,255,0.8);
-  box-shadow:0 0 20px rgba(255,255,255,0.7);
-  z-index:3;
+  height:40%;
+  display:flex;
+  align-items:flex-end;
+  gap:2px;
+  filter:blur(1px);
+}
+.building{
+  background:rgba(30,30,50,0.7);
+  transition:height 0.8s ease;
+}
+.b1{width:8%;height:60%;}
+.b2{width:12%;height:45%;}
+.b3{width:7%;height:70%;}
+.b4{width:10%;height:55%;}
+.b5{width:9%;height:80%;}
+.b6{width:11%;height:50%;}
+.b7{width:8%;height:65%;}
+.b8{width:13%;height:48%;}
+.b9{width:10%;height:75%;}
+
+/* shadows moving across */
+.shadow{
+  position:absolute;
+  bottom:0;
+  width:80px;
+  height:120px;
+  background:linear-gradient(to top,rgba(20,20,40,0.4) 0%,transparent 100%);
+  border-radius:50% 50% 0 0;
+  animation-play-state:paused;
+}
+.shadow1{left:-100px;animation:walk1 8s linear infinite;}
+.shadow2{right:-100px;animation:walk2 10s linear infinite;}
+.shadow3{left:20%;animation:walk3 12s linear infinite;}
+
+@keyframes walk1{
+  0%{left:-100px;transform:scaleX(1);}
+  100%{left:110%;transform:scaleX(1);}
+}
+@keyframes walk2{
+  0%{right:-100px;transform:scaleX(-1);}
+  100%{right:110%;transform:scaleX(-1);}
+}
+@keyframes walk3{
+  0%{left:20%;opacity:0.3;}
+  50%{opacity:0.6;}
+  100%{left:90%;opacity:0.3;}
 }
 
-/* ambient glow overlay */
-.overlay{
+/* footsteps appear on click */
+.footstep{
+  position:absolute;
+  width:12px;
+  height:20px;
+  background:rgba(255,255,255,0.3);
+  border-radius:40% 40% 60% 60%;
+  animation:fadeStep 2s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes fadeStep{
+  0%{opacity:0.8;transform:scale(1);}
+  100%{opacity:0;transform:scale(0.5);}
+}
+
+/* ambient light pulse */
+.ambient{
   position:absolute;
   inset:0;
-  background:radial-gradient(circle at 50% 60%,rgba(255,220,150,0.25),rgba(255,255,255,0) 80%);
-  mix-blend-mode:soft-light;
-  animation:breathe 12s ease-in-out infinite alternate;
+  background:radial-gradient(circle at 50% 30%,rgba(255,255,220,0.1) 0%,transparent 60%);
+  animation:ambientPulse 15s ease-in-out infinite alternate;
+  pointer-events:none;
 }
-@keyframes breathe{
-  0%{opacity:0.6;}
-  100%{opacity:0.9;}
+@keyframes ambientPulse{
+  from{opacity:0.3;}to{opacity:0.7;}
 }
 
-/* echo trail from cursor */
-.trail{
+/* instruction text */
+.instruction{
   position:absolute;
-  width:260px;height:260px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,0.9) 0%,rgba(255,230,180,0.4) 40%,rgba(255,255,255,0) 80%);
-  pointer-events:none;
-  mix-blend-mode:overlay;
-  filter:blur(40px);
+  top:50%;
+  left:50%;
   transform:translate(-50%,-50%);
-  opacity:0.75;
-  transition:opacity .4s ease;
+  text-align:center;
+  color:rgba(255,255,255,0.7);
+  font-family:'Inter',sans-serif;
+  font-size:1.1rem;
+  font-weight:300;
+  letter-spacing:1px;
+  pointer-events:none;
+  transition:opacity 0.5s;
+}
+.instruction.hidden{opacity:0;}
+.subtitle{
+  font-size:0.85rem;
+  margin-top:8px;
+  opacity:0.6;
 }
 
 /* nav */
 .nav{
   position:fixed;
-  bottom:25px;left:50%;
+  bottom:25px;
+  left:50%;
   transform:translateX(-50%);
-  display:flex;gap:25px;z-index:10;
+  display:flex;
+  gap:25px;
+  z-index:100;
 }
 .nav a{
   text-decoration:none;
-  padding:10px 18px;
+  padding:10px 16px;
   border-radius:20px;
-  background:rgba(255,255,255,0.5);
+  background:rgba(255,255,255,0.6);
   color:#333;
+  font-family:'Inter',sans-serif;
   font-size:.9rem;
   transition:.3s;
   backdrop-filter:blur(10px);
 }
 .nav a:hover{background:rgba(255,255,255,0.9);}
+
+body.playing .shadow{
+  animation-play-state:running;
+}
 </style>
 </head>
 <body>
+<div class="buildings">
+  <div class="building b1"></div>
+  <div class="building b2"></div>
+  <div class="building b3"></div>
+  <div class="building b4"></div>
+  <div class="building b5"></div>
+  <div class="building b6"></div>
+  <div class="building b7"></div>
+  <div class="building b8"></div>
+  <div class="building b9"></div>
+</div>
 
-<div class="overlay"></div>
-<div class="horizon"></div>
-<div class="trail" id="trail"></div>
+<div class="shadow shadow1"></div>
+<div class="shadow shadow2"></div>
+<div class="shadow shadow3"></div>
+
+<div class="ambient"></div>
+
+<div class="instruction" id="instruction">
+  SPACE to watch · CLICK to walk
+  <div class="subtitle">harmony hidden in ordinary moments</div>
+</div>
 
 <div class="nav">
-  <a href="entry8.html">← Prev</a>
-  <a href="index.html">Back to Index</a>
+  <a href="entry1.html">← Back</a>
+  <a href="entry3.html">Next →</a>
 </div>
 
 <script>
-const trail=document.getElementById('trail');
-let lastX=0,lastY=0;
+let instructionTimer;
 
-document.addEventListener('mousemove',e=>{
-  const dx=e.clientX-lastX;
-  const dy=e.clientY-lastY;
-  const dist=Math.sqrt(dx*dx+dy*dy);
-  const scale=1+Math.min(dist/80,0.4);
-
-  trail.style.left=e.clientX+'px';
-  trail.style.top=e.clientY+'px';
-  trail.style.transform=`translate(-50%,-50%) scale(${scale})`;
-  trail.style.opacity='1';
-  clearTimeout(window.fade);
-  window.fade=setTimeout(()=>trail.style.opacity='0.7',300);
-
-  lastX=e.clientX;
-  lastY=e.clientY;
+// Space bar controls shadow movement
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    document.body.classList.toggle('playing');
+    hideInstruction();
+  }
 });
-</script>
 
+// Click creates footsteps
+document.addEventListener('click', (e) => {
+  if (e.target.tagName !== 'A') {
+    createFootstep(e.clientX, e.clientY);
+    hideInstruction();
+  }
+});
+
+function createFootstep(x, y) {
+  const step = document.createElement('div');
+  step.className = 'footstep';
+  step.style.left = x + 'px';
+  step.style.top = y + 'px';
+  step.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+  document.body.appendChild(step);
+  
+  setTimeout(() => step.remove(), 2000);
+}
+
+function hideInstruction() {
+  const inst = document.getElementById('instruction');
+  inst.classList.add('hidden');
+  
+  clearTimeout(instructionTimer);
+  instructionTimer = setTimeout(() => {
+    inst.classList.remove('hidden');
+  }, 5000);
+}
+</script>
 </body>
 </html>

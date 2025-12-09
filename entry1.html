@@ -11,6 +11,11 @@ html,body{
   background:linear-gradient(to top,#1b1440 0%,#ffb6b9 50%,#fff6d0 100%);
   background-size:100% 200%;
   animation:skyShift 12s ease-in-out infinite alternate;
+  animation-play-state:paused;
+}
+
+body.playing{
+  animation-play-state:running;
 }
 
 /* sun */
@@ -25,6 +30,10 @@ html,body{
   box-shadow:0 0 80px 40px rgba(255,204,102,0.5);
   animation:sunrise 12s ease-in-out infinite alternate;
   animation-play-state:paused;
+}
+
+body.playing .sun{
+  animation-play-state:running;
 }
 
 @keyframes skyShift{
@@ -76,5 +85,14 @@ html,body{
   <a href="index.html">Back</a>
   <a href="entry2.html">Next →</a>
 </div>
+
+<script>
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    document.body.classList.toggle('playing');
+  }
+});
+</script>
 </body>
 </html>

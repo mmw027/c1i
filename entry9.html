@@ -2,112 +2,109 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>9 · Echo</title>
+<title>9 · Emotional Shifts</title>
 <style>
 html,body{
   margin:0;
   height:100%;
   overflow:hidden;
   font-family:'Inter',sans-serif;
-  background:linear-gradient(45deg,#ffe0cc,#fff5e8,#f2f0ff);
+  background:linear-gradient(120deg,#f2d7d9,#d6eaf8,#fdebd0);
   background-size:400% 400%;
-  animation:shift 25s ease-in-out infinite alternate;
+  transition:background 1s ease;
 }
 
-/* slow gradient movement */
-@keyframes shift{
-  0%{background-position:0% 50%;}
-  100%{background-position:100% 50%;}
-}
-
-/* horizon band */
-.horizon{
+/* instruction text */
+.instruction{
   position:absolute;
-  top:55%;
-  width:100%;
-  height:2px;
-  background:rgba(255,255,255,0.8);
-  box-shadow:0 0 20px rgba(255,255,255,0.7);
-  z-index:3;
-}
-
-/* ambient glow overlay */
-.overlay{
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at 50% 60%,rgba(255,220,150,0.25),rgba(255,255,255,0) 80%);
-  mix-blend-mode:soft-light;
-  animation:breathe 12s ease-in-out infinite alternate;
-}
-@keyframes breathe{
-  0%{opacity:0.6;}
-  100%{opacity:0.9;}
-}
-
-/* echo trail from cursor */
-.trail{
-  position:absolute;
-  width:260px;height:260px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,0.9) 0%,rgba(255,230,180,0.4) 40%,rgba(255,255,255,0) 80%);
-  pointer-events:none;
-  mix-blend-mode:overlay;
-  filter:blur(40px);
+  top:50%;
+  left:50%;
   transform:translate(-50%,-50%);
-  opacity:0.75;
-  transition:opacity .4s ease;
+  text-align:center;
+  color:#555;
+  font-size:1.1rem;
+  font-weight:300;
+  pointer-events:none;
+  transition:opacity 2s ease;
+}
+.instruction.hidden{
+  opacity:0;
+}
+.subtitle{
+  font-size:0.85rem;
+  opacity:0.7;
+  margin-top:8px;
 }
 
 /* nav */
 .nav{
   position:fixed;
-  bottom:25px;left:50%;
+  bottom:25px;
+  left:50%;
   transform:translateX(-50%);
-  display:flex;gap:25px;z-index:10;
+  display:flex;
+  gap:25px;
 }
 .nav a{
   text-decoration:none;
-  padding:10px 18px;
+  padding:10px 16px;
   border-radius:20px;
-  background:rgba(255,255,255,0.5);
-  color:#333;
+  background:rgba(0,0,0,0.05);
+  color:#444;
   font-size:.9rem;
   transition:.3s;
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(6px);
 }
-.nav a:hover{background:rgba(255,255,255,0.9);}
+.nav a:hover{
+  background:rgba(0,0,0,0.15);
+}
 </style>
 </head>
 <body>
 
-<div class="overlay"></div>
-<div class="horizon"></div>
-<div class="trail" id="trail"></div>
+<div class="instruction">
+  Move your mouse to shift the mood
+  <div class="subtitle">emotions changing with each small motion</div>
+</div>
 
 <div class="nav">
-  <a href="entry8.html">← Prev</a>
-  <a href="index.html">Back to Index</a>
+  <a href="entry8.html">Back</a>
+  <a href="entry10.html">Next →</a>
 </div>
 
 <script>
-const trail=document.getElementById('trail');
-let lastX=0,lastY=0;
+let instruction = document.querySelector(".instruction");
+let firstMove = true;
 
-document.addEventListener('mousemove',e=>{
-  const dx=e.clientX-lastX;
-  const dy=e.clientY-lastY;
-  const dist=Math.sqrt(dx*dx+dy*dy);
-  const scale=1+Math.min(dist/80,0.4);
+document.addEventListener("mousemove", (e) => {
+  
+  if(firstMove){
+    instruction.classList.add("hidden");
+    firstMove = false;
+  }
 
-  trail.style.left=e.clientX+'px';
-  trail.style.top=e.clientY+'px';
-  trail.style.transform=`translate(-50%,-50%) scale(${scale})`;
-  trail.style.opacity='1';
-  clearTimeout(window.fade);
-  window.fade=setTimeout(()=>trail.style.opacity='0.7',300);
+  // normalize mouse position
+  let x = e.clientX / window.innerWidth;
+  let y = e.clientY / window.innerHeight;
 
-  lastX=e.clientX;
-  lastY=e.clientY;
+  // color interpolation formulas for emotional “shift”
+  let r = Math.floor(240 + 15 * x - 40 * y); 
+  let g = Math.floor(200 + 30 * y - 20 * x);
+  let b = Math.floor(210 + 10 * x + 20 * y);
+
+  let r2 = Math.floor(220 + 20 * y);
+  let g2 = Math.floor(230 + 40 * x);
+  let b2 = Math.floor(180 + 20 * x - 15 * y);
+
+  let r3 = Math.floor(250 - 30 * x);
+  let g3 = Math.floor(220 - 20 * y);
+  let b3 = Math.floor(170 + 30 * y);
+
+  document.body.style.background =
+    `linear-gradient(120deg,
+     rgb(${r},${g},${b}),
+     rgb(${r2},${g2},${b2}),
+     rgb(${r3},${g3},${b3}))`;
 });
 </script>
 

@@ -12,14 +12,14 @@ html,body{
   font-family:'Inter',sans-serif;
 }
 
-/* Instruction text */
+/* instruction text */
 .instruction{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
   text-align:center;
-  color:#888;
+  color:#555;
   font-size:1.1rem;
   font-weight:300;
   letter-spacing:1px;
@@ -35,28 +35,22 @@ html,body{
   opacity:0.7;
 }
 
-/* Spots */
-.spot{
-  width:14px;
-  height:14px;
-  background:#ff6b6b;
-  border-radius:50%;
-  position:absolute;
-  transform:translate(-50%, -50%);
-  box-shadow:0 0 6px rgba(255,80,80,0.6);
-}
-
-/* Soft red lines */
+/* soft red line */
 .line{
   position:absolute;
-  background:rgba(255,80,80,0.7);
+  background:rgba(255,80,80,0.55);
   height:3px;
   border-radius:3px;
-  filter:blur(0.8px);
+  filter:blur(1.2px);
   transform-origin:0 50%;
+  transition:opacity .6s ease;
+  opacity:0;
+}
+.line.visible{
+  opacity:1;
 }
 
-/* Navigation */
+/* Navigation bar */
 .nav{
   position:fixed;
   bottom:25px;
@@ -83,12 +77,12 @@ html,body{
 <body>
 
 <div class="instruction">
-  Click anywhere to create connection points
-  <div class="subtitle">two clicks form a soft red line</div>
+  Click anywhere twice to create a connection
+  <div class="subtitle">a soft line appears between two points</div>
 </div>
 
 <div class="nav">
-  <a href="index.html">Back</a>
+  <a href="entry9.html">Back</a>
   <a href="entry11.html">Next →</a>
 </div>
 
@@ -97,25 +91,17 @@ let points = [];
 let instructionShown = true;
 
 document.addEventListener("click", function(e){
-  
+
   if(instructionShown){
     document.querySelector(".instruction").classList.add("hidden");
     instructionShown = false;
   }
 
-  // Create spot
-  const spot = document.createElement("div");
-  spot.classList.add("spot");
-  spot.style.left = e.clientX + "px";
-  spot.style.top = e.clientY + "px";
-  document.body.appendChild(spot);
-
   points.push({ x: e.clientX, y: e.clientY });
 
-  // If 2 points exist, draw soft line
   if(points.length === 2){
     drawLine(points[0], points[1]);
-    points = [];
+    points = []; // reset for next line
   }
 });
 
@@ -134,6 +120,11 @@ function drawLine(p1, p2){
   line.style.transform = `rotate(${angle}deg)`;
 
   document.body.appendChild(line);
+
+  // fade in
+  requestAnimationFrame(() => {
+    line.classList.add("visible");
+  });
 }
 </script>
 

@@ -2,300 +2,238 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>8 · Street Details</title>
+<title>Entry 3 — Neon Street</title>
 <style>
-html,body{
-  margin:0;
-  height:100%;
-  overflow:hidden;
-  background:linear-gradient(to bottom, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
-  font-family:'Inter',sans-serif;
-}
+  /* ---------- GLOBAL ---------- */
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: linear-gradient(to bottom, #0A0A0A 0%, #010101 100%);
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+  }
 
-.scene{
-  position:relative;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-}
+  /* ---------- TOP NEON TEXT ---------- */
+  #neonText {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Courier New', monospace;
+    font-size: 4em;
+    color: #FF00FF;
+    text-shadow: 0 0 15px #FF00FF, 0 0 30px #FF00FF, 0 0 60px #FF00FF;
+    animation: flicker 2s infinite;
+    transition: color 1s, text-shadow 1s;
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 80%;
+    text-align: center;
+  }
 
-/* wet street */
-.street{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:40%;
-  background:linear-gradient(to bottom, #1a1a2e 0%, #0f0f1e 100%);
-  box-shadow:inset 0 10px 30px rgba(0,0,0,0.5);
-}
+  #neonText:hover, #neonText:focus {
+    color: #00FFFF;
+    text-shadow: 0 0 20px #00FFFF, 0 0 40px #00FFFF, 0 0 80px #00FFFF;
+  }
 
-/* neon sign 1 - left side */
-.neon-sign-1{
-  position:absolute;
-  top:25%;
-  left:15%;
-  font-size:4rem;
-  font-weight:bold;
-  color:#ff0080;
-  text-shadow:
-    0 0 10px #ff0080,
-    0 0 20px #ff0080,
-    0 0 40px #ff0080,
-    0 0 80px #ff0080;
-  font-family:'Arial Black', sans-serif;
-  letter-spacing:8px;
-}
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.4; }
+  }
 
-.neon-sign-1::before{
-  content:'OPEN';
-}
+  /* ---------- STREET SCENE ---------- */
+  .scene{
+    position:absolute;
+    top:18%;
+    left:0;
+    width:100%;
+    height:82%;
+    overflow:hidden;
+  }
 
-body.playing .neon-sign-1::before{
-  content:'CLOSED';
-  animation:flicker1 4s infinite;
-}
+  .street{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:40%;
+    background:linear-gradient(to bottom, #1a1a2e 0%, #0f0f1e 100%);
+    box-shadow:inset 0 10px 30px rgba(0,0,0,0.5);
+  }
 
-/* neon sign 2 - right side */
-.neon-sign-2{
-  position:absolute;
-  top:30%;
-  right:18%;
-  font-size:3.5rem;
-  font-weight:bold;
-  color:#00ff88;
-  text-shadow:
-    0 0 10px #00ff88,
-    0 0 20px #00ff88,
-    0 0 40px #00ff88,
-    0 0 80px #00ff88;
-  font-family:'Arial Black', sans-serif;
-  letter-spacing:6px;
-}
+  /* neon sign left */
+  .neon-sign-1{
+    position:absolute;
+    top:25%;
+    left:15%;
+    font-size:4rem;
+    font-weight:bold;
+    color:#ff0080;
+    text-shadow:0 0 10px #ff0080, 0 0 20px #ff0080, 0 0 40px #ff0080, 0 0 80px #ff0080;
+    font-family:'Arial Black', sans-serif;
+    letter-spacing:8px;
+  }
+  .neon-sign-1::before{ content:"OPEN"; }
+  body.playing .neon-sign-1::before{ content:"CLOSED"; animation:flicker1 4s infinite; }
 
-body.playing .neon-sign-2{
-  animation:flicker2 5s infinite;
-}
+  /* neon sign right */
+  .neon-sign-2{
+    position:absolute;
+    top:30%;
+    right:18%;
+    font-size:3.5rem;
+    font-weight:bold;
+    color:#00ff88;
+    text-shadow:0 0 10px #00ff88,0 0 20px #00ff88,0 0 40px #00ff88,0 0 80px #00ff88;
+    letter-spacing:6px;
+  }
+  body.playing .neon-sign-2{ animation:flicker2 5s infinite; }
 
-/* reflections on wet ground */
-.reflection-1{
-  position:absolute;
-  bottom:10%;
-  left:15%;
-  font-size:4rem;
-  font-weight:bold;
-  color:#ff0080;
-  text-shadow:
-    0 0 20px #ff0080,
-    0 0 40px #ff0080;
-  font-family:'Arial Black', sans-serif;
-  letter-spacing:8px;
-  opacity:0.4;
-  filter:blur(8px);
-  transform:scaleY(-0.6);
-}
+  /* reflections */
+  .reflection-1{
+    position:absolute;
+    bottom:10%;
+    left:15%;
+    font-size:4rem;
+    font-weight:bold;
+    color:#ff0080;
+    text-shadow:0 0 20px #ff0080,0 0 40px #ff0080;
+    opacity:.4;
+    filter:blur(8px);
+    transform:scaleY(-0.6);
+    letter-spacing:8px;
+  }
+  .reflection-1::before{ content:"OPEN"; }
+  body.playing .reflection-1::before{ content:"CLOSED"; animation:flicker1 4s infinite; }
 
-.reflection-1::before{
-  content:'OPEN';
-}
+  .reflection-2{
+    position:absolute;
+    bottom:8%;
+    right:18%;
+    font-size:3.5rem;
+    font-weight:bold;
+    color:#00ff88;
+    text-shadow:0 0 20px #00ff88,0 0 40px #00ff88;
+    opacity:.35;
+    filter:blur(10px);
+    transform:scaleY(-0.6);
+    letter-spacing:6px;
+  }
+  .reflection-2::before{ content:"BAR"; }
 
-body.playing .reflection-1::before{
-  content:'CLOSED';
-  animation:flicker1 4s infinite;
-}
+  /* glow orbs */
+  .glow-pink{
+    position:absolute;
+    top:25%;
+    left:15%;
+    width:200px;
+    height:200px;
+    background:radial-gradient(circle, rgba(255,0,128,0.3), transparent 70%);
+    filter:blur(60px);
+  }
+  .glow-green{
+    position:absolute;
+    top:30%;
+    right:18%;
+    width:180px;
+    height:180px;
+    background:radial-gradient(circle, rgba(0,255,136,0.25), transparent 70%);
+    filter:blur(60px);
+  }
 
-.reflection-2{
-  position:absolute;
-  bottom:8%;
-  right:18%;
-  font-size:3.5rem;
-  font-weight:bold;
-  color:#00ff88;
-  text-shadow:
-    0 0 20px #00ff88,
-    0 0 40px #00ff88;
-  font-family:'Arial Black', sans-serif;
-  letter-spacing:6px;
-  opacity:0.35;
-  filter:blur(10px);
-  transform:scaleY(-0.6);
-}
+  /* flickers */
+  @keyframes flicker1{
+    0%,100%{opacity:1;}
+    46%{opacity:.3;}
+    47%{opacity:1;}
+  }
+  @keyframes flicker2{
+    0%,100%{opacity:1;}
+    36%{opacity:.2;}
+    38%{opacity:1;}
+  }
 
-body.playing .reflection-2{
-  animation:flicker2 5s infinite;
-}
+  /* ---------- INSTRUCTION ---------- */
+  .instruction{
+    position:absolute;
+    top:48%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    color:white;
+    text-align:center;
+    font-size:1.1rem;
+    opacity:0.9;
+    transition:opacity 2s ease;
+    text-shadow:0 2px 10px rgba(0,0,0,0.8);
+    pointer-events:none;
+    z-index:10;
+  }
+  .instruction.hidden{ opacity:0; }
+  .subtitle{ font-size:.85rem; opacity:.7; margin-top:8px; }
 
-/* flicker animations */
-@keyframes flicker1{
-  0%, 100%{opacity:1;}
-  2%{opacity:0.8;}
-  4%{opacity:1;}
-  8%{opacity:0.9;}
-  10%{opacity:1;}
-  45%{opacity:1;}
-  46%{opacity:0.3;}
-  47%{opacity:1;}
-  48%{opacity:0.5;}
-  50%{opacity:1;}
-}
+  /* ---------- NAV ---------- */
+  .nav {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 25px;
+    z-index: 20;
+  }
 
-@keyframes flicker2{
-  0%, 100%{opacity:1;}
-  5%{opacity:0.9;}
-  10%{opacity:1;}
-  35%{opacity:1;}
-  36%{opacity:0.2;}
-  37%{opacity:1;}
-  38%{opacity:0.4;}
-  40%{opacity:1;}
-  70%{opacity:1;}
-  71%{opacity:0.7;}
-  72%{opacity:1;}
-}
-
-@keyframes flicker3{
-  0%, 100%{opacity:1;}
-  15%{opacity:1;}
-  16%{opacity:0.4;}
-  17%{opacity:1;}
-  18%{opacity:0.6;}
-  20%{opacity:1;}
-  55%{opacity:1;}
-  56%{opacity:0.3;}
-  58%{opacity:1;}
-}
-
-/* ambient glow */
-.glow-pink{
-  position:absolute;
-  top:25%;
-  left:15%;
-  width:200px;
-  height:200px;
-  background:radial-gradient(circle, rgba(255,0,128,0.3) 0%, transparent 70%);
-  filter:blur(60px);
-  pointer-events:none;
-}
-
-body.playing .glow-pink{
-  animation:glowPulse1 4s infinite;
-}
-
-.glow-green{
-  position:absolute;
-  top:30%;
-  right:18%;
-  width:180px;
-  height:180px;
-  background:radial-gradient(circle, rgba(0,255,136,0.25) 0%, transparent 70%);
-  filter:blur(60px);
-  pointer-events:none;
-}
-
-body.playing .glow-green{
-  animation:glowPulse2 5s infinite;
-}
-
-@keyframes glowPulse1{
-  0%, 100%{opacity:1;}
-  45%{opacity:1;}
-  47%{opacity:0.3;}
-  50%{opacity:1;}
-}
-
-@keyframes glowPulse2{
-  0%, 100%{opacity:1;}
-  36%{opacity:0.3;}
-  40%{opacity:1;}
-}
-
-/* instruction */
-.instruction{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
-  color:rgba(255,255,255,0.9);
-  font-size:1.1rem;
-  font-weight:300;
-  letter-spacing:1px;
-  pointer-events:none;
-  text-shadow:0 2px 10px rgba(0,0,0,0.8);
-  transition:opacity 2s ease;
-  z-index:10;
-}
-.instruction.hidden{
-  opacity:0;
-}
-.subtitle{
-  font-size:0.85rem;
-  margin-top:8px;
-  opacity:0.7;
-}
-
-/* nav */
-.nav{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:25px;
-  z-index:20;
-}
-.nav a{
-  text-decoration:none;
-  padding:10px 16px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.6);
-  color:#333;
-  font-size:.9rem;
-  transition:.3s;
-  backdrop-filter:blur(10px);
-}
-.nav a:hover{background:rgba(255,255,255,0.9);}
+  .nav a{
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.6);
+    color:#333;
+    font-size:.9rem;
+    transition:.3s;
+    backdrop-filter:blur(10px);
+  }
+  .nav a:hover{ background:white; }
 </style>
 </head>
 <body>
+
+<input id="neonText" type="text" placeholder="Type here..." autofocus>
+
 <div class="scene">
-  <!-- ambient glows -->
   <div class="glow-pink"></div>
   <div class="glow-green"></div>
-  
-  <!-- neon signs -->
+
   <div class="neon-sign-1"></div>
   <div class="neon-sign-2">BAR</div>
-  
-  <!-- wet street -->
+
   <div class="street"></div>
-  
-  <!-- reflections -->
+
   <div class="reflection-1"></div>
   <div class="reflection-2">BAR</div>
 </div>
 
 <div class="instruction">
   Press SPACE to close the bar
-  <div class="subtitle">neon signs flickering on wet pavement</div>
+  <div class="subtitle">neons flicker on the wet street</div>
 </div>
 
 <div class="nav">
-  <a href="entry7.html">← Back</a>
-  <a href="entry9.html">Next →</a>
+  <a href="entry2.html">← Previous</a>
+  <a href="index.html">Back to Index</a>
+  <a href="entry4.html">Next →</a>
 </div>
 
 <script>
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (e.code === 'Space') {
     e.preventDefault();
     document.body.classList.toggle('playing');
-    
+
     const instruction = document.querySelector('.instruction');
-    setTimeout(() => {
-      instruction.classList.add('hidden');
-    }, 1000);
+    setTimeout(() => instruction.classList.add('hidden'), 1000);
   }
 });
 </script>
+
 </body>
 </html>

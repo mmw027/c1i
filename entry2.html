@@ -8,7 +8,13 @@ html,body{
   margin:0;
   height:100%;
   overflow:hidden;
-  background:linear-gradient(to bottom,#2d2a4a 0%,#7e8ba3 50%,#c8d5e0 100%);
+
+  /* AFTERNOON SKY */
+  background:linear-gradient(to bottom,
+    #87a8d0 0%,      /* sky blue */
+    #b9cfdd 40%,     /* soft haze */
+    #f5e9cf 100%     /* warm afternoon sunlight */
+  );
   background-size:100% 200%;
   animation:cityShift 25s ease-in-out infinite alternate;
 }
@@ -18,7 +24,7 @@ html,body{
   100%{background-position:0 100%;}
 }
 
-/* city silhouette */
+/* BUILDINGS — lighter, daytime */
 .buildings{
   position:absolute;
   bottom:0;
@@ -31,15 +37,16 @@ html,body{
   filter:blur(1px);
 }
 .building{
-  background:rgba(30,30,50,0.7);
+  background:rgba(100,100,120,0.45);   /* lighter grey */
   transition:all 0.5s ease;
   cursor:pointer;
 }
 .building:hover{
-  background:rgba(50,50,80,0.9);
+  background:rgba(120,120,150,0.6);
   transform:scaleY(1.05);
 }
 
+/* SIZES */
 .b1{width:8%;height:60%;}
 .b2{width:12%;height:45%;}
 .b3{width:7%;height:70%;}
@@ -50,28 +57,31 @@ html,body{
 .b8{width:13%;height:48%;}
 .b9{width:10%;height:75%;}
 
-/* windows on buildings */
+/* WINDOWS — almost invisible daytime lights */
 .windowLight{
   position:absolute;
   width:8px;
   height:10px;
-  background:rgba(255,220,150,0.8);
+  background:rgba(255,240,200,0.2); /* softer */
   border-radius:1px;
   opacity:0;
   transition:opacity 0.3s ease;
 }
 .windowLight.on{
-  opacity:1;
-  box-shadow:0 0 8px rgba(255,220,150,0.6);
+  opacity:0.7;
+  box-shadow:0 0 5px rgba(255,235,190,0.4);
 }
 
-/* shadows */
+/* SHADOWS — soft & shorter for afternoon */
 .shadow{
   position:absolute;
   bottom:0;
   width:80px;
-  height:120px;
-  background:linear-gradient(to top,rgba(20,20,40,0.4) 0%,transparent 100%);
+  height:110px;
+  background:linear-gradient(to top,
+    rgba(80,80,90,0.25) 0%,
+    transparent 100%
+  );
   border-radius:50% 50% 0 0;
   animation-play-state:paused;
   cursor:pointer;
@@ -89,17 +99,17 @@ html,body{
   100%{right:110%;}
 }
 @keyframes walk3{
-  0%{left:20%;opacity:0.3;}
-  50%{opacity:0.6;}
-  100%{left:90%;opacity:0.3;}
+  0%{left:20%;opacity:0.4;}
+  50%{opacity:0.7;}
+  100%{left:90%;opacity:0.4;}
 }
 
-/* footsteps */
+/* FOOTSTEPS */
 .footstep{
   position:absolute;
   width:12px;
   height:20px;
-  background:rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.4);
   border-radius:40% 40% 60% 60%;
   animation:fadeStep 2s ease-out forwards;
   pointer-events:none;
@@ -109,7 +119,7 @@ html,body{
   100%{opacity:0;transform:scale(0.5);}
 }
 
-/* sound waves */
+/* SOUND WAVES */
 .soundWave{
   position:absolute;
   border:2px solid rgba(255,255,255,0.4);
@@ -122,12 +132,12 @@ html,body{
   100%{width:150px;height:150px;opacity:0;}
 }
 
-/* rhythm particles */
+/* PARTICLES */
 .rhythmParticle{
   position:absolute;
   width:6px;
   height:6px;
-  background:rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.7);
   border-radius:50%;
   animation:rhythmFloat 2s ease-out forwards;
   pointer-events:none;
@@ -137,13 +147,13 @@ html,body{
   100%{opacity:0;transform:translateY(-150px) scale(0.3);}
 }
 
-/* instruction */
+/* INSTRUCTION */
 .instruction{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  color:rgba(255,255,255,0.7);
+  color:rgba(255,255,255,0.8);
   font-family:'Inter',sans-serif;
   font-size:1.1rem;
   pointer-events:none;
@@ -153,7 +163,7 @@ html,body{
   opacity:0;
 }
 
-/* nav */
+/* NAV */
 .nav{
   position:fixed;
   bottom:25px;
@@ -167,7 +177,7 @@ html,body{
   text-decoration:none;
   padding:10px 16px;
   border-radius:20px;
-  background:rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.5);
   color:#333;
   font-family:'Inter',sans-serif;
   font-size:.9rem;
@@ -184,12 +194,12 @@ body.playing .shadow{
 
 <body>
 
-<!-- 🎵 SOUND FILES -->
+<!-- SOUND FILES -->
 <audio id="sound-do" src="do-80236.mp3"></audio>
 <audio id="sound-re" src="re-78500.mp3"></audio>
 <audio id="sound-fa" src="fa-78409.mp3"></audio>
 
-<!-- AUDIO UNLOCKER -->
+<!-- UNLOCK AUDIO -->
 <script>
 document.body.addEventListener("click", () => {
   document.querySelectorAll("audio").forEach(a => {
@@ -226,7 +236,7 @@ document.body.addEventListener("click", () => {
 <script>
 let instructionTimer;
 
-// add windows
+/* ADD WINDOWS */
 function addWindows(building) {
   const rect = building.getBoundingClientRect();
   const cols = Math.floor(rect.width / 15);
@@ -244,10 +254,9 @@ function addWindows(building) {
     }
   }
 }
-
 document.querySelectorAll('.building').forEach(addWindows);
 
-/* SOUND FUNCTION */
+/* PLAY SOUND */
 function playSound(id) {
   const sound = document.getElementById(id);
   sound.currentTime = 0;
@@ -274,7 +283,7 @@ document.querySelectorAll('.building').forEach(building => {
   });
 });
 
-/* FOOTSTEPS */
+/* GROUND CLICK → FOOTSTEP */
 document.addEventListener('click', (e) => {
   if (!e.target.classList.contains('building')) {
     createFootstep(e.clientX, e.clientY);
@@ -305,7 +314,7 @@ function createRhythmParticles(x, y) {
   }
 }
 
-/* SHOW/HIDE INSTRUCTION */
+/* INSTRUCTION HIDE */
 function hideInstruction() {
   const box = document.getElementById('instruction');
   box.classList.add('hidden');
@@ -313,7 +322,7 @@ function hideInstruction() {
   instructionTimer = setTimeout(() => box.classList.remove('hidden'), 5000);
 }
 
-/* SPACEBAR = SHADOW WALK */
+/* SPACEBAR = ANIMATE */
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
     document.body.classList.toggle('playing');

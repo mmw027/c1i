@@ -49,7 +49,7 @@ html,body{
 .b8{width:13%;height:48%;}
 .b9{width:10%;height:75%;}
 
-/* window lights that turn on when clicking buildings */
+/* window lights */
 .windowLight{
   position:absolute;
   width:8px;
@@ -97,7 +97,7 @@ html,body{
   100%{left:90%;opacity:0.3;}
 }
 
-/* footsteps appear on click */
+/* footsteps */
 .footstep{
   position:absolute;
   width:12px;
@@ -112,7 +112,7 @@ html,body{
   100%{opacity:0;transform:scale(0.5);}
 }
 
-/* sound waves from clicking shadows */
+/* sound waves */
 .soundWave{
   position:absolute;
   border:2px solid rgba(255,255,255,0.4);
@@ -125,7 +125,7 @@ html,body{
   100%{width:150px;height:150px;opacity:0;}
 }
 
-/* rhythm particles on spacebar */
+/* rhythm particles */
 .rhythmParticle{
   position:absolute;
   width:6px;
@@ -140,7 +140,7 @@ html,body{
   100%{opacity:0;transform:translateY(-150px) scale(0.3);}
 }
 
-/* ambient light pulse */
+/* ambient */
 .ambient{
   position:absolute;
   inset:0;
@@ -152,7 +152,7 @@ html,body{
   from{opacity:0.3;}to{opacity:0.7;}
 }
 
-/* instruction text */
+/* instruction */
 .instruction{
   position:absolute;
   top:50%;
@@ -202,7 +202,14 @@ body.playing .shadow{
 }
 </style>
 </head>
+
 <body>
+
+<!-- Piano sounds -->
+<audio id="sound-do" src="do-80236.mp3"></audio>
+<audio id="sound-re" src="re-78500.mp3"></audio>
+<audio id="sound-fa" src="fa-78409.mp3"></audio>
+
 <div class="buildings" id="buildings">
   <div class="building b1" data-building="1"></div>
   <div class="building b2" data-building="2"></div>
@@ -234,15 +241,12 @@ body.playing .shadow{
 <script>
 let instructionTimer;
 
-// Add windows to buildings
+// Add windows
 function addWindowsToBuilding(building) {
   const rect = building.getBoundingClientRect();
-  const width = rect.width;
-  const height = rect.height;
-  
-  const cols = Math.floor(width / 15);
-  const rows = Math.floor(height / 20);
-  
+  const cols = Math.floor(rect.width / 15);
+  const rows = Math.floor(rect.height / 20);
+
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       if (Math.random() > 0.4) {
@@ -256,25 +260,33 @@ function addWindowsToBuilding(building) {
   }
 }
 
-// Initialize windows for all buildings
-document.querySelectorAll('.building').forEach(building => {
-  addWindowsToBuilding(building);
-});
+document.querySelectorAll('.building').forEach(addWindowsToBuilding);
 
-// Click buildings to toggle lights
+/* 🔔 Piano sound mapping */
+function playPianoSound(n) {
+  let id = n <= 3 ? "sound-do" : n <= 6 ? "sound-re" : "sound-fa";
+  const audio = document.getElementById(id);
+  audio.currentTime = 0;
+  audio.play();
+}
+
+/* Building click */
 document.querySelectorAll('.building').forEach(building => {
   building.addEventListener('click', (e) => {
     e.stopPropagation();
+
     const windows = building.querySelectorAll('.windowLight');
-    windows.forEach(window => {
-      window.classList.toggle('on');
-    });
+    windows.forEach(w => w.classList.toggle('on'));
+
+    const num = parseInt(building.dataset.building);
+    playPianoSound(num);
+
     createRhythmParticles(e.clientX, e.clientY);
     hideInstruction();
   });
 });
 
-// Click shadows to create sound waves
+/* Shadow click sound waves */
 document.querySelectorAll('.shadow').forEach(shadow => {
   shadow.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -283,7 +295,7 @@ document.querySelectorAll('.shadow').forEach(shadow => {
   });
 });
 
-// Space bar controls shadow movement
+/* Space = animate shadows */
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
     e.preventDefault();
@@ -292,9 +304,11 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Click ground creates footsteps
+/* Ground click footsteps */
 document.addEventListener('click', (e) => {
-  if (e.target.tagName !== 'A' && !e.target.classList.contains('building') && !e.target.classList.contains('shadow')) {
+  if (!e.target.classList.contains('building') && 
+      !e.target.classList.contains('shadow') &&
+      e.target.tagName !== 'A') {
     createFootstep(e.clientX, e.clientY);
     hideInstruction();
   }
@@ -307,7 +321,6 @@ function createFootstep(x, y) {
   step.style.top = y + 'px';
   step.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
   document.body.appendChild(step);
-  
   setTimeout(() => step.remove(), 2000);
 }
 
@@ -317,20 +330,18 @@ function createSoundWave(x, y) {
   wave.style.left = (x - 75) + 'px';
   wave.style.top = (y - 75) + 'px';
   document.body.appendChild(wave);
-  
   setTimeout(() => wave.remove(), 1500);
 }
 
 function createRhythmParticles(x, y) {
   for (let i = 0; i < 5; i++) {
     setTimeout(() => {
-      const particle = document.createElement('div');
-      particle.className = 'rhythmParticle';
-      particle.style.left = (x + Math.random() * 40 - 20) + 'px';
-      particle.style.top = (y + Math.random() * 40 - 20) + 'px';
-      document.body.appendChild(particle);
-      
-      setTimeout(() => particle.remove(), 2000);
+      const p = document.createElement('div');
+      p.className = 'rhythmParticle';
+      p.style.left = (x + Math.random() * 40 - 20) + 'px';
+      p.style.top = (y + Math.random() * 40 - 20) + 'px';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 2000);
     }, i * 100);
   }
 }
@@ -338,11 +349,8 @@ function createRhythmParticles(x, y) {
 function hideInstruction() {
   const inst = document.getElementById('instruction');
   inst.classList.add('hidden');
-  
   clearTimeout(instructionTimer);
-  instructionTimer = setTimeout(() => {
-    inst.classList.remove('hidden');
-  }, 5000);
+  instructionTimer = setTimeout(() => inst.classList.remove('hidden'), 5000);
 }
 </script>
 </body>

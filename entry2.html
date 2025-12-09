@@ -39,6 +39,7 @@ html,body{
   background:rgba(50,50,80,0.9);
   transform:scaleY(1.05);
 }
+
 .b1{width:8%;height:60%;}
 .b2{width:12%;height:45%;}
 .b3{width:7%;height:70%;}
@@ -49,7 +50,7 @@ html,body{
 .b8{width:13%;height:48%;}
 .b9{width:10%;height:75%;}
 
-/* window lights */
+/* windows on buildings */
 .windowLight{
   position:absolute;
   width:8px;
@@ -64,7 +65,7 @@ html,body{
   box-shadow:0 0 8px rgba(255,220,150,0.6);
 }
 
-/* shadows moving across */
+/* shadows */
 .shadow{
   position:absolute;
   bottom:0;
@@ -74,22 +75,18 @@ html,body{
   border-radius:50% 50% 0 0;
   animation-play-state:paused;
   cursor:pointer;
-  transition:background 0.3s ease;
-}
-.shadow:hover{
-  background:linear-gradient(to top,rgba(40,40,70,0.6) 0%,transparent 100%);
 }
 .shadow1{left:-100px;animation:walk1 8s linear infinite;}
 .shadow2{right:-100px;animation:walk2 10s linear infinite;}
 .shadow3{left:20%;animation:walk3 12s linear infinite;}
 
 @keyframes walk1{
-  0%{left:-100px;transform:scaleX(1);}
-  100%{left:110%;transform:scaleX(1);}
+  0%{left:-100px;}
+  100%{left:110%;}
 }
 @keyframes walk2{
-  0%{right:-100px;transform:scaleX(-1);}
-  100%{right:110%;transform:scaleX(-1);}
+  0%{right:-100px;}
+  100%{right:110%;}
 }
 @keyframes walk3{
   0%{left:20%;opacity:0.3;}
@@ -108,7 +105,7 @@ html,body{
   pointer-events:none;
 }
 @keyframes fadeStep{
-  0%{opacity:0.8;transform:scale(1);}
+  0%{opacity:0.8;}
   100%{opacity:0;transform:scale(0.5);}
 }
 
@@ -136,20 +133,8 @@ html,body{
   pointer-events:none;
 }
 @keyframes rhythmFloat{
-  0%{opacity:1;transform:translateY(0) scale(1);}
+  0%{opacity:1;}
   100%{opacity:0;transform:translateY(-150px) scale(0.3);}
-}
-
-/* ambient */
-.ambient{
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at 50% 30%,rgba(255,255,220,0.1) 0%,transparent 60%);
-  animation:ambientPulse 15s ease-in-out infinite alternate;
-  pointer-events:none;
-}
-@keyframes ambientPulse{
-  from{opacity:0.3;}to{opacity:0.7;}
 }
 
 /* instruction */
@@ -158,20 +143,14 @@ html,body{
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  text-align:center;
   color:rgba(255,255,255,0.7);
   font-family:'Inter',sans-serif;
   font-size:1.1rem;
-  font-weight:300;
-  letter-spacing:1px;
   pointer-events:none;
-  transition:opacity 0.5s;
+  transition:opacity 0.4s;
 }
-.instruction.hidden{opacity:0;}
-.subtitle{
-  font-size:0.85rem;
-  margin-top:8px;
-  opacity:0.6;
+.instruction.hidden{
+  opacity:0;
 }
 
 /* nav */
@@ -192,10 +171,10 @@ html,body{
   color:#333;
   font-family:'Inter',sans-serif;
   font-size:.9rem;
-  transition:.3s;
+  transition:0.3s;
   backdrop-filter:blur(10px);
 }
-.nav a:hover{background:rgba(255,255,255,0.9);}
+.nav a:hover{background:white;}
 
 body.playing .shadow{
   animation-play-state:running;
@@ -205,12 +184,21 @@ body.playing .shadow{
 
 <body>
 
-<!-- Piano sounds -->
+<!-- 🎵 SOUND FILES -->
 <audio id="sound-do" src="do-80236.mp3"></audio>
 <audio id="sound-re" src="re-78500.mp3"></audio>
 <audio id="sound-fa" src="fa-78409.mp3"></audio>
 
-<div class="buildings" id="buildings">
+<!-- AUDIO UNLOCKER -->
+<script>
+document.body.addEventListener("click", () => {
+  document.querySelectorAll("audio").forEach(a => {
+    a.play().then(() => a.pause());
+  });
+}, { once: true });
+</script>
+
+<div class="buildings">
   <div class="building b1" data-building="1"></div>
   <div class="building b2" data-building="2"></div>
   <div class="building b3" data-building="3"></div>
@@ -226,11 +214,8 @@ body.playing .shadow{
 <div class="shadow shadow2"></div>
 <div class="shadow shadow3"></div>
 
-<div class="ambient"></div>
-
 <div class="instruction" id="instruction">
-  SPACE to animate · CLICK ground to walk · CLICK buildings/shadows for sounds
-  <div class="subtitle">harmony hidden in ordinary moments</div>
+  SPACE to animate · CLICK ground to walk · CLICK buildings for piano notes
 </div>
 
 <div class="nav">
@@ -241,8 +226,8 @@ body.playing .shadow{
 <script>
 let instructionTimer;
 
-// Add windows
-function addWindowsToBuilding(building) {
+// add windows
+function addWindows(building) {
   const rect = building.getBoundingClientRect();
   const cols = Math.floor(rect.width / 15);
   const rows = Math.floor(rect.height / 20);
@@ -250,65 +235,48 @@ function addWindowsToBuilding(building) {
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       if (Math.random() > 0.4) {
-        const window = document.createElement('div');
-        window.className = 'windowLight';
-        window.style.left = (c * 15 + 4) + 'px';
-        window.style.top = (r * 20 + 5) + 'px';
-        building.appendChild(window);
+        const w = document.createElement('div');
+        w.className = 'windowLight';
+        w.style.left = (c * 15 + 4) + 'px';
+        w.style.top = (r * 20 + 5) + 'px';
+        building.appendChild(w);
       }
     }
   }
 }
 
-document.querySelectorAll('.building').forEach(addWindowsToBuilding);
+document.querySelectorAll('.building').forEach(addWindows);
 
-/* 🔔 Piano sound mapping */
-function playPianoSound(n) {
-  let id = n <= 3 ? "sound-do" : n <= 6 ? "sound-re" : "sound-fa";
-  const audio = document.getElementById(id);
-  audio.currentTime = 0;
-  audio.play();
+/* SOUND FUNCTION */
+function playSound(id) {
+  const sound = document.getElementById(id);
+  sound.currentTime = 0;
+  sound.play();
 }
 
-/* Building click */
+/* BUILDING CLICK */
 document.querySelectorAll('.building').forEach(building => {
   building.addEventListener('click', (e) => {
     e.stopPropagation();
 
-    const windows = building.querySelectorAll('.windowLight');
-    windows.forEach(w => w.classList.toggle('on'));
+    building.querySelectorAll('.windowLight').forEach(w =>
+      w.classList.toggle('on')
+    );
 
     const num = parseInt(building.dataset.building);
-    playPianoSound(num);
+
+    if (num <= 3) playSound("sound-do");
+    else if (num <= 6) playSound("sound-re");
+    else playSound("sound-fa");
 
     createRhythmParticles(e.clientX, e.clientY);
     hideInstruction();
   });
 });
 
-/* Shadow click sound waves */
-document.querySelectorAll('.shadow').forEach(shadow => {
-  shadow.addEventListener('click', (e) => {
-    e.stopPropagation();
-    createSoundWave(e.clientX, e.clientY);
-    hideInstruction();
-  });
-});
-
-/* Space = animate shadows */
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'Space') {
-    e.preventDefault();
-    document.body.classList.toggle('playing');
-    hideInstruction();
-  }
-});
-
-/* Ground click footsteps */
+/* FOOTSTEPS */
 document.addEventListener('click', (e) => {
-  if (!e.target.classList.contains('building') && 
-      !e.target.classList.contains('shadow') &&
-      e.target.tagName !== 'A') {
+  if (!e.target.classList.contains('building')) {
     createFootstep(e.clientX, e.clientY);
     hideInstruction();
   }
@@ -319,20 +287,11 @@ function createFootstep(x, y) {
   step.className = 'footstep';
   step.style.left = x + 'px';
   step.style.top = y + 'px';
-  step.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
   document.body.appendChild(step);
   setTimeout(() => step.remove(), 2000);
 }
 
-function createSoundWave(x, y) {
-  const wave = document.createElement('div');
-  wave.className = 'soundWave';
-  wave.style.left = (x - 75) + 'px';
-  wave.style.top = (y - 75) + 'px';
-  document.body.appendChild(wave);
-  setTimeout(() => wave.remove(), 1500);
-}
-
+/* RHYTHM PARTICLES */
 function createRhythmParticles(x, y) {
   for (let i = 0; i < 5; i++) {
     setTimeout(() => {
@@ -346,12 +305,21 @@ function createRhythmParticles(x, y) {
   }
 }
 
+/* SHOW/HIDE INSTRUCTION */
 function hideInstruction() {
-  const inst = document.getElementById('instruction');
-  inst.classList.add('hidden');
+  const box = document.getElementById('instruction');
+  box.classList.add('hidden');
   clearTimeout(instructionTimer);
-  instructionTimer = setTimeout(() => inst.classList.remove('hidden'), 5000);
+  instructionTimer = setTimeout(() => box.classList.remove('hidden'), 5000);
 }
+
+/* SPACEBAR = SHADOW WALK */
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    document.body.classList.toggle('playing');
+    hideInstruction();
+  }
+});
 </script>
 </body>
 </html>

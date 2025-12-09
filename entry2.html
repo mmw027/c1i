@@ -32,7 +32,12 @@ html,body{
 }
 .building{
   background:rgba(30,30,50,0.7);
-  transition:height 0.8s ease;
+  transition:all 0.5s ease;
+  cursor:pointer;
+}
+.building:hover{
+  background:rgba(50,50,80,0.9);
+  transform:scaleY(1.05);
 }
 .b1{width:8%;height:60%;}
 .b2{width:12%;height:45%;}
@@ -44,6 +49,21 @@ html,body{
 .b8{width:13%;height:48%;}
 .b9{width:10%;height:75%;}
 
+/* window lights that turn on when clicking buildings */
+.windowLight{
+  position:absolute;
+  width:8px;
+  height:10px;
+  background:rgba(255,220,150,0.8);
+  border-radius:1px;
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+.windowLight.on{
+  opacity:1;
+  box-shadow:0 0 8px rgba(255,220,150,0.6);
+}
+
 /* shadows moving across */
 .shadow{
   position:absolute;
@@ -53,6 +73,11 @@ html,body{
   background:linear-gradient(to top,rgba(20,20,40,0.4) 0%,transparent 100%);
   border-radius:50% 50% 0 0;
   animation-play-state:paused;
+  cursor:pointer;
+  transition:background 0.3s ease;
+}
+.shadow:hover{
+  background:linear-gradient(to top,rgba(40,40,70,0.6) 0%,transparent 100%);
 }
 .shadow1{left:-100px;animation:walk1 8s linear infinite;}
 .shadow2{right:-100px;animation:walk2 10s linear infinite;}
@@ -85,6 +110,34 @@ html,body{
 @keyframes fadeStep{
   0%{opacity:0.8;transform:scale(1);}
   100%{opacity:0;transform:scale(0.5);}
+}
+
+/* sound waves from clicking shadows */
+.soundWave{
+  position:absolute;
+  border:2px solid rgba(255,255,255,0.4);
+  border-radius:50%;
+  animation:waveExpand 1.5s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes waveExpand{
+  0%{width:0;height:0;opacity:0.8;}
+  100%{width:150px;height:150px;opacity:0;}
+}
+
+/* rhythm particles on spacebar */
+.rhythmParticle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:rgba(255,255,255,0.6);
+  border-radius:50%;
+  animation:rhythmFloat 2s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes rhythmFloat{
+  0%{opacity:1;transform:translateY(0) scale(1);}
+  100%{opacity:0;transform:translateY(-150px) scale(0.3);}
 }
 
 /* ambient light pulse */
@@ -150,16 +203,16 @@ body.playing .shadow{
 </style>
 </head>
 <body>
-<div class="buildings">
-  <div class="building b1"></div>
-  <div class="building b2"></div>
-  <div class="building b3"></div>
-  <div class="building b4"></div>
-  <div class="building b5"></div>
-  <div class="building b6"></div>
-  <div class="building b7"></div>
-  <div class="building b8"></div>
-  <div class="building b9"></div>
+<div class="buildings" id="buildings">
+  <div class="building b1" data-building="1"></div>
+  <div class="building b2" data-building="2"></div>
+  <div class="building b3" data-building="3"></div>
+  <div class="building b4" data-building="4"></div>
+  <div class="building b5" data-building="5"></div>
+  <div class="building b6" data-building="6"></div>
+  <div class="building b7" data-building="7"></div>
+  <div class="building b8" data-building="8"></div>
+  <div class="building b9" data-building="9"></div>
 </div>
 
 <div class="shadow shadow1"></div>
@@ -169,7 +222,7 @@ body.playing .shadow{
 <div class="ambient"></div>
 
 <div class="instruction" id="instruction">
-  SPACE to watch · CLICK to walk
+  SPACE to animate · CLICK ground to walk · CLICK buildings/shadows for sounds
   <div class="subtitle">harmony hidden in ordinary moments</div>
 </div>
 
@@ -181,6 +234,55 @@ body.playing .shadow{
 <script>
 let instructionTimer;
 
+// Add windows to buildings
+function addWindowsToBuilding(building) {
+  const rect = building.getBoundingClientRect();
+  const width = rect.width;
+  const height = rect.height;
+  
+  const cols = Math.floor(width / 15);
+  const rows = Math.floor(height / 20);
+  
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (Math.random() > 0.4) {
+        const window = document.createElement('div');
+        window.className = 'windowLight';
+        window.style.left = (c * 15 + 4) + 'px';
+        window.style.top = (r * 20 + 5) + 'px';
+        building.appendChild(window);
+      }
+    }
+  }
+}
+
+// Initialize windows for all buildings
+document.querySelectorAll('.building').forEach(building => {
+  addWindowsToBuilding(building);
+});
+
+// Click buildings to toggle lights
+document.querySelectorAll('.building').forEach(building => {
+  building.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const windows = building.querySelectorAll('.windowLight');
+    windows.forEach(window => {
+      window.classList.toggle('on');
+    });
+    createRhythmParticles(e.clientX, e.clientY);
+    hideInstruction();
+  });
+});
+
+// Click shadows to create sound waves
+document.querySelectorAll('.shadow').forEach(shadow => {
+  shadow.addEventListener('click', (e) => {
+    e.stopPropagation();
+    createSoundWave(e.clientX, e.clientY);
+    hideInstruction();
+  });
+});
+
 // Space bar controls shadow movement
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
@@ -190,9 +292,9 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Click creates footsteps
+// Click ground creates footsteps
 document.addEventListener('click', (e) => {
-  if (e.target.tagName !== 'A') {
+  if (e.target.tagName !== 'A' && !e.target.classList.contains('building') && !e.target.classList.contains('shadow')) {
     createFootstep(e.clientX, e.clientY);
     hideInstruction();
   }
@@ -207,6 +309,30 @@ function createFootstep(x, y) {
   document.body.appendChild(step);
   
   setTimeout(() => step.remove(), 2000);
+}
+
+function createSoundWave(x, y) {
+  const wave = document.createElement('div');
+  wave.className = 'soundWave';
+  wave.style.left = (x - 75) + 'px';
+  wave.style.top = (y - 75) + 'px';
+  document.body.appendChild(wave);
+  
+  setTimeout(() => wave.remove(), 1500);
+}
+
+function createRhythmParticles(x, y) {
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      const particle = document.createElement('div');
+      particle.className = 'rhythmParticle';
+      particle.style.left = (x + Math.random() * 40 - 20) + 'px';
+      particle.style.top = (y + Math.random() * 40 - 20) + 'px';
+      document.body.appendChild(particle);
+      
+      setTimeout(() => particle.remove(), 2000);
+    }, i * 100);
+  }
 }
 
 function hideInstruction() {

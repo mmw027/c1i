@@ -2,38 +2,277 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>9 · Emotional Shifts</title>
+<title>9 · Mood Waves</title>
 <style>
 html,body{
   margin:0;
   height:100%;
   overflow:hidden;
+  background:#1a1a2e;
   font-family:'Inter',sans-serif;
-  background:linear-gradient(120deg,#f2d7d9,#d6eaf8,#fdebd0);
-  background-size:400% 400%;
-  transition:background 1s ease;
 }
 
-/* instruction text */
-.instruction{
+.scene{
+  position:relative;
+  width:100%;
+  height:100%;
+  transition:background 2s ease;
+}
+
+/* mood wave backgrounds */
+body.excited .scene{
+  background:linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%);
+}
+
+body.stressed .scene{
+  background:linear-gradient(135deg, #2d3436 0%, #636e72 50%, #b2bec3 100%);
+}
+
+body.calm .scene{
+  background:linear-gradient(135deg, #74b9ff 0%, #a29bfe 50%, #dfe6e9 100%);
+}
+
+body.comfort .scene{
+  background:linear-gradient(135deg, #fd79a8 0%, #fdcb6e 50%, #ffeaa7 100%);
+}
+
+/* wave container */
+.wave-container{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:60%;
+  overflow:hidden;
+}
+
+/* animated waves */
+.wave{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:200%;
+  height:100%;
+  opacity:0.6;
+}
+
+.wave path{
+  fill:rgba(255,255,255,0.2);
+}
+
+body.excited .wave path{
+  animation:waveExcited 2.5s ease-in-out infinite;
+}
+
+body.stressed .wave path{
+  animation:waveStressed 4s linear infinite;
+}
+
+body.calm .wave path{
+  animation:waveCalm 10s ease-in-out infinite;
+}
+
+body.comfort .wave path{
+  animation:waveComfort 7s ease-in-out infinite;
+}
+
+.wave:nth-child(2){
+  opacity:0.4;
+  animation-delay:1s;
+}
+
+.wave:nth-child(3){
+  opacity:0.3;
+  animation-delay:2s;
+}
+
+@keyframes waveExcited{
+  0%{transform:translateX(0) translateY(0) scaleY(1);}
+  25%{transform:translateX(-12.5%) translateY(-30px) scaleY(1.2);}
+  50%{transform:translateX(-25%) translateY(-15px) scaleY(0.9);}
+  75%{transform:translateX(-37.5%) translateY(-25px) scaleY(1.1);}
+  100%{transform:translateX(-50%) translateY(0) scaleY(1);}
+}
+
+@keyframes waveStressed{
+  0%{transform:translateX(0) translateY(15px) scaleY(0.8);}
+  100%{transform:translateX(-50%) translateY(15px) scaleY(0.8);}
+}
+
+@keyframes waveCalm{
+  0%{transform:translateX(0) translateY(0) scaleY(1);}
+  50%{transform:translateX(-25%) translateY(-15px) scaleY(1.05);}
+  100%{transform:translateX(-50%) translateY(0) scaleY(1);}
+}
+
+@keyframes waveComfort{
+  0%{transform:translateX(0) translateY(-8px) scaleY(1.1);}
+  33%{transform:translateX(-16.5%) translateY(8px) scaleY(1.15);}
+  66%{transform:translateX(-33%) translateY(-5px) scaleY(1.12);}
+  100%{transform:translateX(-50%) translateY(-8px) scaleY(1.1);}
+}
+
+/* mood label */
+.mood-label{
+  position:absolute;
+  top:30%;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:5rem;
+  font-weight:bold;
+  color:rgba(255,255,255,0.9);
+  text-shadow:0 4px 20px rgba(0,0,0,0.3);
+  opacity:0;
+  transition:opacity 1s ease;
+  pointer-events:none;
+  display:none;
+}
+
+/* particles for excitement */
+.particle{
+  position:absolute;
+  width:12px;
+  height:12px;
+  background:rgba(255,255,255,0.9);
+  border-radius:50%;
+  opacity:0;
+}
+
+body.excited .particle{
+  animation:particleBurst 1.5s ease-out infinite;
+}
+
+.particle:nth-child(1){top:15%;left:15%;animation-delay:0s;}
+.particle:nth-child(2){top:25%;left:30%;animation-delay:0.2s;}
+.particle:nth-child(3){top:35%;left:70%;animation-delay:0.4s;}
+.particle:nth-child(4){top:45%;left:85%;animation-delay:0.6s;}
+.particle:nth-child(5){top:20%;left:50%;animation-delay:0.8s;}
+.particle:nth-child(6){top:40%;left:20%;animation-delay:1s;}
+.particle:nth-child(7){top:30%;left:80%;animation-delay:1.2s;}
+.particle:nth-child(8){top:50%;left:60%;animation-delay:0.3s;}
+.particle:nth-child(9){top:18%;left:40%;animation-delay:0.7s;}
+.particle:nth-child(10){top:42%;left:45%;animation-delay:0.5s;}
+
+@keyframes particleBurst{
+  0%{opacity:0;transform:scale(0) translateY(0);}
+  30%{opacity:1;transform:scale(2) translateY(-40px);}
+  100%{opacity:0;transform:scale(0.3) translateY(-100px);}
+}
+
+/* stress lines */
+.stress-line{
+  position:absolute;
+  width:100%;
+  height:3px;
+  background:rgba(0,0,0,0.3);
+  opacity:0;
+}
+
+body.stressed .stress-line{
+  animation:stressShake 0.3s ease-in-out infinite;
+  opacity:1;
+}
+
+.stress-line:nth-child(1){top:20%;}
+.stress-line:nth-child(2){top:35%;}
+.stress-line:nth-child(3){top:50%;}
+.stress-line:nth-child(4){top:65%;}
+.stress-line:nth-child(5){top:80%;}
+
+@keyframes stressShake{
+  0%,100%{transform:translateX(0) scaleX(1);}
+  20%{transform:translateX(-5px) scaleX(1.02);}
+  40%{transform:translateX(5px) scaleX(0.98);}
+  60%{transform:translateX(-3px) scaleX(1.01);}
+  80%{transform:translateX(3px) scaleX(0.99);}
+}
+
+/* control buttons */
+.controls{
   position:absolute;
   top:50%;
   left:50%;
+  transform:translate(-50%, -50%);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  z-index:10;
+  transition:opacity 1s ease;
+}
+
+body.excited .controls,
+body.stressed .controls,
+body.calm .controls,
+body.comfort .controls{
+  opacity:0;
+  pointer-events:none;
+}
+
+.mood-btn{
+  padding:20px 40px;
+  font-size:1.2rem;
+  font-weight:600;
+  border:none;
+  border-radius:15px;
+  cursor:pointer;
+  transition:transform 0.2s, box-shadow 0.2s;
+  font-family:'Inter',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.mood-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+.mood-btn.excited{
+  background:linear-gradient(135deg, #ff6b6b, #feca57);
+  color:#fff;
+}
+
+.mood-btn.stressed{
+  background:linear-gradient(135deg, #2d3436, #636e72);
+  color:#fff;
+}
+
+.mood-btn.calm{
+  background:linear-gradient(135deg, #74b9ff, #a29bfe);
+  color:#fff;
+}
+
+.mood-btn.comfort{
+  background:linear-gradient(135deg, #fd79a8, #fdcb6e);
+  color:#fff;
+}
+
+/* instruction */
+.instruction{
+  position:absolute;
+  top:30%;
+  left:50%;
   transform:translate(-50%,-50%);
   text-align:center;
-  color:#555;
+  color:rgba(255,255,255,0.9);
   font-size:1.1rem;
   font-weight:300;
+  letter-spacing:1px;
   pointer-events:none;
-  transition:opacity 2s ease;
+  text-shadow:0 2px 10px rgba(0,0,0,0.5);
+  z-index:5;
 }
-.instruction.hidden{
+
+body.excited .instruction,
+body.stressed .instruction,
+body.calm .instruction,
+body.comfort .instruction{
   opacity:0;
 }
+
 .subtitle{
   font-size:0.85rem;
-  opacity:0.7;
   margin-top:8px;
+  opacity:0.7;
 }
 
 /* nav */
@@ -44,69 +283,103 @@ html,body{
   transform:translateX(-50%);
   display:flex;
   gap:25px;
+  z-index:20;
 }
 .nav a{
   text-decoration:none;
   padding:10px 16px;
   border-radius:20px;
-  background:rgba(0,0,0,0.05);
-  color:#444;
+  background:rgba(255,255,255,0.6);
+  color:#333;
   font-size:.9rem;
   transition:.3s;
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(10px);
 }
-.nav a:hover{
-  background:rgba(0,0,0,0.15);
-}
+.nav a:hover{background:rgba(255,255,255,0.9);}
 </style>
 </head>
 <body>
+<div class="scene">
+  <!-- particles for excitement -->
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  
+  <!-- stress lines -->
+  <div class="stress-line"></div>
+  <div class="stress-line"></div>
+  <div class="stress-line"></div>
+  <div class="stress-line"></div>
+  <div class="stress-line"></div>
+  
+  <!-- waves -->
+  <div class="wave-container">
+    <svg class="wave" viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,100 C300,150 600,50 900,100 C1050,125 1150,100 1200,100 L1200,300 L0,300 Z"/>
+    </svg>
+    <svg class="wave" viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,120 C300,80 600,160 900,120 C1050,100 1150,130 1200,120 L1200,300 L0,300 Z"/>
+    </svg>
+    <svg class="wave" viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,140 C300,180 600,100 900,140 C1050,160 1150,120 1200,140 L1200,300 L0,300 Z"/>
+    </svg>
+  </div>
+  
+  <!-- mood label -->
+  <div class="mood-label"></div>
+</div>
 
 <div class="instruction">
-  Move your mouse to shift the mood
-  <div class="subtitle">emotions changing with each small motion</div>
+  Choose a mood to experience
+  <div class="subtitle">watch how your environment shifts your feelings</div>
+</div>
+
+<div class="controls">
+  <button class="mood-btn excited">Excited</button>
+  <button class="mood-btn stressed">Stressed</button>
+  <button class="mood-btn calm">Calm</button>
+  <button class="mood-btn comfort">Comfort</button>
 </div>
 
 <div class="nav">
-  <a href="entry8.html">Back</a>
+  <a href="entry8.html">← Back</a>
   <a href="entry10.html">Next →</a>
 </div>
 
 <script>
-let instruction = document.querySelector(".instruction");
-let firstMove = true;
+const buttons = document.querySelectorAll('.mood-btn');
+const moodLabel = document.querySelector('.mood-label');
 
-document.addEventListener("mousemove", (e) => {
-  
-  if(firstMove){
-    instruction.classList.add("hidden");
-    firstMove = false;
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const mood = btn.classList[1];
+    
+    // Remove all mood classes
+    document.body.classList.remove('excited', 'stressed', 'calm', 'comfort');
+    
+    // Add selected mood
+    document.body.classList.add(mood);
+    
+    // Update label
+    moodLabel.textContent = mood.toUpperCase();
+  });
+});
+
+// Reset on spacebar
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    document.body.classList.remove('excited', 'stressed', 'calm', 'comfort');
+    moodLabel.textContent = '';
   }
-
-  // normalize mouse position
-  let x = e.clientX / window.innerWidth;
-  let y = e.clientY / window.innerHeight;
-
-  // color interpolation formulas for emotional “shift”
-  let r = Math.floor(240 + 15 * x - 40 * y); 
-  let g = Math.floor(200 + 30 * y - 20 * x);
-  let b = Math.floor(210 + 10 * x + 20 * y);
-
-  let r2 = Math.floor(220 + 20 * y);
-  let g2 = Math.floor(230 + 40 * x);
-  let b2 = Math.floor(180 + 20 * x - 15 * y);
-
-  let r3 = Math.floor(250 - 30 * x);
-  let g3 = Math.floor(220 - 20 * y);
-  let b3 = Math.floor(170 + 30 * y);
-
-  document.body.style.background =
-    `linear-gradient(120deg,
-     rgb(${r},${g},${b}),
-     rgb(${r2},${g2},${b2}),
-     rgb(${r3},${g3},${b3}))`;
 });
 </script>
-
 </body>
 </html>

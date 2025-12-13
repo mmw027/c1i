@@ -11,152 +11,244 @@ html,body{
   background:linear-gradient(to bottom,#d4a373 0%,#e8c4a0 50%,#f5e6d3 100%);
 }
 
-/* texture overlay */
-.texture{
+/* tunnel container */
+.tunnel{
   position:absolute;
-  inset:0;
-  background-image:
-    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139,90,60,0.03) 2px, rgba(139,90,60,0.03) 4px),
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,90,60,0.03) 2px, rgba(139,90,60,0.03) 4px);
-  pointer-events:none;
-  opacity:0.6;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:500px;
+  height:500px;
+  perspective:1000px;
 }
 
-/* photo frames - clickable memories */
-.frame{
+/* portal rings */
+.ring{
   position:absolute;
-  width:240px;
-  height:320px;
-  background:rgba(255,255,255,0.2);
-  border:20px solid rgba(139,90,60,0.35);
-  border-radius:4px;
-  box-shadow:0 12px 35px rgba(0,0,0,0.25);
+  border:3px solid rgba(255,255,255,0.3);
+  border-radius:50%;
+  animation:pulseRing 4s ease-in-out infinite;
+}
+
+.ring1{
+  width:500px;
+  height:500px;
+  top:0;
+  left:0;
+  animation-delay:0s;
+}
+.ring2{
+  width:400px;
+  height:400px;
+  top:50px;
+  left:50px;
+  animation-delay:0.5s;
+}
+.ring3{
+  width:300px;
+  height:300px;
+  top:100px;
+  left:100px;
+  animation-delay:1s;
+}
+.ring4{
+  width:200px;
+  height:200px;
+  top:150px;
+  left:150px;
+  animation-delay:1.5s;
+}
+
+@keyframes pulseRing{
+  0%,100%{opacity:0.3;transform:scale(1);}
+  50%{opacity:0.7;transform:scale(1.05);}
+}
+
+/* portal sides */
+.portalSide{
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  backdrop-filter:blur(20px);
+  box-shadow:0 10px 40px rgba(0,0,0,0.2);
   cursor:pointer;
   transition:all 0.5s ease;
-  backdrop-filter:blur(8px);
-  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  font-family:'Inter',sans-serif;
+  border:4px solid rgba(255,255,255,0.4);
 }
-.frame:hover{
-  transform:scale(1.08) rotate(0deg) !important;
-  box-shadow:0 18px 45px rgba(0,0,0,0.35);
-  border-color:rgba(139,90,60,0.55);
+
+.portalSide:hover{
+  transform:scale(1.15);
+  box-shadow:0 15px 60px rgba(0,0,0,0.3);
 }
-.frame.active{
-  transform:scale(1.15) rotate(0deg) !important;
+
+.portalSide.active{
+  transform:scale(1.3);
   z-index:10;
-  background:rgba(255,255,255,0.3);
-  box-shadow:0 20px 60px rgba(0,0,0,0.4);
 }
 
-.frame img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transition:opacity 0.3s ease;
+.taiwan{
+  top:80px;
+  left:80px;
+  background:rgba(255,180,120,0.4);
 }
 
-.frame1{top:12%;left:8%;transform:rotate(-4deg);}
-.frame2{top:15%;right:10%;transform:rotate(3deg);}
-.frame3{bottom:18%;left:12%;transform:rotate(2deg);}
-.frame4{bottom:15%;right:12%;transform:rotate(-3deg);}
+.newyork{
+  bottom:80px;
+  right:80px;
+  background:rgba(150,180,220,0.4);
+}
 
-/* memory caption */
-.caption{
+.portalLabel{
+  font-size:1.1rem;
+  font-weight:500;
+  letter-spacing:2px;
+  color:rgba(80,60,50,0.9);
+  margin-bottom:8px;
+}
+
+.portalSubtext{
+  font-size:0.75rem;
+  opacity:0.7;
+  letter-spacing:1px;
+}
+
+/* connection beam */
+.beam{
   position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:15px;
-  background:rgba(0,0,0,0.5);
-  color:rgba(255,255,255,0.95);
+  top:50%;
+  left:50%;
+  width:4px;
+  height:0;
+  background:linear-gradient(to bottom,rgba(255,180,120,0.6),rgba(150,180,220,0.6));
+  transform:translate(-50%,-50%) rotate(45deg);
+  transform-origin:center;
+  transition:height 0.8s ease;
+  box-shadow:0 0 20px rgba(255,200,150,0.5);
+}
+
+.beam.active{
+  height:400px;
+}
+
+/* airplane */
+.airplane{
+  position:absolute;
+  font-size:32px;
+  transform:rotate(-45deg);
+  opacity:0;
+  transition:opacity 0.5s ease;
+  filter:drop-shadow(0 3px 10px rgba(0,0,0,0.3));
+  z-index:15;
+  pointer-events:none;
+}
+
+.airplane.flying{
+  opacity:1;
+  animation:flyTunnel 8s linear infinite;
+}
+
+@keyframes flyTunnel{
+  0%{
+    left:calc(80px + 90px);
+    top:calc(80px + 90px);
+    transform:rotate(-45deg) scale(0.5);
+  }
+  50%{
+    left:50%;
+    top:50%;
+    transform:rotate(-45deg) scale(1);
+  }
+  100%{
+    left:calc(100% - 80px - 90px);
+    top:calc(100% - 80px - 90px);
+    transform:rotate(-45deg) scale(0.5);
+  }
+}
+
+/* floating particles through tunnel */
+.tunnelParticle{
+  position:absolute;
+  width:8px;
+  height:8px;
+  background:rgba(255,200,150,0.7);
+  border-radius:50%;
+  animation:floatThrough 6s linear infinite;
+  box-shadow:0 0 15px rgba(255,200,150,0.6);
+}
+
+@keyframes floatThrough{
+  0%{
+    left:calc(80px + 90px);
+    top:calc(80px + 90px);
+    opacity:0;
+    transform:scale(0.5);
+  }
+  50%{
+    left:50%;
+    top:50%;
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    left:calc(100% - 80px - 90px);
+    top:calc(100% - 80px - 90px);
+    opacity:0;
+    transform:scale(0.5);
+  }
+}
+
+/* memory fragments */
+.memoryFragment{
+  position:absolute;
+  padding:8px 14px;
+  background:rgba(255,255,255,0.5);
+  border-radius:20px;
   font-family:'Inter',sans-serif;
   font-size:0.8rem;
-  font-weight:400;
-  text-align:center;
-  letter-spacing:1px;
-  opacity:0;
-  transition:opacity 0.4s ease;
+  color:rgba(80,60,50,0.8);
   backdrop-filter:blur(10px);
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  opacity:0;
+  transition:opacity 0.5s ease;
+  pointer-events:none;
+  letter-spacing:0.5px;
 }
-.frame.active .caption{
+
+.memoryFragment.visible{
   opacity:1;
 }
 
-/* floating lanterns */
-.lantern{
-  position:absolute;
-  width:50px;
-  height:60px;
-  background:radial-gradient(circle,rgba(255,180,100,0.7) 0%,rgba(255,140,80,0.4) 100%);
-  border-radius:45% 45% 50% 50%;
-  animation:floatLantern 18s ease-in-out infinite;
-  cursor:pointer;
-  transition:all 0.3s ease;
-  box-shadow:0 0 25px rgba(255,180,100,0.5);
-}
-.lantern:hover{
-  transform:scale(1.3);
-  box-shadow:0 0 45px rgba(255,180,100,0.8);
-}
-.lantern::after{
-  content:'';
-  position:absolute;
-  bottom:-10px;
-  left:50%;
-  transform:translateX(-50%);
-  width:25px;
-  height:10px;
-  background:rgba(255,140,80,0.5);
-  border-radius:50%;
-}
+.m1{top:20%;left:15%;}
+.m2{top:25%;right:18%;}
+.m3{bottom:22%;left:18%;}
+.m4{bottom:18%;right:15%;}
 
-.l1{left:18%;top:28%;animation-delay:0s;}
-.l2{right:20%;top:38%;animation-delay:4s;}
-.l3{left:55%;bottom:28%;animation-delay:8s;}
-
-@keyframes floatLantern{
-  0%,100%{transform:translateY(0) translateX(0);}
-  25%{transform:translateY(-35px) translateX(20px);}
-  50%{transform:translateY(-15px) translateX(-15px);}
-  75%{transform:translateY(-45px) translateX(25px);}
-}
-
-/* warmth particles */
-.warmthParticle{
-  position:absolute;
-  width:5px;
-  height:5px;
-  background:rgba(255,180,100,0.6);
-  border-radius:50%;
-  animation:warmthRise 4.5s ease-out forwards;
-  pointer-events:none;
-  box-shadow:0 0 8px rgba(255,180,100,0.5);
-}
-@keyframes warmthRise{
-  0%{opacity:1;transform:translateY(0) scale(1);}
-  100%{opacity:0;transform:translateY(-230px) scale(0.3);}
-}
-
-/* distance indicator */
+/* distance counter */
 .distance{
   position:absolute;
   bottom:100px;
   left:50%;
   transform:translateX(-50%);
   text-align:center;
-  color:rgba(100,60,40,0.65);
+  color:rgba(100,60,40,0.7);
   font-family:'Inter',sans-serif;
-  font-size:0.85rem;
-  font-weight:300;
+  font-size:1rem;
+  font-weight:400;
   letter-spacing:2px;
 }
 
 /* instruction */
 .instruction{
   position:absolute;
-  top:50%;
+  top:15%;
   left:50%;
-  transform:translate(-50%,-50%);
+  transform:translateX(-50%);
   text-align:center;
   color:rgba(100,60,40,0.7);
   font-family:'Inter',sans-serif;
@@ -165,13 +257,12 @@ html,body{
   letter-spacing:2px;
   pointer-events:none;
   transition:opacity 2s ease;
-  text-shadow:0 2px 8px rgba(255,255,255,0.3);
 }
 .instruction.hidden{opacity:0;}
 .subtitle{
-  font-size:0.8rem;
-  margin-top:10px;
-  opacity:0.75;
+  font-size:0.75rem;
+  margin-top:8px;
+  opacity:0.7;
 }
 
 /* nav */
@@ -199,37 +290,36 @@ html,body{
 </style>
 </head>
 <body>
-<div class="texture"></div>
-
-<div class="frame frame1">
-  <img src="img_1675.jpg" alt="Night train window">
-  <div class="caption">夜晚的車窗<br>night reflections</div>
+<div class="tunnel">
+  <div class="ring ring1"></div>
+  <div class="ring ring2"></div>
+  <div class="ring ring3"></div>
+  <div class="ring ring4"></div>
+  
+  <div class="beam" id="beam"></div>
+  <div class="airplane" id="airplane">✈️</div>
+  
+  <div class="portalSide taiwan" data-side="taiwan">
+    <div class="portalLabel">TAIWAN</div>
+    <div class="portalSubtext">home</div>
+  </div>
+  
+  <div class="portalSide newyork" data-side="newyork">
+    <div class="portalLabel">NEW YORK</div>
+    <div class="portalSubtext">here</div>
+  </div>
 </div>
 
-<div class="frame frame2">
-  <img src="IMG_3955.jpg" alt="Night market">
-  <div class="caption">台灣夜市<br>night market warmth</div>
-</div>
+<div class="memoryFragment m1">night market sounds</div>
+<div class="memoryFragment m2">grandma's smile</div>
+<div class="memoryFragment m3">smell of home</div>
+<div class="memoryFragment m4">missing home</div>
 
-<div class="frame frame3">
-  <img src="IMG_4025.jpg" alt="Rainbow sunset">
-  <div class="caption">家鄉的天空<br>rainbow & sunset</div>
-</div>
-
-<div class="frame frame4">
-  <img src="IMG_4075.jpg" alt="Home cooking">
-  <div class="caption">家的味道<br>taste of home</div>
-</div>
-
-<div class="lantern l1"></div>
-<div class="lantern l2"></div>
-<div class="lantern l3"></div>
-
-<div class="distance">7,783 miles away</div>
+<div class="distance">7,783 miles between</div>
 
 <div class="instruction" id="instruction">
-  Click photos to remember · Click lanterns for warmth
-  <div class="subtitle">nostalgia, warmth, emotional connection</div>
+  Click portals to connect
+  <div class="subtitle">nostalgia, distance, connection</div>
 </div>
 
 <div class="nav">
@@ -238,46 +328,94 @@ html,body{
 </div>
 
 <script>
-let activeFrame = null;
+const beam = document.getElementById('beam');
+const airplane = document.getElementById('airplane');
+const portals = document.querySelectorAll('.portalSide');
+const memories = document.querySelectorAll('.memoryFragment');
+let activePortal = null;
+let particleInterval;
 
-// Click frames to activate memories
-document.querySelectorAll('.frame').forEach(frame => {
-  frame.addEventListener('click', () => {
-    if (activeFrame === frame) {
-      frame.classList.remove('active');
-      activeFrame = null;
-    } else {
-      if (activeFrame) activeFrame.classList.remove('active');
-      frame.classList.add('active');
-      activeFrame = frame;
-    }
-    hideInstruction();
-  });
-});
+const memoryTexts = {
+  taiwan: [
+    'night market sounds',
+    'grandma\'s hands',
+    'road back home',
+    'childhood streets'
+  ],
+  newyork: [
+    'subway echoes',
+    'missing home',
+    'foreign moon',
+    'days of effort'
+  ]
+};
 
-// Click lanterns to release warmth particles
-document.querySelectorAll('.lantern').forEach(lantern => {
-  lantern.addEventListener('click', (e) => {
-    const x = e.clientX;
-    const y = e.clientY;
+portals.forEach(portal => {
+  portal.addEventListener('click', () => {
+    const side = portal.dataset.side;
     
-    for (let i = 0; i < 12; i++) {
-      setTimeout(() => {
-        createWarmthParticle(x, y);
-      }, i * 100);
+    if (activePortal === portal) {
+      // Deactivate
+      portal.classList.remove('active');
+      beam.classList.remove('active');
+      airplane.classList.remove('flying');
+      stopParticles();
+      hideMemories();
+      activePortal = null;
+    } else {
+      // Activate
+      portals.forEach(p => p.classList.remove('active'));
+      portal.classList.add('active');
+      beam.classList.add('active');
+      airplane.classList.add('flying');
+      activePortal = portal;
+      
+      // Show memories
+      showMemories(side);
+      
+      // Start particles
+      startParticles();
     }
+    
     hideInstruction();
   });
 });
 
-function createWarmthParticle(x, y) {
-  const particle = document.createElement('div');
-  particle.className = 'warmthParticle';
-  particle.style.left = (x + Math.random() * 70 - 35) + 'px';
-  particle.style.top = (y + Math.random() * 70 - 35) + 'px';
-  document.body.appendChild(particle);
+function startParticles() {
+  stopParticles();
   
-  setTimeout(() => particle.remove(), 4500);
+  particleInterval = setInterval(() => {
+    const particle = document.createElement('div');
+    particle.className = 'tunnelParticle';
+    particle.style.animationDuration = (4 + Math.random() * 4) + 's';
+    particle.style.animationDelay = Math.random() * 2 + 's';
+    document.querySelector('.tunnel').appendChild(particle);
+    
+    setTimeout(() => particle.remove(), 8000);
+  }, 800);
+}
+
+function stopParticles() {
+  if (particleInterval) {
+    clearInterval(particleInterval);
+    particleInterval = null;
+  }
+}
+
+function showMemories(side) {
+  const texts = memoryTexts[side];
+  memories.forEach((memory, i) => {
+    memory.textContent = texts[i];
+    setTimeout(() => {
+      memory.classList.add('visible');
+    }, i * 200);
+  });
+}
+
+function hideMemories() {
+  memories.forEach(memory => {
+    memory.classList.remove('visible');
+  });
 }
 
 function hideInstruction() {
